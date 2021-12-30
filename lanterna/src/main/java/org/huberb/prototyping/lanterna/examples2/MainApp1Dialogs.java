@@ -89,18 +89,6 @@ public class MainApp1Dialogs {
         protected abstract void doWork(Screen screen);
     }
 
-    static class AppContext {
-
-        private String currentDialog;
-        private final Map<String, Object> m;
-
-        public AppContext(String currentDialog) {
-            this.currentDialog = currentDialog;
-            this.m = new HashMap<>();
-        }
-
-    }
-
     static abstract class DialogWindowHandler {
 
         protected AppContext appContext;
@@ -203,7 +191,7 @@ public class MainApp1Dialogs {
 
     static class TerminalScreeenTemplateImpl extends TerminalScreeenTemplate {
 
-        private final AppContext appContext;
+        private final AppContext<String> appContext;
         private final Map<String, DialogWindowHandler> m;
         //---
 
@@ -261,16 +249,14 @@ public class MainApp1Dialogs {
             //final MultiWindowTextGUI gui = new MultiWindowTextGUI(screen,
             //  new DefaultWindowManager(),
             //  new EmptySpace(TextColor.ANSI.BLUE));
-            final MultiWindowTextGUI gui = new MultiWindowTextGUI(screen);
+            final MultiWindowTextGUI multiWindowTextGUI = new MultiWindowTextGUI(screen);
 
             //final String themeName = ThemeSuppliers.DefaultThemes.conquerorTheme.themeName();
             final String themeName = new ThemeSuppliers().retrieveRandomTheme();
             final Theme theme = LanternaThemes.getRegisteredTheme(themeName);
-            gui.setTheme(theme);
-            final WindowBasedTextGUI windowBasedTextGUI = gui;
+            multiWindowTextGUI.setTheme(theme);
+            final WindowBasedTextGUI windowBasedTextGUI = multiWindowTextGUI;
             return windowBasedTextGUI;
         }
-
     }
-
 }

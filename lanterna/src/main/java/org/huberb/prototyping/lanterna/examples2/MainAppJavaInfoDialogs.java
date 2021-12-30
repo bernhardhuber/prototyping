@@ -98,21 +98,10 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
         protected abstract void doWork(Screen screen);
     }
 
-    static class AppContext<T> implements Serializable {
-
-        private T currentDialog;
-        private final Map<T, Object> m;
-
-        public AppContext(T currentDialog) {
-            this.currentDialog = currentDialog;
-            this.m = new HashMap<>();
-        }
-
-    }
 
     static abstract class DialogWindowHandler implements Serializable {
 
-        protected final AppContext appContext;
+        protected final AppContext<String> appContext;
 
         public DialogWindowHandler() {
             this(null);
