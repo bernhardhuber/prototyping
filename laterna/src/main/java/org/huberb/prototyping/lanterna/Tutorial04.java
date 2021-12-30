@@ -1,4 +1,4 @@
-package org.huberb.prototyping.laterna;
+package org.huberb.prototyping.lanterna;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.*;

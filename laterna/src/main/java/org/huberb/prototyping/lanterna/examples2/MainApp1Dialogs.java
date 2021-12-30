@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples2;
+package org.huberb.prototyping.lanterna.examples2;
 
 import com.googlecode.lanterna.bundle.LanternaThemes;
 import com.googlecode.lanterna.graphics.Theme;
@@ -31,9 +31,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.DialogWindowCreatorParameter;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.DialogWindowFactory;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.Mode;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowCreatorParameter;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowFactory;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.Mode;
 
 /**
  *
@@ -132,27 +132,27 @@ public class MainApp1Dialogs {
         void action(Object mdbObject) {
             final String mdb = (String) mdbObject;
             if ("M1".equals(mdb)) {
-                appContext.currentDialog = "m1MessageDialogCreatorParameter";
+                appContext.currentDialog = "M1";
             } else if ("M2".equals(mdb)) {
-                appContext.currentDialog = "m2RadioListDialogCreatorParameter";
+                appContext.currentDialog = "M2";
             } else if ("M3".equals(mdb)) {
-                appContext.currentDialog = "m3RadioListDialogCreatorParameter";
+                appContext.currentDialog = "M3";
             } else {
                 appContext.currentDialog = "menuDialogCreatorParameter";
             }
         }
     }
 
-    static class M1 extends DialogWindowHandler {
+    static class MessageDialogDialogWindowHandler extends DialogWindowHandler {
 
-        public M1(AppContext appContext) {
+        public MessageDialogDialogWindowHandler(AppContext appContext) {
             this.appContext = appContext;
-            final DialogWindowCreatorParameter m1MessageDialogCreatorParameter = new DialogWindowCreatorParameter(Mode.messageDialog,
+            final DialogWindowCreatorParameter dialogWindowCreatorParameter = new DialogWindowCreatorParameter(Mode.messageDialog,
                     "Message", "Select",
                     Collections.emptyList(),
                     "m1Message"
             );
-            this.dialogWindowCreatorParameter = m1MessageDialogCreatorParameter;
+            this.dialogWindowCreatorParameter = dialogWindowCreatorParameter;
         }
 
         @Override
@@ -161,16 +161,16 @@ public class MainApp1Dialogs {
         }
     }
 
-    static class M2 extends DialogWindowHandler {
+    static class RadioListDialogDialogWindowHandler extends DialogWindowHandler {
 
-        public M2(AppContext appContext) {
+        public RadioListDialogDialogWindowHandler(AppContext appContext) {
             this.appContext = appContext;
-            final DialogWindowCreatorParameter m2RadioListDialogCreatorParameter = new DialogWindowCreatorParameter(Mode.radioListDialog,
+            final DialogWindowCreatorParameter dialogWindowCreatorParameter = new DialogWindowCreatorParameter(Mode.radioListDialog,
                     "RadioList", "Select",
                     Arrays.asList("m2RB1", "m2RB2", "m2RB3"),
                     ""
             );
-            this.dialogWindowCreatorParameter = m2RadioListDialogCreatorParameter;
+            this.dialogWindowCreatorParameter = dialogWindowCreatorParameter;
         }
 
         @Override
@@ -180,16 +180,16 @@ public class MainApp1Dialogs {
 
     }
 
-    static class M3 extends DialogWindowHandler {
+    static class CheckListDialogDialogWindowHandler extends DialogWindowHandler {
 
-        public M3(AppContext appContext) {
+        public CheckListDialogDialogWindowHandler(AppContext appContext) {
             this.appContext = appContext;
-            final DialogWindowCreatorParameter m3RadioListDialogCreatorParameter = new DialogWindowCreatorParameter(Mode.radioListDialog,
-                    "RadioList", "Select",
-                    Arrays.asList("m3RB1", "m3RB2", "m3RB3"),
+            final DialogWindowCreatorParameter dialogWindowCreatorParameter = new DialogWindowCreatorParameter(Mode.checkListDialog,
+                    "CheckList", "Select",
+                    Arrays.asList("m3CB1", "m3CB2", "m3CB3"),
                     ""
             );
-            this.dialogWindowCreatorParameter = m3RadioListDialogCreatorParameter;
+            this.dialogWindowCreatorParameter = dialogWindowCreatorParameter;
         }
 
         @Override
@@ -208,9 +208,9 @@ public class MainApp1Dialogs {
             this.appContext = new AppContext("menuDialogCreatorParameter");
             this.m = new HashMap<>();
             this.m.put("menuDialogCreatorParameter", new MenuDialogWindowHandler(this.appContext));
-            this.m.put("m1MessageDialogCreatorParameter", new M1(this.appContext));
-            this.m.put("m2RadioListDialogCreatorParameter", new M2(this.appContext));
-            this.m.put("m3RadioListDialogCreatorParameter", new M3(this.appContext));
+            this.m.put("M1", new MessageDialogDialogWindowHandler(this.appContext));
+            this.m.put("M2", new RadioListDialogDialogWindowHandler(this.appContext));
+            this.m.put("M3", new CheckListDialogDialogWindowHandler(this.appContext));
         }
 
         @Override

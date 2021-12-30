@@ -13,17 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples.dialogs;
+package org.huberb.prototyping.lanterna.examples.dialogs;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TerminalTextUtils;
+import com.googlecode.lanterna.gui2.ActionListBox;
 import com.googlecode.lanterna.gui2.Button;
 import com.googlecode.lanterna.gui2.EmptySpace;
 import com.googlecode.lanterna.gui2.GridLayout;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.LocalizedString;
 import com.googlecode.lanterna.gui2.Panel;
-import com.googlecode.lanterna.gui2.RadioBoxList;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
 import java.util.List;
@@ -33,11 +33,11 @@ import java.util.List;
  * @author pi
  * @param <T>
  */
-public class RadioListDialog<T> extends DialogWindow {
+public class MenuListDialog<T> extends DialogWindow {
 
     private T result;
 
-    public RadioListDialog(
+    public MenuListDialog(
             String title,
             String description,
             TerminalSize listBoxPreferredSize,
@@ -46,19 +46,13 @@ public class RadioListDialog<T> extends DialogWindow {
         super(title);
         this.result = null;
         if (content.isEmpty()) {
-            throw new IllegalStateException("RadioListDialog needs at least one item");
+            throw new IllegalStateException("MenuListDialog needs at least one item");
         }
 
-        final RadioBoxList<T> radioBoxList = new RadioBoxList<>();
+        ActionListBox listBox = new ActionListBox(listBoxPreferredSize);
         for (final T item : content) {
-            radioBoxList.addItem(item);
+            listBox.addItem(item.toString(), () -> onSelect(item));
         }
-        radioBoxList.addListener(new RadioBoxList.Listener() {
-            @Override
-            public void onSelectionChanged(int selectedIndex, int previousSelection) {
-                result = content.get(selectedIndex);
-            }
-        });
 
         final Panel mainPanel = new Panel();
         mainPanel.setLayoutManager(
@@ -69,7 +63,7 @@ public class RadioListDialog<T> extends DialogWindow {
             mainPanel.addComponent(new Label(description));
             mainPanel.addComponent(new EmptySpace(TerminalSize.ONE));
         }
-        radioBoxList.setLayoutData(
+        listBox.setLayoutData(
                 GridLayout.createLayoutData(
                         GridLayout.Alignment.FILL,
                         GridLayout.Alignment.CENTER,
@@ -87,6 +81,10 @@ public class RadioListDialog<T> extends DialogWindow {
         buttonPanel.addTo(mainPanel);
 
         setComponent(mainPanel);
+    }
+
+    private void onSelect(T item) {
+        result = item;
     }
 
     private void onOK() {
@@ -171,13 +169,13 @@ public class RadioListDialog<T> extends DialogWindow {
             String title, String description,
             TerminalSize listBoxSize,
             T... items) {
-        final RadioListDialog<T> radioListDialog = new RadioListDialogBuilder<T>()
+        final MenuListDialog<T> menuListDialog = new MenuListDialogBuilder<T>()
                 .setTitle(title)
                 .setDescription(description)
                 .setListBoxSize(listBoxSize)
                 .addListItems(items)
                 .build();
-        return radioListDialog.showDialog(textGUI);
+        return menuListDialog.showDialog(textGUI);
     }
 
 }

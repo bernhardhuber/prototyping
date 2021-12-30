@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 berni3.
+ * Copyright 2021 pi.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,11 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna;
+package org.huberb.prototyping.lanterna.examples2;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
-import com.googlecode.lanterna.gui2.*;
+import com.googlecode.lanterna.gui2.BasicWindow;
+import com.googlecode.lanterna.gui2.Button;
+import com.googlecode.lanterna.gui2.DefaultWindowManager;
+import com.googlecode.lanterna.gui2.EmptySpace;
+import com.googlecode.lanterna.gui2.GridLayout;
+import com.googlecode.lanterna.gui2.Label;
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
+import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.TextBox;
 import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
@@ -26,21 +34,20 @@ import java.io.IOException;
 
 /**
  *
- * @author berni3
- * @see
- * <a href="https://github.com/mabe02/lanterna/blob/master/docs/examples/gui/hello_world.md">HelloWorld</a>
+ * @author pi
  */
-public class HelloWorld {
+public class Main0 {
 
     public static void main(String[] args) throws IOException {
-
         // Setup terminal and screen layers
-        try (final Terminal terminal = new DefaultTerminalFactory().createTerminal()) {
-            try (final Screen screen = new TerminalScreen(terminal)) {
+        try (Terminal terminal = new DefaultTerminalFactory().createTerminal()) {
+            try (Screen screen = new TerminalScreen(terminal)) {
                 screen.startScreen();
 
+                // Create window to hold the panel
+                BasicWindow window = new BasicWindow();
                 // Create panel to hold components
-                final Panel panel = new Panel();
+                Panel panel = new Panel();
                 panel.setLayoutManager(new GridLayout(2));
 
                 panel.addComponent(new Label("Forename"));
@@ -52,16 +59,19 @@ public class HelloWorld {
                 panel.addComponent(new EmptySpace(new TerminalSize(0, 0))); // Empty space underneath labels
                 panel.addComponent(new Button("Submit"));
 
-                // Create window to hold the panel
-                final BasicWindow window = new BasicWindow();
+                panel.addComponent(new EmptySpace(new TerminalSize(0, 0))); // Empty space underneath labels
+                panel.addComponent(new Button("Close", new Runnable() {
+                    @Override
+                    public void run() {
+                        window.close();
+                    }
+                }));
+
                 window.setComponent(panel);
 
                 // Create gui and start gui
-                final MultiWindowTextGUI gui = new MultiWindowTextGUI(
-                        screen,
-                        new DefaultWindowManager(),
-                        new EmptySpace(TextColor.ANSI.BLUE)
-                );
+                MultiWindowTextGUI gui = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
+
                 gui.addWindowAndWait(window);
             }
         }

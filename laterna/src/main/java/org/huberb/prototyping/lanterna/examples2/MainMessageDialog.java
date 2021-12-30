@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples2;
+package org.huberb.prototyping.lanterna.examples2;
 
 import com.googlecode.lanterna.bundle.LanternaThemes;
 import com.googlecode.lanterna.graphics.Theme;
@@ -32,9 +32,9 @@ import java.util.List;
 import java.util.Random;
 import java.util.function.BiFunction;
 import java.util.function.Supplier;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.DialogWindowCreatorParameter;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.DialogWindowFactory;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.Mode;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowCreatorParameter;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowFactory;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.Mode;
 
 /**
  *

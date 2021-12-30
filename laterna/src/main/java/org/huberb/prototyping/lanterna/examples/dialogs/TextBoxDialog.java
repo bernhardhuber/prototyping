@@ -13,46 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples.dialogs;
+package org.huberb.prototyping.lanterna.examples.dialogs;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.TerminalTextUtils;
-import com.googlecode.lanterna.gui2.ActionListBox;
 import com.googlecode.lanterna.gui2.Button;
 import com.googlecode.lanterna.gui2.EmptySpace;
 import com.googlecode.lanterna.gui2.GridLayout;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.LocalizedString;
 import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.TextBox;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
-import java.util.List;
 
 /**
  *
  * @author pi
- * @param <T>
  */
-public class MenuListDialog<T> extends DialogWindow {
+public class TextBoxDialog extends DialogWindow {
 
-    private T result;
+    private String result;
 
-    public MenuListDialog(
+    public TextBoxDialog(
             String title,
             String description,
             TerminalSize listBoxPreferredSize,
-            List<T> content) {
+            String message) {
 
         super(title);
         this.result = null;
-        if (content.isEmpty()) {
-            throw new IllegalStateException("MenuListDialog needs at least one item");
+        if (message.isEmpty()) {
+            throw new IllegalStateException("TextBoxDialog needs a message");
         }
 
-        ActionListBox listBox = new ActionListBox(listBoxPreferredSize);
-        for (final T item : content) {
-            listBox.addItem(item.toString(), () -> onSelect(item));
-        }
+        final TextBox textBox = new TextBox(message);
+        textBox.setReadOnly(true);
 
         final Panel mainPanel = new Panel();
         mainPanel.setLayoutManager(
@@ -63,7 +58,7 @@ public class MenuListDialog<T> extends DialogWindow {
             mainPanel.addComponent(new Label(description));
             mainPanel.addComponent(new EmptySpace(TerminalSize.ONE));
         }
-        listBox.setLayoutData(
+        textBox.setLayoutData(
                 GridLayout.createLayoutData(
                         GridLayout.Alignment.FILL,
                         GridLayout.Alignment.CENTER,
@@ -77,22 +72,14 @@ public class MenuListDialog<T> extends DialogWindow {
         buttonPanel.addComponent(new Button(LocalizedString.OK.toString(), this::onOK)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER, true, false))
         );
-        buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
+        //buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
         buttonPanel.addTo(mainPanel);
 
         setComponent(mainPanel);
     }
 
-    private void onSelect(T item) {
-        result = item;
-    }
-
     private void onOK() {
-        close();
-    }
-
-    private void onCancel() {
-        this.result = null;
+        result = "OK";
         close();
     }
 
@@ -104,7 +91,7 @@ public class MenuListDialog<T> extends DialogWindow {
      * dialog was cancelled
      */
     @Override
-    public T showDialog(WindowBasedTextGUI textGUI) {
+    public String showDialog(WindowBasedTextGUI textGUI) {
         result = null;
         super.showDialog(textGUI);
         return result;
@@ -116,15 +103,13 @@ public class MenuListDialog<T> extends DialogWindow {
      * @param textGUI Text GUI to add the dialog to
      * @param title Title of the dialog
      * @param description Description of the dialog
-     * @param items Items in the dialog
-     * @param <T> Type of items in the dialog
+     * @param content
      * @return The selected item or {@code null} if cancelled
      */
-    @SafeVarargs
-    public static <T> T showDialog(WindowBasedTextGUI textGUI,
+    public static String showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
-            T... items) {
-        return showDialog(textGUI, title, description, null, items);
+            String content) {
+        return showDialog(textGUI, title, description, null, content);
     }
 
     /**
@@ -135,21 +120,18 @@ public class MenuListDialog<T> extends DialogWindow {
      * @param description Description of the dialog
      * @param listBoxHeight Maximum height of the list box, scrollbars will be
      * used if there are more items
-     * @param items Items in the dialog
-     * @param <T> Type of items in the dialog
      * @return The selected item or {@code null} if cancelled
      */
-    @SafeVarargs
-    public static <T> T showDialog(WindowBasedTextGUI textGUI,
+    public static String showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             int listBoxHeight,
-            T... items) {
-        int width = 0;
-        for (T item : items) {
-            width = Math.max(width, TerminalTextUtils.getColumnWidth(item.toString()));
-        }
-        width += 2;
-        return showDialog(textGUI, title, description, new TerminalSize(width, listBoxHeight), items);
+            String content) {
+        int width = 40;
+//        for (T item : items) {
+//            width = Math.max(width, TerminalTextUtils.getColumnWidth(item.toString()));
+//        }
+//        width += 2;
+        return showDialog(textGUI, title, description, new TerminalSize(width, listBoxHeight), content);
     }
 
     /**
@@ -160,22 +142,20 @@ public class MenuListDialog<T> extends DialogWindow {
      * @param description Description of the dialog
      * @param listBoxSize Maximum size of the list box, scrollbars will be used
      * if the items cannot fit
-     * @param items Items in the dialog
-     * @param <T> Type of items in the dialog
+     * @param content
      * @return The selected item or {@code null} if cancelled
      */
-    @SafeVarargs
-    public static <T> T showDialog(WindowBasedTextGUI textGUI,
+    public static String showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             TerminalSize listBoxSize,
-            T... items) {
-        final MenuListDialog<T> menuListDialog = new MenuListDialogBuilder<T>()
+            String content) {
+        final TextBoxDialog textBoxDialog = new TextBoxDialogBuilder()
                 .setTitle(title)
                 .setDescription(description)
                 .setListBoxSize(listBoxSize)
-                .addListItems(items)
+                .setContent(content)
                 .build();
-        return menuListDialog.showDialog(textGUI);
+        return textBoxDialog.showDialog(textGUI);
     }
 
 }

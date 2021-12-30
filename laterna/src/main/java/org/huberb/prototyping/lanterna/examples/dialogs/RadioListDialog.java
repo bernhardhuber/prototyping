@@ -13,41 +13,52 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples.dialogs;
+package org.huberb.prototyping.lanterna.examples.dialogs;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.TerminalTextUtils;
 import com.googlecode.lanterna.gui2.Button;
 import com.googlecode.lanterna.gui2.EmptySpace;
 import com.googlecode.lanterna.gui2.GridLayout;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.LocalizedString;
 import com.googlecode.lanterna.gui2.Panel;
-import com.googlecode.lanterna.gui2.TextBox;
+import com.googlecode.lanterna.gui2.RadioBoxList;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
+import java.util.List;
 
 /**
  *
  * @author pi
+ * @param <T>
  */
-public class TextBoxDialog extends DialogWindow {
+public class RadioListDialog<T> extends DialogWindow {
 
-    private String result;
+    private T result;
 
-    public TextBoxDialog(
+    public RadioListDialog(
             String title,
             String description,
             TerminalSize listBoxPreferredSize,
-            String message) {
+            List<T> content) {
 
         super(title);
         this.result = null;
-        if (message.isEmpty()) {
-            throw new IllegalStateException("TextBoxDialog needs a message");
+        if (content.isEmpty()) {
+            throw new IllegalStateException("RadioListDialog needs at least one item");
         }
 
-        final TextBox textBox = new TextBox(message);
-        textBox.setReadOnly(true);
+        final RadioBoxList<T> radioBoxList = new RadioBoxList<>();
+        for (final T item : content) {
+            radioBoxList.addItem(item);
+        }
+        radioBoxList.addListener(new RadioBoxList.Listener() {
+            @Override
+            public void onSelectionChanged(int selectedIndex, int previousSelection) {
+                result = content.get(selectedIndex);
+            }
+        });
 
         final Panel mainPanel = new Panel();
         mainPanel.setLayoutManager(
@@ -58,7 +69,7 @@ public class TextBoxDialog extends DialogWindow {
             mainPanel.addComponent(new Label(description));
             mainPanel.addComponent(new EmptySpace(TerminalSize.ONE));
         }
-        textBox.setLayoutData(
+        radioBoxList.setLayoutData(
                 GridLayout.createLayoutData(
                         GridLayout.Alignment.FILL,
                         GridLayout.Alignment.CENTER,
@@ -72,14 +83,18 @@ public class TextBoxDialog extends DialogWindow {
         buttonPanel.addComponent(new Button(LocalizedString.OK.toString(), this::onOK)
                 .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER, true, false))
         );
-        //buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
+        buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
         buttonPanel.addTo(mainPanel);
 
         setComponent(mainPanel);
     }
 
     private void onOK() {
-        result = "OK";
+        close();
+    }
+
+    private void onCancel() {
+        this.result = null;
         close();
     }
 
@@ -91,7 +106,7 @@ public class TextBoxDialog extends DialogWindow {
      * dialog was cancelled
      */
     @Override
-    public String showDialog(WindowBasedTextGUI textGUI) {
+    public T showDialog(WindowBasedTextGUI textGUI) {
         result = null;
         super.showDialog(textGUI);
         return result;
@@ -103,13 +118,15 @@ public class TextBoxDialog extends DialogWindow {
      * @param textGUI Text GUI to add the dialog to
      * @param title Title of the dialog
      * @param description Description of the dialog
-     * @param content
+     * @param items Items in the dialog
+     * @param <T> Type of items in the dialog
      * @return The selected item or {@code null} if cancelled
      */
-    public static String showDialog(WindowBasedTextGUI textGUI,
+    @SafeVarargs
+    public static <T> T showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
-            String content) {
-        return showDialog(textGUI, title, description, null, content);
+            T... items) {
+        return showDialog(textGUI, title, description, null, items);
     }
 
     /**
@@ -120,18 +137,21 @@ public class TextBoxDialog extends DialogWindow {
      * @param description Description of the dialog
      * @param listBoxHeight Maximum height of the list box, scrollbars will be
      * used if there are more items
+     * @param items Items in the dialog
+     * @param <T> Type of items in the dialog
      * @return The selected item or {@code null} if cancelled
      */
-    public static String showDialog(WindowBasedTextGUI textGUI,
+    @SafeVarargs
+    public static <T> T showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             int listBoxHeight,
-            String content) {
-        int width = 40;
-//        for (T item : items) {
-//            width = Math.max(width, TerminalTextUtils.getColumnWidth(item.toString()));
-//        }
-//        width += 2;
-        return showDialog(textGUI, title, description, new TerminalSize(width, listBoxHeight), content);
+            T... items) {
+        int width = 0;
+        for (T item : items) {
+            width = Math.max(width, TerminalTextUtils.getColumnWidth(item.toString()));
+        }
+        width += 2;
+        return showDialog(textGUI, title, description, new TerminalSize(width, listBoxHeight), items);
     }
 
     /**
@@ -142,20 +162,22 @@ public class TextBoxDialog extends DialogWindow {
      * @param description Description of the dialog
      * @param listBoxSize Maximum size of the list box, scrollbars will be used
      * if the items cannot fit
-     * @param content
+     * @param items Items in the dialog
+     * @param <T> Type of items in the dialog
      * @return The selected item or {@code null} if cancelled
      */
-    public static String showDialog(WindowBasedTextGUI textGUI,
+    @SafeVarargs
+    public static <T> T showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             TerminalSize listBoxSize,
-            String content) {
-        final TextBoxDialog textBoxDialog = new TextBoxDialogBuilder()
+            T... items) {
+        final RadioListDialog<T> radioListDialog = new RadioListDialogBuilder<T>()
                 .setTitle(title)
                 .setDescription(description)
                 .setListBoxSize(listBoxSize)
-                .setContent(content)
+                .addListItems(items)
                 .build();
-        return textBoxDialog.showDialog(textGUI);
+        return radioListDialog.showDialog(textGUI);
     }
 
 }

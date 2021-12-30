@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples2;
+package org.huberb.prototyping.lanterna.examples2;
 
 import com.googlecode.lanterna.bundle.LanternaThemes;
 import com.googlecode.lanterna.graphics.Theme;
@@ -37,8 +37,8 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.DialogWindowBuilder;
-import org.huberb.prototyping.laterna.examples2.DialogWindowCreators.Mode;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowBuilder;
+import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.Mode;
 
 /**
  *

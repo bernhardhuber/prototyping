@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples2;
+package org.huberb.prototyping.lanterna.examples2;
 
 import java.util.Random;
 

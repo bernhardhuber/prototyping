@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples2;
+package org.huberb.prototyping.lanterna.examples2;
 
 import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
@@ -31,14 +31,14 @@ import java.io.Serializable;
 import java.util.Collections;
 import java.util.List;
 import java.util.function.Supplier;
-import org.huberb.prototyping.laterna.examples.dialogs.CheckListDialog;
-import org.huberb.prototyping.laterna.examples.dialogs.CheckListDialogBuilder;
-import org.huberb.prototyping.laterna.examples.dialogs.MenuListDialog;
-import org.huberb.prototyping.laterna.examples.dialogs.MenuListDialogBuilder;
-import org.huberb.prototyping.laterna.examples.dialogs.RadioListDialog;
-import org.huberb.prototyping.laterna.examples.dialogs.RadioListDialogBuilder;
-import org.huberb.prototyping.laterna.examples.dialogs.TextBoxDialog;
-import org.huberb.prototyping.laterna.examples.dialogs.TextBoxDialogBuilder;
+import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
+import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialogBuilder;
+import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialog;
+import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialogBuilder;
+import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
+import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialogBuilder;
+import org.huberb.prototyping.lanterna.examples.dialogs.TextBoxDialog;
+import org.huberb.prototyping.lanterna.examples.dialogs.TextBoxDialogBuilder;
 
 /**
  *
@@ -198,12 +198,16 @@ class DialogWindowCreators {
                 final CheckListDialog<String> checkListDialog = checkListDialogBuilder.build();
                 dialogWindow = checkListDialog;
             } else if (mode == Mode.menuListDialog) {
-                final MenuListDialogBuilder<String> menuListDialogBuilder = new MenuListDialogBuilder<String>().setTitle(title).setDescription(description);
+                final MenuListDialogBuilder<String> menuListDialogBuilder = new MenuListDialogBuilder<String>()
+                        .setTitle(title)
+                        .setDescription(description);
                 listStringParams.forEach((String s) -> menuListDialogBuilder.addListItem(s));
                 final MenuListDialog<String> menuListDialog = menuListDialogBuilder.build();
                 dialogWindow = menuListDialog;
             } else if (mode == Mode.radioListDialog) {
-                final RadioListDialogBuilder<String> radioListDialogBuilder = new RadioListDialogBuilder<String>().setTitle(title).setDescription(description);
+                final RadioListDialogBuilder<String> radioListDialogBuilder = new RadioListDialogBuilder<String>()
+                        .setTitle(title)
+                        .setDescription(description);
                 listStringParams.forEach((String s) -> radioListDialogBuilder.addListItem(s));
                 final RadioListDialog<String> radioListDialog = radioListDialogBuilder.build();
                 dialogWindow = radioListDialog;
@@ -318,12 +322,16 @@ class DialogWindowCreators {
                 final CheckListDialog<String> checkListDialog = checkListDialogBuilder.build();
                 dialogWindow = checkListDialog;
             } else if (mode == Mode.menuListDialog) {
-                final MenuListDialogBuilder<String> menuListDialogBuilder = new MenuListDialogBuilder<String>().setTitle(title).setDescription(description);
+                final MenuListDialogBuilder<String> menuListDialogBuilder = new MenuListDialogBuilder<String>()
+                        .setTitle(title)
+                        .setDescription(description);
                 listStringParams.forEach((String s) -> menuListDialogBuilder.addListItem(s));
                 final MenuListDialog<String> menuListDialog = menuListDialogBuilder.build();
                 dialogWindow = menuListDialog;
             } else if (mode == Mode.radioListDialog) {
-                final RadioListDialogBuilder<String> radioListDialogBuilder = new RadioListDialogBuilder<String>().setTitle(title).setDescription(description);
+                final RadioListDialogBuilder<String> radioListDialogBuilder = new RadioListDialogBuilder<String>()
+                        .setTitle(title)
+                        .setDescription(description);
                 listStringParams.forEach((String s) -> radioListDialogBuilder.addListItem(s));
                 final RadioListDialog<String> radioListDialog = radioListDialogBuilder.build();
                 dialogWindow = radioListDialog;
