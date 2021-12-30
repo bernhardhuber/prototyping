@@ -56,7 +56,15 @@ class DialogWindowCreators {
         checkListDialog,
         menuListDialog,
         radioListDialog,
-        textBoxDialog
+        textBoxDialog,
+        //---
+        actionListDialog,
+        //directoryDialog,
+        //fileDialog,
+        //listSelectDialog,
+        //messageDialog,
+        //textInputDialog,
+        waitingDialog
     }
 
     static class DialogWindowCreatorParameter implements Serializable {

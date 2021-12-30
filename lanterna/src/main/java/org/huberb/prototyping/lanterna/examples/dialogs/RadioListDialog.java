@@ -81,7 +81,12 @@ public class RadioListDialog<T> extends DialogWindow {
         final Panel buttonPanel = new Panel();
         buttonPanel.setLayoutManager(new GridLayout(2).setHorizontalSpacing(1));
         buttonPanel.addComponent(new Button(LocalizedString.OK.toString(), this::onOK)
-                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER, true, false))
+                .setLayoutData(
+                        GridLayout.createLayoutData(
+                                GridLayout.Alignment.CENTER,
+                                GridLayout.Alignment.CENTER,
+                                true,
+                                false))
         );
         buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
         buttonPanel.addTo(mainPanel);
@@ -143,7 +148,8 @@ public class RadioListDialog<T> extends DialogWindow {
      */
     @SafeVarargs
     public static <T> T showDialog(WindowBasedTextGUI textGUI,
-            String title, String description,
+            String title,
+            String description,
             int listBoxHeight,
             T... items) {
         int width = 0;
@@ -168,7 +174,8 @@ public class RadioListDialog<T> extends DialogWindow {
      */
     @SafeVarargs
     public static <T> T showDialog(WindowBasedTextGUI textGUI,
-            String title, String description,
+            String title,
+            String description,
             TerminalSize listBoxSize,
             T... items) {
         final RadioListDialog<T> radioListDialog = new RadioListDialogBuilder<T>()

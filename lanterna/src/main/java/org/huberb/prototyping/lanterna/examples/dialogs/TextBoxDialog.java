@@ -70,7 +70,12 @@ public class TextBoxDialog extends DialogWindow {
         final Panel buttonPanel = new Panel();
         buttonPanel.setLayoutManager(new GridLayout(2).setHorizontalSpacing(1));
         buttonPanel.addComponent(new Button(LocalizedString.OK.toString(), this::onOK)
-                .setLayoutData(GridLayout.createLayoutData(GridLayout.Alignment.CENTER, GridLayout.Alignment.CENTER, true, false))
+                .setLayoutData(
+                        GridLayout.createLayoutData(
+                                GridLayout.Alignment.CENTER,
+                                GridLayout.Alignment.CENTER,
+                                true,
+                                false))
         );
         //buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
         buttonPanel.addTo(mainPanel);
