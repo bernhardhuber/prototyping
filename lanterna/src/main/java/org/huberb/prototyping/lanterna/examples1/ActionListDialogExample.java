@@ -77,33 +77,4 @@ public class ActionListDialogExample {
         }
     }
 
-    public static abstract class LaternaDialogTemplate {
-
-        final Terminal terminal;
-        final Screen screen;
-        MultiWindowTextGUI textGUI;
-
-        public LaternaDialogTemplate() throws IOException {
-            this.terminal = new DefaultTerminalFactory().createTerminal();
-            this.screen = new TerminalScreen(terminal);
-        }
-
-        public void launch() throws IOException {
-            try (this.terminal) {
-                try (this.screen) {
-                    screen.startScreen();
-
-                    // Create gui and start gui
-                    this.textGUI = new MultiWindowTextGUI(screen,
-                            new DefaultWindowManager(),
-                            new EmptySpace(TextColor.ANSI.BLUE)
-                    );
-                    //
-                    setupComponents();
-                }
-            }
-        }
-
-        protected abstract void setupComponents();
-    }
 }

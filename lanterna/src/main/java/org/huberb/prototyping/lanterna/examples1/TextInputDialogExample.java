@@ -18,7 +18,7 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
 import java.io.IOException;
 import java.math.BigInteger;
-import org.huberb.prototyping.lanterna.examples1.ActionListDialogExample.LaternaDialogTemplate;
+import org.huberb.prototyping.lanterna.examples1.LaternaDialogTemplate;
 
 /**
  *

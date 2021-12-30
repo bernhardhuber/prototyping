@@ -21,7 +21,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
-import org.huberb.prototyping.lanterna.examples1.ActionListDialogExample.LaternaDialogTemplate;
+import org.huberb.prototyping.lanterna.examples1.LaternaDialogTemplate;
 
 /**
  *

@@ -19,7 +19,7 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.dialogs.FileDialog;
 import java.io.File;
 import java.io.IOException;
-import org.huberb.prototyping.lanterna.examples1.ActionListDialogExample.LaternaDialogTemplate;
+import org.huberb.prototyping.lanterna.examples1.LaternaDialogTemplate;
 
 /**
  *
