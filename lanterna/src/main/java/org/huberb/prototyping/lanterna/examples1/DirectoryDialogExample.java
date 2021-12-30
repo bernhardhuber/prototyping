@@ -19,7 +19,6 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
 import java.io.File;
 import java.io.IOException;
-import org.huberb.prototyping.lanterna.examples1.LaternaDialogTemplate;
 
 /**
  *

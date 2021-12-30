@@ -18,7 +18,6 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import java.io.IOException;
-import org.huberb.prototyping.lanterna.examples1.LaternaDialogTemplate;
 
 /**
  *
@@ -31,9 +30,6 @@ public class MessageDialogButtonExample {
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final MessageDialogButton[] buttons = new MessageDialogButton[]{
-                    MessageDialogButton.OK
-                };
                 final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel diam purus.\n"
                         + "Curabitur ut nisi lacus.\n"
                         + "Nam id nisl quam. Donec a lorem sit amet libero pretium vulputate vel ut purus.\n"
@@ -50,9 +46,28 @@ public class MessageDialogButtonExample {
                         + "Aliquam erat volutpat.\n"
                         + "\n"
                         + "";
-                final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
-
-                System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
+                {
+                    final MessageDialogButton[] buttons = new MessageDialogButton[]{
+                        MessageDialogButton.OK
+                    };
+                    final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
+                    System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
+                }
+                {
+                    final MessageDialogButton[] buttons = new MessageDialogButton[]{
+                        MessageDialogButton.Abort,
+                        MessageDialogButton.Cancel,
+                        MessageDialogButton.Close,
+                        MessageDialogButton.Continue,
+                        MessageDialogButton.Ignore,
+                        MessageDialogButton.No,
+                        MessageDialogButton.OK,
+                        MessageDialogButton.Retry,
+                        MessageDialogButton.Yes
+                    };
+                    final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
+                    System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
+                }
             }
         };
 

@@ -24,6 +24,7 @@ import java.util.List;
 /**
  *
  * @author pi
+ * @param <T>
  */
 public class MenuListDialogBuilder<T> extends AbstractDialogBuilder<MenuListDialogBuilder<T>, MenuListDialog<T>> {
 

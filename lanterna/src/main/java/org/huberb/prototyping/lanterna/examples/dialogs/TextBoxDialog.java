@@ -126,6 +126,7 @@ public class TextBoxDialog extends DialogWindow {
      * @param description Description of the dialog
      * @param listBoxHeight Maximum height of the list box, scrollbars will be
      * used if there are more items
+     * @param content
      * @return The selected item or {@code null} if cancelled
      */
     public static String showDialog(WindowBasedTextGUI textGUI,
