@@ -102,7 +102,7 @@ class DialogWindowCreators {
         Supplier<List<String>> listStringParamsSupplier;
         Supplier<String> messageSupplier;
 
-        DialogWindowCreatorParameterBuilder DialogWindowCreatorParameter(DialogWindowCreatorParameter dwcp) {
+        DialogWindowCreatorParameterBuilder dialogWindowCreatorParameter(DialogWindowCreatorParameter dwcp) {
             this.mode = dwcp.mode;
             this.titleSupplier = dwcp.title;
             this.descriptionSupplier = dwcp.description;
@@ -149,15 +149,15 @@ class DialogWindowCreators {
         /**
          * Create a {@link DialogWindow}.
          *
-         * @param dialogCreatorContext
+         * @param dialogWindowCreatorParameter
          * @return
          */
-        DialogWindow createDialogWindow(DialogWindowCreatorParameter dialogCreatorContext) {
-            final Mode mode = dialogCreatorContext.mode;
-            final String title = dialogCreatorContext.title.get();
-            final String description = dialogCreatorContext.description.get();
-            final String message = dialogCreatorContext.message.get();
-            final List<String> listStringParams = dialogCreatorContext.listStringParams.get();
+        DialogWindow createDialogWindow(DialogWindowCreatorParameter dialogWindowCreatorParameter) {
+            final Mode mode = dialogWindowCreatorParameter.mode;
+            final String title = dialogWindowCreatorParameter.title.get();
+            final String description = dialogWindowCreatorParameter.description.get();
+            final String message = dialogWindowCreatorParameter.message.get();
+            final List<String> listStringParams = dialogWindowCreatorParameter.listStringParams.get();
             final DialogWindow dialogWindow;
             //---
             if (mode == Mode.directoryDialog) {
@@ -242,7 +242,7 @@ class DialogWindowCreators {
             messageSupplier = () -> "";
         }
 
-        DialogWindowBuilder DialogWindowCreatorParameter(DialogWindowCreatorParameter dwcp) {
+        DialogWindowBuilder dialogWindowCreatorParameter(DialogWindowCreatorParameter dwcp) {
             this.mode = dwcp.mode;
             this.titleSupplier = dwcp.title;
             this.descriptionSupplier = dwcp.description;
@@ -277,6 +277,20 @@ class DialogWindowCreators {
         }
 
         DialogWindow build() {
+            final DialogWindowCreatorParameter dialogWindowCreatorParameter
+                    = new DialogWindowCreatorParameterBuilder()
+                            .mode(this.mode)
+                            .title(this.titleSupplier.get())
+                            .description(this.descriptionSupplier.get())
+                            .message(this.messageSupplier.get())
+                            .listStringParams(this.listStringParamsSupplier.get())
+                            .build();
+            final DialogWindowFactory dialogWindowFactory = new DialogWindowFactory();
+            final DialogWindow dialogWindow = dialogWindowFactory.createDialogWindow(dialogWindowCreatorParameter);
+            return dialogWindow;
+        }
+
+        DialogWindow _build() {
             final Mode mode = this.mode;
             final String title = this.titleSupplier.get();
             final String description = this.descriptionSupplier.get();

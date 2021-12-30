@@ -147,11 +147,12 @@ public class MainApp1Dialogs {
 
         public MessageDialogDialogWindowHandler(AppContext appContext) {
             this.appContext = appContext;
-            final DialogWindowCreatorParameter dialogWindowCreatorParameter = new DialogWindowCreatorParameter(Mode.messageDialog,
-                    "Message", "Select",
-                    Collections.emptyList(),
-                    "m1Message"
-            );
+            final DialogWindowCreatorParameter dialogWindowCreatorParameter
+                    = new DialogWindowCreatorParameter(Mode.messageDialog,
+                            "Message", "Select",
+                            Collections.emptyList(),
+                            "m1Message"
+                    );
             this.dialogWindowCreatorParameter = dialogWindowCreatorParameter;
         }
 
@@ -165,11 +166,12 @@ public class MainApp1Dialogs {
 
         public RadioListDialogDialogWindowHandler(AppContext appContext) {
             this.appContext = appContext;
-            final DialogWindowCreatorParameter dialogWindowCreatorParameter = new DialogWindowCreatorParameter(Mode.radioListDialog,
-                    "RadioList", "Select",
-                    Arrays.asList("m2RB1", "m2RB2", "m2RB3"),
-                    ""
-            );
+            final DialogWindowCreatorParameter dialogWindowCreatorParameter
+                    = new DialogWindowCreatorParameter(Mode.radioListDialog,
+                            "RadioList", "Select",
+                            Arrays.asList("m2RB1", "m2RB2", "m2RB3"),
+                            ""
+                    );
             this.dialogWindowCreatorParameter = dialogWindowCreatorParameter;
         }
 
@@ -184,11 +186,12 @@ public class MainApp1Dialogs {
 
         public CheckListDialogDialogWindowHandler(AppContext appContext) {
             this.appContext = appContext;
-            final DialogWindowCreatorParameter dialogWindowCreatorParameter = new DialogWindowCreatorParameter(Mode.checkListDialog,
-                    "CheckList", "Select",
-                    Arrays.asList("m3CB1", "m3CB2", "m3CB3"),
-                    ""
-            );
+            final DialogWindowCreatorParameter dialogWindowCreatorParameter
+                    = new DialogWindowCreatorParameter(Mode.checkListDialog,
+                            "CheckList", "Select",
+                            Arrays.asList("m3CB1", "m3CB2", "m3CB3"),
+                            ""
+                    );
             this.dialogWindowCreatorParameter = dialogWindowCreatorParameter;
         }
 

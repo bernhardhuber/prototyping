@@ -107,7 +107,8 @@ public class TextBoxDialog extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     public static String showDialog(WindowBasedTextGUI textGUI,
-            String title, String description,
+            String title,
+            String description,
             String content) {
         return showDialog(textGUI, title, description, null, content);
     }
@@ -123,7 +124,8 @@ public class TextBoxDialog extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     public static String showDialog(WindowBasedTextGUI textGUI,
-            String title, String description,
+            String title,
+            String description,
             int listBoxHeight,
             String content) {
         int width = 40;
@@ -146,7 +148,8 @@ public class TextBoxDialog extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     public static String showDialog(WindowBasedTextGUI textGUI,
-            String title, String description,
+            String title,
+            String description,
             TerminalSize listBoxSize,
             String content) {
         final TextBoxDialog textBoxDialog = new TextBoxDialogBuilder()
