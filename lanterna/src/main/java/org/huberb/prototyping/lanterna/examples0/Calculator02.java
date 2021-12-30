@@ -13,12 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.lanterna;
+package org.huberb.prototyping.lanterna.examples0;
 
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.BasicWindow;
 import com.googlecode.lanterna.gui2.Button;
+import com.googlecode.lanterna.gui2.ComboBox;
 import com.googlecode.lanterna.gui2.DefaultWindowManager;
 import com.googlecode.lanterna.gui2.EmptySpace;
 import com.googlecode.lanterna.gui2.GridLayout;
@@ -39,7 +40,7 @@ import java.util.regex.Pattern;
  * @see
  * <a href="https://github.com/mabe02/lanterna/blob/master/docs/examples/gui/basic_form_submission.md">Calculator</a>
  */
-public class Calculator01 {
+public class Calculator02 {
 
     public static void main(String[] args) throws IOException {
         // Setup terminal and screen layers
@@ -59,13 +60,23 @@ public class Calculator01 {
                 panel.addComponent(new Label("Num 2"));
                 final TextBox txtNum2 = new TextBox().setValidationPattern(Pattern.compile("[0-9]*")).addTo(panel);
 
+                panel.addComponent(new Label("Operation"));
+                final ComboBox<String> operations = new ComboBox<String>();
+                operations.addItem("Add");
+                operations.addItem("Subtract");
+                panel.addComponent(operations);
+
                 panel.addComponent(new EmptySpace(new TerminalSize(0, 0)));
-                new Button("Add!", new Runnable() {
+                new Button("Calculate!", new Runnable() {
                     @Override
                     public void run() {
                         int num1 = Integer.parseInt(txtNum1.getText());
                         int num2 = Integer.parseInt(txtNum2.getText());
-                        lblOutput.setText(Integer.toString(num1 + num2));
+                        if (operations.getSelectedIndex() == 0) {
+                            lblOutput.setText(Integer.toString(num1 + num2));
+                        } else if (operations.getSelectedIndex() == 1) {
+                            lblOutput.setText(Integer.toString(num1 - num2));
+                        }
                     }
                 }).addTo(panel);
 
@@ -77,7 +88,8 @@ public class Calculator01 {
                 window.setComponent(panel);
 
                 // Create gui and start gui
-                final MultiWindowTextGUI gui = new MultiWindowTextGUI(screen,
+                final MultiWindowTextGUI gui = new MultiWindowTextGUI(
+                        screen,
                         new DefaultWindowManager(),
                         new EmptySpace(TextColor.ANSI.BLUE)
                 );

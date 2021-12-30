@@ -13,19 +13,19 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples1;
+package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
+import com.googlecode.lanterna.gui2.dialogs.FileDialog;
 import java.io.File;
 import java.io.IOException;
-import org.huberb.prototyping.laterna.examples1.ActionListDialogExample.LaternaDialogTemplate;
+import org.huberb.prototyping.lanterna.examples1.ActionListDialogExample.LaternaDialogTemplate;
 
 /**
  *
  * @author berni3
  */
-public class DirectoryDialogExample {
+public class FileDialogExample {
 
     public static void main(String[] args) throws IOException {
 
@@ -34,7 +34,7 @@ public class DirectoryDialogExample {
             protected void setupComponents() {
                 final TerminalSize dialogSize = new TerminalSize(40, 15);
 
-                final DirectoryDialog​ dd = new DirectoryDialog​(
+                final FileDialog​ dd = new FileDialog​(
                         "title", "description", "Select",
                         dialogSize,
                         true, //boolean showHiddenDirs, 
@@ -42,7 +42,7 @@ public class DirectoryDialogExample {
                 );
 
                 final File result = dd.showDialog(textGUI);
-                System.out.printf("%s result %s%n", DirectoryDialogExample.class.getName(), result);
+                System.out.printf("%s result %s%n", FileDialogExample.class.getName(), result);
             }
         };
 

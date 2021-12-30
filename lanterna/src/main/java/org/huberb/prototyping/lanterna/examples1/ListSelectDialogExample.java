@@ -13,40 +13,41 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.laterna.examples1;
+package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.dialogs.FileDialog;
-import java.io.File;
+import com.googlecode.lanterna.gui2.dialogs.ListSelectDialog;
 import java.io.IOException;
-import org.huberb.prototyping.laterna.examples1.ActionListDialogExample.LaternaDialogTemplate;
+import java.util.Arrays;
+import java.util.List;
+import java.util.function.Supplier;
+import org.huberb.prototyping.lanterna.examples1.ActionListDialogExample.LaternaDialogTemplate;
 
 /**
  *
  * @author berni3
  */
-public class FileDialogExample {
+public class ListSelectDialogExample {
 
     public static void main(String[] args) throws IOException {
+
+        final Supplier<List<String>> itemSupp = () -> {
+            return Arrays.asList("item1", "item2", "item3");
+        };
 
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
+                final List<String> itemList = itemSupp.get();
+                final String[] items = itemList.toArray(new String[itemList.size()]);
+
                 final TerminalSize dialogSize = new TerminalSize(40, 15);
+                final String result = ListSelectDialog.showDialog(textGUI, "title", "description", dialogSize, items);
 
-                final FileDialog​ dd = new FileDialog​(
-                        "title", "description", "Select",
-                        dialogSize,
-                        true, //boolean showHiddenDirs, 
-                        null //File selectedObject
-                );
-
-                final File result = dd.showDialog(textGUI);
-                System.out.printf("%s result %s%n", FileDialogExample.class.getName(), result);
+                System.out.printf("%s result %s%n", ListSelectDialogExample.class.getName(), result);
             }
         };
 
         laternaDialogTemplate.launch();
     }
-
 }
