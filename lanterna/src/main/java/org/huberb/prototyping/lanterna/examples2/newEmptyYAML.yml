@@ -2,7 +2,6 @@
 ---
 # comment
 dialogs: {
-  [
     dialogMenu: {
       title: 'Menu',
       description: 'Description',
@@ -29,8 +28,8 @@ dialogs: {
       type: 'textBoxDialog',
       message: 'messageY'
     }
-  ]
 }
+
 ---
 [
   bugCreateDialog : {

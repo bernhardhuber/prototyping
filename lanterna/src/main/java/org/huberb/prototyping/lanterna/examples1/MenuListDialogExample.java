@@ -15,6 +15,7 @@
  */
 package org.huberb.prototyping.lanterna.examples1;
 
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -31,17 +32,22 @@ public class MenuListDialogExample {
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final List<ItemLabel<String>> itemLabelList = Arrays.asList(
-                        new ItemLabel<>("mn1Label", "mn1Value"),
-                        new ItemLabel<>("mn2Label", "mn2Value"),
-                        new ItemLabel<>("mn3Label", "mn3Value")
-                );
-                final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-                final ItemLabel<String> result = MenuListDialog.showDialog(textGUI, "title", "description", items);
-                System.out.printf("%s result %s%n", MenuListDialogExample.class.getName(), result.getItem());
+                new MenuListDialogExample().showDialog(textGUI);
+
             }
         };
 
         laternaDialogTemplate.launch();
+    }
+
+    void showDialog(MultiWindowTextGUI textGUI) {
+        final List<ItemLabel<String>> itemLabelList = Arrays.asList(
+                new ItemLabel<>("mn1Label", "mn1Value"),
+                new ItemLabel<>("mn2Label", "mn2Value"),
+                new ItemLabel<>("mn3Label", "mn3Value")
+        );
+        final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
+        final ItemLabel<String> result = MenuListDialog.showDialog(textGUI, "title", "description", items);
+        System.out.printf("%s result %s%n", MenuListDialogExample.class.getName(), result.getItem());
     }
 }

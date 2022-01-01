@@ -15,6 +15,7 @@
  */
 package org.huberb.prototyping.lanterna.examples1;
 
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
 import java.io.IOException;
 import java.math.BigInteger;
@@ -30,21 +31,25 @@ public class TextInputDialogExample {
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                {
-                    final String result = TextInputDialog.showDialog(textGUI, "title", "description", "initialContent");
-                    System.out.printf("%s showDialog result %s%n", TextInputDialog.class.getName(), result);
-                }
-                {
-                    final BigInteger result = TextInputDialog.showNumberDialog(textGUI, "title", "description", "0");
-                    System.out.printf("%s showNumberDialog result %s%n", TextInputDialog.class.getName(), result);
-                }
-                {
-                    final String result = TextInputDialog.showPasswordDialog(textGUI, "title", "description", "initialContent");
-                    System.out.printf("%s showPasswordDialog result %s%n", TextInputDialog.class.getName(), result);
-                }
+                new TextInputDialogExample().showDialog(textGUI);
             }
         };
 
         laternaDialogTemplate.launch();
+    }
+
+    void showDialog(MultiWindowTextGUI textGUI) {
+        {
+            final String result = TextInputDialog.showDialog(textGUI, "title", "description", "initialContent");
+            System.out.printf("%s showDialog result %s%n", TextInputDialog.class.getName(), result);
+        }
+        {
+            final BigInteger result = TextInputDialog.showNumberDialog(textGUI, "title", "description", "0");
+            System.out.printf("%s showNumberDialog result %s%n", TextInputDialog.class.getName(), result);
+        }
+        {
+            final String result = TextInputDialog.showPasswordDialog(textGUI, "title", "description", "initialContent");
+            System.out.printf("%s showPasswordDialog result %s%n", TextInputDialog.class.getName(), result);
+        }
     }
 }

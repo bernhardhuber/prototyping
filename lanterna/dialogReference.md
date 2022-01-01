@@ -40,13 +40,11 @@ Dialog is a program that will let you to present a variety of questions or displ
 * yesno (yes/no). 
 
 You can put more than one dialog box into a script:
--
 
-Use the "--and-widget" token to force Dialog to proceed to the next dialog unless you have pressed ESC to cancel, or
+- Use the "--and-widget" token to force Dialog to proceed to the next dialog unless you have pressed ESC to cancel, or
 
--
+- Simply add the tokens for the next dialog box, making a chain. Dialog stops chaining when the return code from a dialog is nonzero, e.g., Cancel or No (see DIAGNOSTICS).
 
-Simply add the tokens for the next dialog box, making a chain. Dialog stops chaining when the return code from a dialog is nonzero, e.g., Cancel or No (see DIAGNOSTICS).
 Some widgets, e.g., checklist, will write text to dialog's output. Normally that is the standard error, but there are options for changing this: "--output-fd", "--stderr" and "--stdout". No text is written if the Cancel button (or ESC) is pressed; dialog exits immediately in that case. 
 
 # Options
@@ -54,26 +52,35 @@ Some widgets, e.g., checklist, will write text to dialog's output. Normally that
 All options begin with "--" (two ASCII hyphens, for the benefit of those using systems with deranged locale support).
 
 A "--" by itself is used as an escape, i.e., the next token on the command-line is not treated as an option.
-
     dialog --title -- --Not an option 
+
 The "--args" option tells dialog to list the command-line parameters to the standard error. This is useful when debugging complex scripts using the "--" and "--file", since the command-line may be rewritten as these are expanded.
 
 The "--file" option tells dialog to read parameters from the file named as its value.
     dialog --file parameterfile 
-Blanks not within double-quotes are discarded (use backslashes to quote single characters). The result is inserted into the command-line, replacing "--file" and its option value. Interpretation of the command-line resumes from that point. If parameterfile begins with "&", dialog interprets the following text as a file descriptor number rather than a filename.
+
+Blanks not within double-quotes are discarded (use backslashes to quote single characters). 
+The result is inserted into the command-line, replacing "--file" and its option value. 
+Interpretation of the command-line resumes from that point. 
+If parameterfile begins with "&", dialog interprets the following text as a file descriptor number rather than a filename.
 
 ## Common Options
 
 --ascii-lines
     Rather than draw graphics lines around boxes, draw ASCII "+" and "-" in the same place. See also "--no-lines". 
+
 --aspect ratio
     This gives you some control over the box dimensions when using auto sizing (specifying 0 for height and width). It represents width / height. The default is 9, which means 9 characters wide to every 1 line high. 
+
 --backtitle backtitle
     Specifies a backtitle string to be displayed on the backdrop, at the top of the screen. 
+
 --begin y x
     Specify the position of the upper left corner of a dialog box on the screen. 
+
 --cancel-label string
     Override the label used for "Cancel" buttons. 
+
 --clear
     Clears the widget screen, keeping only the screen_color background. Use this when you combine widgets with "--and-widget" to erase the contents of a previous widget on the screen, so it won't be seen under the contents of a following widget. Understand this as the complement of "--keep-window". To compare the effects, use these: 
     All three widgets visible, staircase effect, ordered 1,2,3: 
@@ -101,114 +108,161 @@ Blanks not within double-quotes are discarded (use backslashes to quote single c
         --and-widget               --begin 6 6 --yesno "" 0 0
 
     Note, if you want to restore original console colors and send your cursor home after the dialog program has exited, use the clear (1) command. 
+
 --colors
     Interpret embedded "\Z" sequences in the dialog text by the following character, which tells dialog to set colors or video attributes: 0 through 7 are the ANSI used in curses: black, red, green, yellow, blue, magenta, cyan and white respectively. Bold is set by 'b', reset by 'B'. Reverse is set by 'r', reset by 'R'. Underline is set by 'u', reset by 'U'. The settings are cumulative, e.g., "\Zb\Z1" makes the following text bold (perhaps bright) red. Restore normal settings with "\Zn". 
+
 --column-separator string
     Tell dialog to split data for radio/checkboxes and menus on the occurrences of the given string, and to align the split data into columns. 
+
 --cr-wrap
     Interpret embedded newlines in the dialog text as a newline on the screen. Otherwise, dialog will only wrap lines where needed to fit inside the text box. Even though you can control line breaks with this, dialog will still wrap any lines that are too long for the width of the box. Without cr-wrap, the layout of your text may be formatted to look nice in the source code of your script without affecting the way it will look in the dialog. 
     See also the "--no-collapse" and "--trim" options. 
+
 --create-rc file
     When dialog supports run-time configuration, this can be used to dump a sample configuration file to the file specified by file. 
+
 --defaultno
     Make the default value of the yes/no box a No. Likewise, make the default button of widgets that provide "OK" and "Cancel" a Cancel. If "--nocancel" or "--visit-items" are given those options overrides this, making the default button always "Yes" (internally the same as "OK"). 
+
 --default-item string
     Set the default item in a checklist, form or menu box. Normally the first item in the box is the default. 
+
 --exit-label string
     Override the label used for "EXIT" buttons. 
+
 --extra-button
     Show an extra button, between "OK" and "Cancel" buttons. 
+
 --extra-label string
     Override the label used for "Extra" buttons. Note: for inputmenu widgets, this defaults to "Rename". 
---help
 
+--help
 Prints the help message to dialog's output. The help message is printed if no options are given.
+
 --help-button
     Show a help-button after "OK" and "Cancel" buttons, i.e., in checklist, radiolist and menu boxes. If "--item-help" is also given, on exit the return status will be the same as for the "OK" button, and the item-help text will be written to dialog's output after the token "HELP". Otherwise, the return status will indicate that the Help button was pressed, and no message printed. 
+
 --help-label string
     Override the label used for "Help" buttons. 
+
 --help-status
     If the help-button is selected, writes the checklist, radiolist or form information after the item-help "HELP" information. This can be used to reconstruct the state of a checklist after processing the help request. 
+
 --ignore
     Ignore options that dialog does not recognize. Some well-known ones such as "--icon" are ignored anyway, but this is a better choice for compatibility with other implementations. 
+
 --input-fd fd
     Read keyboard input from the given file descriptor. Most dialog scripts read from the standard input, but the gauge widget reads a pipe (which is always standard input). Some configurations do not work properly when dialog tries to reopen the terminal. Use this option (with appropriate juggling of file-descriptors) if your script must work in that type of environment. 
+
 --insecure
     Makes the password widget friendlier but less secure, by echoing asterisks for each character. 
+
 --item-help
     Interpret the tags data for checklist, radiolist and menu boxes adding a column which is displayed in the bottom line of the screen, for the currently selected item. 
+
 --keep-tite
     Normally dialog checks to see if it is running in an xterm, and in that case tries to suppress the initialization strings that would make it switch to the alternate screen. Switching between the normal and alternate screens is visually distracting in a script which runs dialog several times. Use this option to allow dialog to use those initialization strings. 
+
 --keep-window
     Normally when dialog performs several tailboxbg widgets connected by "--and-widget", it clears the old widget from the screen by painting over it. Use this option to suppress that repainting. 
     At exit, dialog repaints all of the widgets which have been marked with "--keep-window", even if they are not tailboxbg widgets. That causes them to be repainted in reverse order. See the discussion of the "--clear" option for examples. 
+
 --max-input size
     Limit input strings to the given size. If not specified, the limit is 2048. 
+
 --no-cancel
 --nocancel
     Suppress the "Cancel" button in checklist, inputbox and menu box modes. A script can still test if the user pressed the ESC key to cancel to quit. 
+
 --no-collapse
     Normally dialog converts tabs to spaces and reduces multiple spaces to a single space for text which is displayed in a message boxes, etc. Use this option to disable that feature. Note that dialog will still wrap text, subject to the "--cr-wrap" and "--trim" options. 
+
 --no-kill
     Tells dialog to put the tailboxbg box in the background, printing its process id to dialog's output. SIGHUP is disabled for the background process. 
+
 --no-label string
     Override the label used for "No" buttons. 
+
 --no-lines
     Rather than draw lines around boxes, draw spaces in the same place. See also "--ascii-lines". 
+
 --no-ok
 --nook
-
 Suppress the "OK" button in checklist, inputbox and menu box modes. A script can still test if the user pressed the "Enter" key to accept the data.
+
 --no-shadow
     Suppress shadows that would be drawn to the right and bottom of each dialog box. 
+
 --ok-label string
     Override the label used for "OK" buttons. 
+
 --output-fd fd
     Direct output to the given file descriptor. Most dialog scripts write to the standard error, but error messages may also be written there, depending on your script. 
+
 --separator string
 --output-separatorstring
     Specify a string that will separate the output on dialog's output from checklists, rather than a newline (for --separate-output) or a space. This applies to other widgets such as forms and editboxes which normally use a newline. 
+
 --print-maxsize
     Print the maximum size of dialog boxes, i.e., the screen size, to dialog's output. This may be used alone, without other options. 
+
 --print-size
     Prints the size of each dialog box to dialog's output. 
+
 --print-version
     Prints dialog's version to dialog's output. This may be used alone, without other options. 
+
 --separate-output
     For checklist widgets, output result one line at a time, with no quoting. This facilitates parsing by another program. 
+
 --separate-widget string
     Specify a string that will separate the output on dialog's output from each widget. This is used to simplify parsing the result of a dialog with several widgets. If this option is not given, the default separator string is a tab character. 
+
 --shadow
     Draw a shadow to the right and bottom of each dialog box. 
+
 --single-quoted
     Use single-quoting as needed (and no quotes if unneeded) for the output of checklist's as well as the item-help text. If this option is not set, dialog uses double quotes around each item. That requires occasional use of backslashes to make the output useful in shell scripts. 
+
 --size-err
     Check the resulting size of a dialog box before trying to use it, printing the resulting size if it is larger than the screen. (This option is obsolete, since all new-window calls are checked). 
+
 --sleep secs
     Sleep (delay) for the given number of seconds after processing a dialog box. 
+
 --stderr
     Direct output to the standard error. This is the default, since curses normally writes screen updates to the standard output. 
+
 --stdout
     Direct output to the standard output. This option is provided for compatibility with Xdialog, however using it in portable scripts is not recommended, since curses normally writes its screen updates to the standard output. If you use this option, dialog attempts to reopen the terminal so it can write to the display. Depending on the platform and your environment, that may fail. 
+
 --tab-correct
     Convert each tab character to one or more spaces (for the textbox widget; otherwise to a single space). Otherwise, tabs are rendered according to the curses library's interpretation. 
+
 --tab-len n
     Specify the number of spaces that a tab character occupies if the "--tab-correct" option is given. The default is 8. This option is only effective for the textbox widget. 
+
 --timeout secs
     Timeout (exit with error code) if no user response within the given number of seconds. This is overridden if the background "--tailboxbg is used. A timeout of zero seconds is ignored. 
+
 --title title
     Specifies a title string to be displayed at the top of the dialog box. 
+
 --trace filename
     logs keystrokes to the given file. Use control/T to log a picture of the current dialog window. 
---trim
 
+--trim
 eliminate leading blanks, trim literal newlines and repeated blanks from message text.
     See also the "--cr-wrap" and "--no-collapse" options. 
+
 --version
     Same as "--print-version". 
+
 --visit-items
     Modify the tab-traversal of checklist, radiobox, menubox and inputmenu to include the list of items as one of the states. This is useful as a visual aid, i.e., the cursor position helps some users. 
     When this option is given, the cursor is initially placed on the list. Abbreviations (the first letter of the tag) apply to the list items. If you tab to the button row, abbreviations apply to the buttons. 
+
 --yes-label string
     Override the label used for "Yes" buttons. 
 

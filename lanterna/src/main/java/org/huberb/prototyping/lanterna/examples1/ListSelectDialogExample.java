@@ -16,6 +16,7 @@
 package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.ListSelectDialog;
 import java.io.IOException;
 import java.util.Arrays;
@@ -30,23 +31,27 @@ public class ListSelectDialogExample {
 
     public static void main(String[] args) throws IOException {
 
-        final Supplier<List<String>> itemSupp = () -> {
-            return Arrays.asList("item1", "item2", "item3");
-        };
-
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final List<String> itemList = itemSupp.get();
-                final String[] items = itemList.toArray(new String[itemList.size()]);
-
-                final TerminalSize dialogSize = new TerminalSize(40, 15);
-                final String result = ListSelectDialog.showDialog(textGUI, "title", "description", dialogSize, items);
-
-                System.out.printf("%s result %s%n", ListSelectDialogExample.class.getName(), result);
+                new ListSelectDialogExample().showDialog(textGUI);
             }
         };
 
         laternaDialogTemplate.launch();
+    }
+
+    void showDialog(MultiWindowTextGUI textGUI) {
+        final Supplier<List<String>> itemSupp = () -> {
+            return Arrays.asList("item1", "item2", "item3");
+        };
+
+        final List<String> itemList = itemSupp.get();
+        final String[] items = itemList.toArray(new String[itemList.size()]);
+
+        final TerminalSize dialogSize = new TerminalSize(40, 15);
+        final String result = ListSelectDialog.showDialog(textGUI, "title", "description", dialogSize, items);
+
+        System.out.printf("%s result %s%n", ListSelectDialogExample.class.getName(), result);
     }
 }

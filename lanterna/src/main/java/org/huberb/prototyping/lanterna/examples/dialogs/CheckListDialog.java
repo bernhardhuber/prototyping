@@ -55,7 +55,7 @@ public class CheckListDialog<T> extends DialogWindow {
             throw new IllegalStateException("CheckListDialog needs at least one item");
         }
 
-        final CheckBoxList<T> checkBoxList = new CheckBoxList<>();
+        final CheckBoxList<T> checkBoxList = new CheckBoxList<>(listBoxPreferredSize);
         for (final T item : content) {
             checkBoxList.addItem(item);
         }

@@ -15,6 +15,7 @@
  */
 package org.huberb.prototyping.lanterna.examples1;
 
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import java.io.IOException;
@@ -30,47 +31,51 @@ public class MessageDialogButtonExample {
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel diam purus.\n"
-                        + "Curabitur ut nisi lacus.\n"
-                        + "Nam id nisl quam. Donec a lorem sit amet libero pretium vulputate vel ut purus.\n"
-                        + "Suspendisse leo arcu,\n"
-                        + "mattis et imperdiet luctus, pulvinar vitae mi. Quisque fermentum sollicitudin feugiat.\n"
-                        + "\n"
-                        + "Mauris nec leo\n"
-                        + "ligula. Vestibulum tristique odio ut risus ultricies a hendrerit quam iaculis.\n"
-                        + "Duis tempor elit sit amet\n"
-                        + "ligula vehicula et iaculis sem placerat. Fusce dictum, metus at volutpat lacinia, elit massa auctor risus,\n"
-                        + "id auctor arcu enim eu augue. Donec ultrices turpis in mi imperdiet ac venenatis sapien sodales.\n"
-                        + "In consequat imperdiet nunc quis bibendum. Nulla semper, erat quis ornare tristique, lectus massa posuere\n"
-                        + "libero, ut vehicula lectus nunc ut lorem.\n"
-                        + "Aliquam erat volutpat.\n"
-                        + "\n"
-                        + "";
-                {
-                    final MessageDialogButton[] buttons = new MessageDialogButton[]{
-                        MessageDialogButton.OK
-                    };
-                    final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
-                    System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
-                }
-                {
-                    final MessageDialogButton[] buttons = new MessageDialogButton[]{
-                        MessageDialogButton.Abort,
-                        MessageDialogButton.Cancel,
-                        MessageDialogButton.Close,
-                        MessageDialogButton.Continue,
-                        MessageDialogButton.Ignore,
-                        MessageDialogButton.No,
-                        MessageDialogButton.OK,
-                        MessageDialogButton.Retry,
-                        MessageDialogButton.Yes
-                    };
-                    final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
-                    System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
-                }
+                new MessageDialogButtonExample().showDialog(textGUI);
             }
         };
 
         laternaDialogTemplate.launch();
+    }
+
+    void showDialog(MultiWindowTextGUI textGUI) {
+        final String text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque vel diam purus.\n"
+                + "Curabitur ut nisi lacus.\n"
+                + "Nam id nisl quam. Donec a lorem sit amet libero pretium vulputate vel ut purus.\n"
+                + "Suspendisse leo arcu,\n"
+                + "mattis et imperdiet luctus, pulvinar vitae mi. Quisque fermentum sollicitudin feugiat.\n"
+                + "\n"
+                + "Mauris nec leo\n"
+                + "ligula. Vestibulum tristique odio ut risus ultricies a hendrerit quam iaculis.\n"
+                + "Duis tempor elit sit amet\n"
+                + "ligula vehicula et iaculis sem placerat. Fusce dictum, metus at volutpat lacinia, elit massa auctor risus,\n"
+                + "id auctor arcu enim eu augue. Donec ultrices turpis in mi imperdiet ac venenatis sapien sodales.\n"
+                + "In consequat imperdiet nunc quis bibendum. Nulla semper, erat quis ornare tristique, lectus massa posuere\n"
+                + "libero, ut vehicula lectus nunc ut lorem.\n"
+                + "Aliquam erat volutpat.\n"
+                + "\n"
+                + "";
+        {
+            final MessageDialogButton[] buttons = new MessageDialogButton[]{
+                MessageDialogButton.OK
+            };
+            final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
+            System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
+        }
+        {
+            final MessageDialogButton[] buttons = new MessageDialogButton[]{
+                MessageDialogButton.Abort,
+                MessageDialogButton.Cancel,
+                MessageDialogButton.Close,
+                MessageDialogButton.Continue,
+                MessageDialogButton.Ignore,
+                MessageDialogButton.No,
+                MessageDialogButton.OK,
+                MessageDialogButton.Retry,
+                MessageDialogButton.Yes
+            };
+            final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
+            System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
+        }
     }
 }

@@ -16,6 +16,7 @@
 package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
 import java.io.File;
 import java.io.IOException;
@@ -31,21 +32,24 @@ public class DirectoryDialogExample {
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final TerminalSize dialogSize = new TerminalSize(40, 15);
-
-                final DirectoryDialog​ dd = new DirectoryDialog​(
-                        "title", "description", "Select",
-                        dialogSize,
-                        true, //boolean showHiddenDirs, 
-                        null //File selectedObject
-                );
-
-                final File result = dd.showDialog(textGUI);
-                System.out.printf("%s result %s%n", DirectoryDialogExample.class.getName(), result);
+                new DirectoryDialogExample().showDialog(textGUI);
             }
         };
 
         laternaDialogTemplate.launch();
     }
 
+    void showDialog(MultiWindowTextGUI textGUI) {
+        final TerminalSize dialogSize = new TerminalSize(40, 15);
+
+        final DirectoryDialog​ dd = new DirectoryDialog​(
+                "title", "description", "Select",
+                dialogSize,
+                true, //boolean showHiddenDirs, 
+                null //File selectedObject
+        );
+
+        final File result = dd.showDialog(textGUI);
+        System.out.printf("%s result %s%n", DirectoryDialogExample.class.getName(), result);
+    }
 }

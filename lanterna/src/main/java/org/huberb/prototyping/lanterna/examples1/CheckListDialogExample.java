@@ -15,6 +15,7 @@
  */
 package org.huberb.prototyping.lanterna.examples1;
 
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -32,21 +33,28 @@ public class CheckListDialogExample {
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final List<ItemLabel<String>> itemLabelList = Arrays.asList(
-                        new ItemLabel<>("cb1Label", "cb1Value"),
-                        new ItemLabel<>("cb2Label", "cb2Value"),
-                        new ItemLabel<>("cb3Label", "cb3Value")
-                );
-                final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-                final List<ItemLabel<String>> result = CheckListDialog.showDialog(textGUI, "title", "description", items);
-                System.out.printf("%s result %s%n", CheckListDialogExample.class.getName(),
-                        result.stream()
-                                .map((il) -> il.item)
-                                .collect(Collectors.toList())
-                );
+                new CheckListDialogExample().showDialog(this.textGUI);
             }
         };
 
         laternaDialogTemplate.launch();
+    }
+
+    void showDialog(MultiWindowTextGUI textGUI) {
+        final List<ItemLabel<String>> itemLabelList = Arrays.asList(
+                new ItemLabel<>("cb1Label", "cb1Value"),
+                new ItemLabel<>("cb2Label", "cb2Value"),
+                new ItemLabel<>("cb3Label", "cb3Value"),
+                new ItemLabel<>("cb4Label", "cb4Value"),
+                new ItemLabel<>("cb5Label", "cb5Value")
+        );
+        final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
+        final List<ItemLabel<String>> result = CheckListDialog.showDialog(textGUI, "title", "description", items);
+        System.out.printf("%s result %s%n", CheckListDialogExample.class.getName(),
+                result.stream()
+                        .map((il) -> il.item)
+                        .collect(Collectors.toList())
+        );
+
     }
 }

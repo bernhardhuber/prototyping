@@ -30,14 +30,18 @@ import java.io.IOException;
  * @author berni3
  */
 public abstract class LaternaDialogTemplate {
-    
+
     final Terminal terminal;
     final Screen screen;
-    MultiWindowTextGUI textGUI;
+    final MultiWindowTextGUI textGUI;
 
     public LaternaDialogTemplate() throws IOException {
         this.terminal = new DefaultTerminalFactory().createTerminal();
         this.screen = new TerminalScreen(terminal);
+        this.textGUI = new MultiWindowTextGUI(screen,
+                new DefaultWindowManager(),
+                new EmptySpace(TextColor.ANSI.BLUE)
+        );
     }
 
     public void launch() throws IOException {
@@ -45,13 +49,11 @@ public abstract class LaternaDialogTemplate {
             try (this.screen) {
                 screen.startScreen();
                 // Create gui and start gui
-                this.textGUI = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(TextColor.ANSI.BLUE));
-                //
                 setupComponents();
             }
         }
     }
 
     protected abstract void setupComponents();
-    
+
 }

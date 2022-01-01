@@ -15,6 +15,7 @@
  */
 package org.huberb.prototyping.lanterna.examples1;
 
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
@@ -31,17 +32,23 @@ public class RadioListDialogExample {
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final List<ItemLabel<String>> itemLabelList = Arrays.asList(
-                        new ItemLabel<>("cb1Label", "cb1Value"),
-                        new ItemLabel<>("cb2Label", "cb2Value"),
-                        new ItemLabel<>("cb3Label", "cb3Value")
-                );
-                final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-                final ItemLabel<String> result = RadioListDialog.showDialog(textGUI, "title", "description", items);
-                System.out.printf("%s result %s%n", RadioListDialogExample.class.getName(), result.getItem());
+                new RadioListDialogExample().showDialog(textGUI);
             }
         };
 
         laternaDialogTemplate.launch();
+    }
+
+    void showDialog(MultiWindowTextGUI textGUI) {
+        final List<ItemLabel<String>> itemLabelList = Arrays.asList(
+                new ItemLabel<>("rb1Label", "rb1Value"),
+                new ItemLabel<>("rb2Label", "rb2Value"),
+                new ItemLabel<>("rb3Label", "rb3Value"),
+                new ItemLabel<>("rb4Label", "rb4Value"),
+                new ItemLabel<>("rb5Label", "rb5Value")
+        );
+        final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
+        final ItemLabel<String> result = RadioListDialog.showDialog(textGUI, "title", "description", items);
+        System.out.printf("%s result %s%n", RadioListDialogExample.class.getName(), result.getItem());
     }
 }

@@ -15,6 +15,7 @@
  */
 package org.huberb.prototyping.lanterna.examples1;
 
+import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.ActionListDialog;
 import java.io.IOException;
 import java.util.Arrays;
@@ -29,25 +30,31 @@ public class ActionListDialogExample {
 
     public static void main(String[] args) throws IOException {
 
-        final Supplier<  List<Runnable>> itemsSupplier = () -> {
-            final List<Runnable> itemsList = Arrays.asList(
-                    new RunnableItem("item1"),
-                    new RunnableItem("item2"),
-                    new RunnableItem("item3")
-            );
-            return itemsList;
-        };
-
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                final List<Runnable> itemsList = itemsSupplier.get();
-                final Runnable[] items = itemsList.toArray(new Runnable[itemsList.size()]);
-                ActionListDialog.showDialog(textGUI, ActionListDialogExample.class.getName(), "description", items);
+                new ActionListDialogExample().showDialog(this.textGUI);
             }
         };
 
         laternaDialogTemplate.launch();
+    }
+
+    void showDialog(MultiWindowTextGUI textGUI) {
+        final Supplier<  List<Runnable>> itemsSupplier = () -> {
+            final List<Runnable> itemsList = Arrays.asList(
+                    new RunnableItem("actionItem1"),
+                    new RunnableItem("actionItem2"),
+                    new RunnableItem("actionItem3"),
+                    new RunnableItem("actionItem4"),
+                    new RunnableItem("actionItem5")
+            );
+            return itemsList;
+        };
+        final List<Runnable> itemsList = itemsSupplier.get();
+        final Runnable[] items = itemsList.toArray(new Runnable[itemsList.size()]);
+        ActionListDialog.showDialog(textGUI, ActionListDialogExample.class.getName(), "description", items);
+
     }
 
     static class RunnableItem implements Runnable {

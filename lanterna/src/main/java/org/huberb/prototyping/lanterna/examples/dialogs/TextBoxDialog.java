@@ -37,7 +37,7 @@ public class TextBoxDialog extends DialogWindow {
     public TextBoxDialog(
             String title,
             String description,
-            TerminalSize listBoxPreferredSize,
+            TerminalSize terminalSize,
             String message) {
 
         super(title);
@@ -46,7 +46,7 @@ public class TextBoxDialog extends DialogWindow {
             throw new IllegalStateException("TextBoxDialog needs a message");
         }
 
-        final TextBox textBox = new TextBox(message);
+        final TextBox textBox = new TextBox(terminalSize,message);
         textBox.setReadOnly(true);
 
         final Panel mainPanel = new Panel();

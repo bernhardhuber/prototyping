@@ -49,7 +49,7 @@ public class RadioListDialog<T> extends DialogWindow {
             throw new IllegalStateException("RadioListDialog needs at least one item");
         }
 
-        final RadioBoxList<T> radioBoxList = new RadioBoxList<>();
+        final RadioBoxList<T> radioBoxList = new RadioBoxList<>(listBoxPreferredSize);
         for (final T item : content) {
             radioBoxList.addItem(item);
         }
