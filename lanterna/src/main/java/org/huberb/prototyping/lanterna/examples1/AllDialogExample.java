@@ -17,6 +17,7 @@ package org.huberb.prototyping.lanterna.examples1;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 
 /**
  *
@@ -31,7 +32,9 @@ public class AllDialogExample {
             IOException {
         final String[] args1 = args;
 
-        ActionListDialogExample.main(args1);
+        //ActionListDialogExample.main(args1);
+        invokeMain(ActionListDialogExample.class, args1);
+
         DirectoryDialogExample.main(args1);
         FileDialogExample.main(args1);
         ListSelectDialogExample.main(args1);
@@ -41,5 +44,19 @@ public class AllDialogExample {
         CheckListDialogExample.main(args1);
         MenuListDialogExample.main(args1);
         RadioListDialogExample.main(args1);
+    }
+
+    static void invokeMain(Class<?> mainClass, String[] mainArgs) throws
+            NoSuchMethodException,
+            IllegalAccessException,
+            IllegalArgumentException,
+            InvocationTargetException {
+        final Class<?> clazz = mainClass;
+        final Method method = clazz.getMethod("main", String[].class);
+
+        final Object[] args = new Object[1];
+        //args[0] = new String[]{"1", "2"};
+        args[0] = mainArgs;
+        method.invoke(null, args);
     }
 }

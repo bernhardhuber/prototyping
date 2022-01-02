@@ -53,7 +53,11 @@ public class ActionListDialogExample {
         };
         final List<Runnable> itemsList = itemsSupplier.get();
         final Runnable[] items = itemsList.toArray(new Runnable[itemsList.size()]);
-        ActionListDialog.showDialog(textGUI, ActionListDialogExample.class.getName(), "description", items);
+        ActionListDialog.showDialog(
+                textGUI,
+                this.getClass().getName(),
+                "description",
+                items);
 
     }
 

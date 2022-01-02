@@ -49,7 +49,12 @@ public class CheckListDialogExample {
                 new ItemLabel<>("cb5Label", "cb5Value")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final List<ItemLabel<String>> result = CheckListDialog.showDialog(textGUI, "title", "description", items);
+        final List<ItemLabel<String>> result = CheckListDialog.showDialog(
+                textGUI,
+                this.getClass().getName(),
+                "description",
+                items
+        );
         System.out.printf("%s result %s%n", CheckListDialogExample.class.getName(),
                 result.stream()
                         .map((il) -> il.item)

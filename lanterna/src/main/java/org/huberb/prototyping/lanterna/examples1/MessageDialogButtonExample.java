@@ -59,7 +59,11 @@ public class MessageDialogButtonExample {
             final MessageDialogButton[] buttons = new MessageDialogButton[]{
                 MessageDialogButton.OK
             };
-            final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
+            final MessageDialogButton result = MessageDialog.showMessageDialog(
+                    textGUI,
+                    this.getClass().getName(),
+                    text,
+                    buttons);
             System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
         }
         {
@@ -74,7 +78,11 @@ public class MessageDialogButtonExample {
                 MessageDialogButton.Retry,
                 MessageDialogButton.Yes
             };
-            final MessageDialogButton result = MessageDialog.showMessageDialog(textGUI, "title", text, buttons);
+            final MessageDialogButton result = MessageDialog.showMessageDialog(
+                    textGUI,
+                    this.getClass().getName(),
+                    text,
+                    buttons);
             System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
         }
     }

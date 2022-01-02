@@ -48,7 +48,12 @@ public class RadioListDialogExample {
                 new ItemLabel<>("rb5Label", "rb5Value")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final ItemLabel<String> result = RadioListDialog.showDialog(textGUI, "title", "description", items);
+        final ItemLabel<String> result = RadioListDialog.showDialog(
+                textGUI,
+                this.getClass().getName(),
+                "description",
+                items
+        );
         System.out.printf("%s result %s%n", RadioListDialogExample.class.getName(), result.getItem());
     }
 }

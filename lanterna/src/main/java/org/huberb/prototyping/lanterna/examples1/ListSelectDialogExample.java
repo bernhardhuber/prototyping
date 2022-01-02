@@ -43,14 +43,24 @@ public class ListSelectDialogExample {
 
     void showDialog(MultiWindowTextGUI textGUI) {
         final Supplier<List<String>> itemSupp = () -> {
-            return Arrays.asList("item1", "item2", "item3");
+            return Arrays.asList(
+                    "item1",
+                    "item2",
+                    "item3",
+                    "item4",
+                    "item5"
+            );
         };
 
         final List<String> itemList = itemSupp.get();
         final String[] items = itemList.toArray(new String[itemList.size()]);
 
         final TerminalSize dialogSize = new TerminalSize(40, 15);
-        final String result = ListSelectDialog.showDialog(textGUI, "title", "description", dialogSize, items);
+        final String result = ListSelectDialog.showDialog(textGUI,
+                this.getClass().getName(),
+                "description",
+                dialogSize,
+                items);
 
         System.out.printf("%s result %s%n", ListSelectDialogExample.class.getName(), result);
     }

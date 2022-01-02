@@ -43,7 +43,9 @@ public class DirectoryDialogExample {
         final TerminalSize dialogSize = new TerminalSize(40, 15);
 
         final DirectoryDialog​ dd = new DirectoryDialog​(
-                "title", "description", "Select",
+                this.getClass().getName(),
+                "description",
+                "Select",
                 dialogSize,
                 true, //boolean showHiddenDirs, 
                 null //File selectedObject

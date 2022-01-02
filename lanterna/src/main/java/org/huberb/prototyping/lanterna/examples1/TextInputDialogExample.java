@@ -40,15 +40,28 @@ public class TextInputDialogExample {
 
     void showDialog(MultiWindowTextGUI textGUI) {
         {
-            final String result = TextInputDialog.showDialog(textGUI, "title", "description", "initialContent");
+            final String result = TextInputDialog.showDialog(
+                    textGUI,
+                    this.getClass().getName(),
+                    "description",
+                    "initialContent");
             System.out.printf("%s showDialog result %s%n", TextInputDialog.class.getName(), result);
         }
         {
-            final BigInteger result = TextInputDialog.showNumberDialog(textGUI, "title", "description", "0");
+            final BigInteger result = TextInputDialog.showNumberDialog(
+                    textGUI,
+                    this.getClass().getName(),
+                    "description",
+                    "0");
             System.out.printf("%s showNumberDialog result %s%n", TextInputDialog.class.getName(), result);
         }
         {
-            final String result = TextInputDialog.showPasswordDialog(textGUI, "title", "description", "initialContent");
+            final String result = TextInputDialog.showPasswordDialog(
+                    textGUI,
+                    this.getClass().getName(),
+                    "description",
+                    "initialContent"
+            );
             System.out.printf("%s showPasswordDialog result %s%n", TextInputDialog.class.getName(), result);
         }
     }

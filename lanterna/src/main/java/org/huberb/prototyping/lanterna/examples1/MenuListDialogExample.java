@@ -47,7 +47,11 @@ public class MenuListDialogExample {
                 new ItemLabel<>("mn3Label", "mn3Value")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final ItemLabel<String> result = MenuListDialog.showDialog(textGUI, "title", "description", items);
+        final ItemLabel<String> result = MenuListDialog.showDialog(
+                textGUI,
+                this.getClass().getName(),
+                "description",
+                items);
         System.out.printf("%s result %s%n", MenuListDialogExample.class.getName(), result.getItem());
     }
 }

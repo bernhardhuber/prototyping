@@ -43,7 +43,9 @@ public class FileDialogExample {
         final TerminalSize dialogSize = new TerminalSize(40, 15);
 
         final FileDialog​ dd = new FileDialog​(
-                "title", "description", "Select",
+                this.getClass().getName(),
+                "description",
+                "Select",
                 dialogSize,
                 true, //boolean showHiddenDirs, 
                 null //File selectedObject
