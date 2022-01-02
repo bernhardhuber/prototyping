@@ -24,7 +24,7 @@ import java.util.Map;
  * @author berni3
  */
 class AppContext<T> implements Serializable {
-    
+
     T currentDialog;
     final Map<T, Object> m;
 
@@ -32,5 +32,13 @@ class AppContext<T> implements Serializable {
         this.currentDialog = currentDialog;
         this.m = new HashMap<>();
     }
-    
+
+    public T getCurrentDialog() {
+        return currentDialog;
+    }
+
+    public Map<T, Object> getM() {
+        return m;
+    }
+
 }
