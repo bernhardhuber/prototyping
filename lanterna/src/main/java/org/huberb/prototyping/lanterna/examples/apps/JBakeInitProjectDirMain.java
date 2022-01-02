@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
 import org.huberb.prototyping.lanterna.examples1.ApplicationContext;
 import org.huberb.prototyping.lanterna.examples1.DirectoryDialogExample;
@@ -61,17 +62,8 @@ public class JBakeInitProjectDirMain {
         showDialogProjectDir(textGUI);
         showDialogDirectoryName(textGUI);
         showDialogTemplateType(textGUI);
+        validateAndProcessInput();
         showDialogSummary(textGUI);
-    }
-
-    void showDialogDirectoryName(MultiWindowTextGUI textGUI) {
-        final String result = TextInputDialog.showDialog(
-                textGUI,
-                "JBake Project Directory",
-                "description: " + formatApplicationContext(),
-                "jbake-project");
-        System.out.printf("%s showDialog result %s%n", TextInputDialog.class.getName(), result);
-        this.appContext.put("showDialogDirectoryName", result);
     }
 
     void showDialogProjectDir(MultiWindowTextGUI textGUI) {
@@ -79,7 +71,7 @@ public class JBakeInitProjectDirMain {
 
         final DirectoryDialog​ dd = new DirectoryDialog​(
                 "JBake Project Name",
-                "description:\n " + formatApplicationContext(),
+                "description:\n" + formatApplicationContext(),
                 "Select",
                 dialogSize,
                 true, //boolean showHiddenDirs,
@@ -91,6 +83,16 @@ public class JBakeInitProjectDirMain {
         this.appContext.put("showDialogProjectDir", result);
     }
 
+    void showDialogDirectoryName(MultiWindowTextGUI textGUI) {
+        final String result = TextInputDialog.showDialog(
+                textGUI,
+                "JBake Project Directory",
+                "description:\n" + formatApplicationContext(),
+                "jbake-project");
+        System.out.printf("%s showDialog result %s%n", TextInputDialog.class.getName(), result);
+        this.appContext.put("showDialogDirectoryName", result);
+    }
+
     void showDialogTemplateType(MultiWindowTextGUI textGUI) {
         final List<ItemLabel<String>> itemLabelList = Arrays.asList(
                 new ItemLabel<>("freemarker", "freemarker"),
@@ -100,12 +102,16 @@ public class JBakeInitProjectDirMain {
                 new ItemLabel<>("jade", "jade")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final ItemLabel<String> result = RadioListDialog.showDialog(
-                textGUI,
-                "JBake Project Template Type",
-                "description:\n " + formatApplicationContext(),
-                items
-        );
+        final ItemLabel<String> result
+                = Optional.ofNullable(
+                        RadioListDialog.showDialog(
+                                textGUI,
+                                "JBake Project Template Type",
+                                "description:\n" + formatApplicationContext(),
+                                items
+                        )).orElseGet(() -> {
+                    return new ItemLabel<String>(null, null);
+                });
         System.out.printf("%s result %s%n", RadioListDialogExample.class.getName(), result.getItem());
         this.appContext.put("showDialogTemplateType", result);
     }
@@ -131,11 +137,24 @@ public class JBakeInitProjectDirMain {
     String formatApplicationContext() {
         final StringBuilder sb = new StringBuilder();
 
-        this.appContext
-                .getM().forEach((k, v) -> {
-                    sb.append(String.format("%s: %s%n", k, v));
-                }
-                );
+        this.appContext.getM().forEach((k, v) -> {
+            sb.append(String.format("%s: %s%n", k, v));
+        });
         return sb.toString();
+    }
+
+    //---
+    void validateAndProcessInput() {
+        final File projectDirFile = (File) this.appContext.get("showDialogProjectDir");
+
+        this.appContext.put("projectDirFile.exists", projectDirFile.exists());
+
+        final String projectName = (String) this.appContext.get("showDialogDirectoryName");
+        final File fullProjectName = new File(projectDirFile, projectName);
+        this.appContext.put("fullProjectName.exists", fullProjectName.exists());
+
+        this.appContext.put("fullProjectName.assets.exists", new File(fullProjectName, "assets").exists());
+        this.appContext.put("fullProjectName.content.exists", new File(fullProjectName, "content").exists());
+        this.appContext.put("fullProjectName.templates.exists", new File(fullProjectName, "templates").exists());
     }
 }
