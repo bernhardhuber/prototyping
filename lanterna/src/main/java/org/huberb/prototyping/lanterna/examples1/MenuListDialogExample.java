@@ -44,7 +44,9 @@ public class MenuListDialogExample {
         final List<ItemLabel<String>> itemLabelList = Arrays.asList(
                 new ItemLabel<>("mn1Label", "mn1Value"),
                 new ItemLabel<>("mn2Label", "mn2Value"),
-                new ItemLabel<>("mn3Label", "mn3Value")
+                new ItemLabel<>("mn3Label", "mn3Value"),
+                new ItemLabel<>("mn4Label", "mn4Value"),
+                new ItemLabel<>("mn5Label", "mn5Value")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
         final ItemLabel<String> result = MenuListDialog.showDialog(

@@ -44,6 +44,18 @@ public abstract class LaternaDialogTemplate {
         );
     }
 
+    public Terminal getTerminal() {
+        return terminal;
+    }
+
+    public Screen getScreen() {
+        return screen;
+    }
+
+    public MultiWindowTextGUI getTextGUI() {
+        return textGUI;
+    }
+
     public void launch() throws IOException {
         try (this.terminal) {
             try (this.screen) {
