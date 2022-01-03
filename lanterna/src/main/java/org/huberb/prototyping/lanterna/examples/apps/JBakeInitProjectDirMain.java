@@ -102,16 +102,15 @@ public class JBakeInitProjectDirMain {
                 new ItemLabel<>("jade", "jade")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final ItemLabel<String> result
-                = Optional.ofNullable(
-                        RadioListDialog.showDialog(
-                                textGUI,
-                                "JBake Project Template Type",
-                                "description:\n" + formatApplicationContext(),
-                                items
-                        )).orElseGet(() -> {
-                    return new ItemLabel<String>(null, null);
-                });
+        final ItemLabel<String> result = Optional.ofNullable(
+                RadioListDialog.showDialog(
+                        textGUI,
+                        "JBake Project Template Type",
+                        "description:\n" + formatApplicationContext(),
+                        items
+                )).orElseGet(() -> {
+            return new ItemLabel<String>(null, null);
+        });
         System.out.printf("%s result %s%n", RadioListDialogExample.class.getName(), result.getItem());
         this.appContext.put("showDialogTemplateType", result);
     }
