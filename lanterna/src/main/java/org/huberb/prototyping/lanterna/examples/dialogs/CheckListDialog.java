@@ -25,6 +25,7 @@ import com.googlecode.lanterna.gui2.GridLayout;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.LocalizedString;
 import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.Panels;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
 import java.util.ArrayList;
@@ -88,18 +89,21 @@ public class CheckListDialog<T> extends DialogWindow {
                 .addTo(mainPanel);
         mainPanel.addComponent(new EmptySpace(TerminalSize.ONE));
 
-        final Panel buttonPanel = new Panel();
-        buttonPanel.setLayoutManager(new GridLayout(2).setHorizontalSpacing(1));
-        buttonPanel.addComponent(new Button(LocalizedString.OK.toString(), this::onOK)
+        // ButtonPanel
+        final Button okButton = new Button(LocalizedString.OK.toString(), this::onOK);
+        final Button cancelButton = new Button(LocalizedString.Cancel.toString(), this::onCancel);
+        Panels.grid(2,
+                okButton,
+                cancelButton)
                 .setLayoutData(
                         GridLayout.createLayoutData(
+                                GridLayout.Alignment.END,
                                 GridLayout.Alignment.CENTER,
-                                GridLayout.Alignment.CENTER,
-                                true,
-                                false))
-        );
-        buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
-        buttonPanel.addTo(mainPanel);
+                                false,
+                                false,
+                                2,
+                                1))
+                .addTo(mainPanel);
 
         setComponent(mainPanel);
     }

@@ -30,20 +30,21 @@ public class AllDialogExample {
             IllegalArgumentException,
             InvocationTargetException,
             IOException {
-        final String[] args1 = args;
+        final String[] theArgs = args;
 
         //ActionListDialogExample.main(args1);
-        invokeMain(ActionListDialogExample.class, args1);
+        invokeMain(ActionListDialogExample.class, theArgs);
 
-        DirectoryDialogExample.main(args1);
-        FileDialogExample.main(args1);
-        ListSelectDialogExample.main(args1);
-        MessageDialogButtonExample.main(args1);
-        TextInputDialogExample.main(args1);
+        DirectoryDialogExample.main(theArgs);
+        FileDialogExample.main(theArgs);
+        ListSelectDialogExample.main(theArgs);
+        MessageDialogButtonExample.main(theArgs);
+        TextInputDialogExample.main(theArgs);
         //---
-        CheckListDialogExample.main(args1);
-        MenuListDialogExample.main(args1);
-        RadioListDialogExample.main(args1);
+        CheckListDialogExample.main(theArgs);
+        MenuListDialogExample.main(theArgs);
+        RadioListDialogExample.main(theArgs);
+        invokeMain(TextBoxDialogExample.class, theArgs);
     }
 
     static void invokeMain(Class<?> mainClass, String[] mainArgs) throws

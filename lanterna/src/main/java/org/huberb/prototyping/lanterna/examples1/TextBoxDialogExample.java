@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 berni3.
+ * Copyright 2022 berni3.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,22 +16,22 @@
 package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
-import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
+import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
 import java.io.IOException;
+import org.huberb.prototyping.lanterna.examples.dialogs.TextBoxDialog;
 
 /**
  *
  * @author berni3
  */
-public class MessageDialogButtonExample {
+public class TextBoxDialogExample {
 
     public static void main(String[] args) throws IOException {
 
         final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
             @Override
             protected void setupComponents() {
-                new MessageDialogButtonExample().showDialog(textGUI);
+                new TextBoxDialogExample().showDialog(textGUI);
             }
         };
 
@@ -55,47 +55,15 @@ public class MessageDialogButtonExample {
                 + "Aliquam erat volutpat.\n"
                 + "\n"
                 + "";
+
         {
-            final MessageDialogButton[] buttons = new MessageDialogButton[]{
-                MessageDialogButton.OK
-            };
-            final MessageDialogButton result = MessageDialog.showMessageDialog(
+            final String result = TextBoxDialog.showDialog(
                     textGUI,
                     this.getClass().getName(),
-                    text,
-                    buttons);
-            System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
-        }
-        {
-            final MessageDialogButton[] buttons = new MessageDialogButton[]{
-                MessageDialogButton.Yes,
-                MessageDialogButton.No
-            };
-            final MessageDialogButton result = MessageDialog.showMessageDialog(
-                    textGUI,
-                    this.getClass().getName(),
-                    text,
-                    buttons);
-            System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
-        }
-        {
-            final MessageDialogButton[] buttons = new MessageDialogButton[]{
-                MessageDialogButton.Abort,
-                MessageDialogButton.Cancel,
-                MessageDialogButton.Close,
-                MessageDialogButton.Continue,
-                MessageDialogButton.Ignore,
-                MessageDialogButton.No,
-                MessageDialogButton.OK,
-                MessageDialogButton.Retry,
-                MessageDialogButton.Yes
-            };
-            final MessageDialogButton result = MessageDialog.showMessageDialog(
-                    textGUI,
-                    this.getClass().getName(),
-                    text,
-                    buttons);
-            System.out.printf("%s result %s%n", MessageDialogButtonExample.class.getName(), result);
+                    "description",
+                    text);
+            System.out.printf("%s showDialog result %s%n", TextInputDialog.class.getName(), result);
         }
     }
+
 }

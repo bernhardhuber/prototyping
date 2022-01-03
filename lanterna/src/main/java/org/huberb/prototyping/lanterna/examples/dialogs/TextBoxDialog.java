@@ -22,6 +22,7 @@ import com.googlecode.lanterna.gui2.GridLayout;
 import com.googlecode.lanterna.gui2.Label;
 import com.googlecode.lanterna.gui2.LocalizedString;
 import com.googlecode.lanterna.gui2.Panel;
+import com.googlecode.lanterna.gui2.Panels;
 import com.googlecode.lanterna.gui2.TextBox;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
@@ -46,7 +47,7 @@ public class TextBoxDialog extends DialogWindow {
             throw new IllegalStateException("TextBoxDialog needs a message");
         }
 
-        final TextBox textBox = new TextBox(terminalSize,message);
+        final TextBox textBox = new TextBox(terminalSize, message);
         textBox.setReadOnly(true);
 
         final Panel mainPanel = new Panel();
@@ -67,24 +68,31 @@ public class TextBoxDialog extends DialogWindow {
                 .addTo(mainPanel);
         mainPanel.addComponent(new EmptySpace(TerminalSize.ONE));
 
-        final Panel buttonPanel = new Panel();
-        buttonPanel.setLayoutManager(new GridLayout(2).setHorizontalSpacing(1));
-        buttonPanel.addComponent(new Button(LocalizedString.OK.toString(), this::onOK)
+        // ButtonPanel
+        final Button okButton = new Button(LocalizedString.OK.toString(), this::onOK);
+        //final Button cancelButton = new Button(LocalizedString.Cancel.toString(), this::onCancel);
+        Panels.grid(2,
+                okButton)
                 .setLayoutData(
                         GridLayout.createLayoutData(
+                                GridLayout.Alignment.END,
                                 GridLayout.Alignment.CENTER,
-                                GridLayout.Alignment.CENTER,
-                                true,
-                                false))
-        );
-        //buttonPanel.addComponent(new Button(LocalizedString.Cancel.toString(), this::onCancel));
-        buttonPanel.addTo(mainPanel);
+                                false,
+                                false,
+                                2,
+                                1))
+                .addTo(mainPanel);
 
         setComponent(mainPanel);
     }
 
     private void onOK() {
         result = "OK";
+        close();
+    }
+
+    private void onCancel() {
+        result = "Cancel";
         close();
     }
 
