@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.lanterna.examples1;
+package org.huberb.prototyping.lanterna;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,11 +22,11 @@ import java.util.Map;
  *
  * @author berni3
  */
-public class ApplicationContext {
+public class LanternaApplicationContext {
 
     private final Map<String, Object> m;
 
-    public ApplicationContext() {
+    public LanternaApplicationContext() {
         this.m = new HashMap<>();
     }
 

@@ -17,25 +17,23 @@ package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
-import java.io.IOException;
 import java.math.BigInteger;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
+import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 
 /**
  *
  * @author berni3
  */
-public class TextInputDialogExample {
+public class TextInputDialogExample extends LanternaDialogTemplate {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
+        LanternaLauncher.launchWithClass(TextInputDialogExample.class, args);
+    }
 
-        final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
-            @Override
-            protected void setupComponents() {
-                new TextInputDialogExample().showDialog(textGUI);
-            }
-        };
-
-        laternaDialogTemplate.launch();
+    @Override
+    protected void setupComponents() {
+        showDialog(this.getTextGUI());
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {

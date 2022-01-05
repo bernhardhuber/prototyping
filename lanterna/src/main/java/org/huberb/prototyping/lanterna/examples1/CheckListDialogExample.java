@@ -16,28 +16,27 @@
 package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.huberb.prototyping.lanterna.ItemLabel;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
+import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
 
 /**
  *
  * @author berni3
  */
-public class CheckListDialogExample {
+public class CheckListDialogExample extends LanternaDialogTemplate {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
+        LanternaLauncher.launchWithClass(CheckListDialogExample.class, args);
+    }
 
-        final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
-            @Override
-            protected void setupComponents() {
-                new CheckListDialogExample().showDialog(this.textGUI);
-            }
-        };
-
-        laternaDialogTemplate.launch();
+    @Override
+    protected void setupComponents() {
+        showDialog(this.getTextGUI());
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {
@@ -57,7 +56,7 @@ public class CheckListDialogExample {
         );
         System.out.printf("%s result %s%n", CheckListDialogExample.class.getName(),
                 result.stream()
-                        .map((il) -> il.item)
+                        .map((il) -> il.getItem())
                         .collect(Collectors.toList())
         );
 

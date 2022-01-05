@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.lanterna.examples1;
+package org.huberb.prototyping.lanterna;
 
 import com.googlecode.lanterna.TextColor;
 import com.googlecode.lanterna.gui2.DefaultWindowManager;
@@ -29,19 +29,25 @@ import java.io.IOException;
  *
  * @author berni3
  */
-public abstract class LaternaDialogTemplate {
+public abstract class LanternaDialogTemplate {
 
     final Terminal terminal;
     final Screen screen;
     final MultiWindowTextGUI textGUI;
 
-    public LaternaDialogTemplate() throws IOException {
-        this.terminal = new DefaultTerminalFactory().createTerminal();
-        this.screen = new TerminalScreen(terminal);
-        this.textGUI = new MultiWindowTextGUI(screen,
-                new DefaultWindowManager(),
-                new EmptySpace(TextColor.ANSI.BLUE)
-        );
+    protected LanternaDialogTemplate() throws RuntimeException {
+        try {
+            final DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
+
+            this.terminal = defaultTerminalFactory.createTerminal();
+            this.screen = new TerminalScreen(terminal);
+            this.textGUI = new MultiWindowTextGUI(screen,
+                    new DefaultWindowManager(),
+                    new EmptySpace(TextColor.ANSI.BLUE)
+            );
+        } catch (IOException ioex) {
+            throw new RuntimeException("Cannot create lanterna terminal/screen/textGUI", ioex);
+        }
     }
 
     public Terminal getTerminal() {

@@ -27,10 +27,10 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
-import org.huberb.prototyping.lanterna.examples1.ApplicationContext;
+import org.huberb.prototyping.lanterna.LanternaApplicationContext;
 import org.huberb.prototyping.lanterna.examples1.DirectoryDialogExample;
-import org.huberb.prototyping.lanterna.examples1.ItemLabel;
-import org.huberb.prototyping.lanterna.examples1.LaternaDialogTemplate;
+import org.huberb.prototyping.lanterna.ItemLabel;
+import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 import org.huberb.prototyping.lanterna.examples1.MessageDialogButtonExample;
 import org.huberb.prototyping.lanterna.examples1.RadioListDialogExample;
 
@@ -38,24 +38,23 @@ import org.huberb.prototyping.lanterna.examples1.RadioListDialogExample;
  *
  * @author berni3
  */
-public class JBakeInitProjectDirMain {
+public class JBakeInitProjectDirMain extends LanternaDialogTemplate {
 
-    private final ApplicationContext appContext;
+    private final LanternaApplicationContext appContext;
 
     public static void main(String[] args) throws IOException {
-        final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
-            @Override
-            protected void setupComponents() {
-                final MultiWindowTextGUI textGUI = getTextGUI();
-                new JBakeInitProjectDirMain().showDialog(textGUI);
-            }
-        };
-
-        laternaDialogTemplate.launch();
+        final JBakeInitProjectDirMain jbakeInitProjectDirMain = new JBakeInitProjectDirMain();
+        jbakeInitProjectDirMain.launch();
     }
 
-    public JBakeInitProjectDirMain() {
-        this.appContext = new ApplicationContext();
+    @Override
+    protected void setupComponents() {
+        final MultiWindowTextGUI textGUI = getTextGUI();
+        showDialog(textGUI);
+    }
+
+    public JBakeInitProjectDirMain() throws IOException {
+        this.appContext = new LanternaApplicationContext();
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {

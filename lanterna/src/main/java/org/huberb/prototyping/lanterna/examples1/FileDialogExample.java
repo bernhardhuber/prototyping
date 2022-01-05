@@ -19,24 +19,22 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.FileDialog;
 import java.io.File;
-import java.io.IOException;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
+import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 
 /**
  *
  * @author berni3
  */
-public class FileDialogExample {
+public class FileDialogExample extends LanternaDialogTemplate {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
+        LanternaLauncher.launchWithClass(FileDialogExample.class, args);
+    }
 
-        final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
-            @Override
-            protected void setupComponents() {
-                new FileDialogExample().showDialog(textGUI);
-            }
-        };
-
-        laternaDialogTemplate.launch();
+    @Override
+    protected void setupComponents() {
+        showDialog(this.getTextGUI());
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {

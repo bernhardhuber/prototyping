@@ -18,27 +18,26 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.ListSelectDialog;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
+import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 
 /**
  *
  * @author berni3
  */
-public class ListSelectDialogExample {
+public class ListSelectDialogExample extends LanternaDialogTemplate {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
+        LanternaLauncher.launchWithClass(ListSelectDialogExample.class, args);
 
-        final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
-            @Override
-            protected void setupComponents() {
-                new ListSelectDialogExample().showDialog(textGUI);
-            }
-        };
+    }
 
-        laternaDialogTemplate.launch();
+    @Override
+    protected void setupComponents() {
+        showDialog(this.getTextGUI());
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {

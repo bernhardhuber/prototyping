@@ -16,27 +16,27 @@
 package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
+import org.huberb.prototyping.lanterna.ItemLabel;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
+import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
 
 /**
  *
  * @author berni3
  */
-public class RadioListDialogExample {
+public class RadioListDialogExample extends LanternaDialogTemplate {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
+        LanternaLauncher.launchWithClass(RadioListDialogExample.class, args);
 
-        final LaternaDialogTemplate laternaDialogTemplate = new LaternaDialogTemplate() {
-            @Override
-            protected void setupComponents() {
-                new RadioListDialogExample().showDialog(textGUI);
-            }
-        };
+    }
 
-        laternaDialogTemplate.launch();
+    @Override
+    protected void setupComponents() {
+        showDialog(this.getTextGUI());
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {

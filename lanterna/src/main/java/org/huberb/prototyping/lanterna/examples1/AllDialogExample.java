@@ -15,7 +15,6 @@
  */
 package org.huberb.prototyping.lanterna.examples1;
 
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -25,11 +24,7 @@ import java.lang.reflect.Method;
  */
 public class AllDialogExample {
 
-    public static void main(String[] args) throws NoSuchMethodException,
-            IllegalAccessException,
-            IllegalArgumentException,
-            InvocationTargetException,
-            IOException {
+    public static void main(String[] args) throws Exception {
         final String[] theArgs = args;
 
         //ActionListDialogExample.main(args1);

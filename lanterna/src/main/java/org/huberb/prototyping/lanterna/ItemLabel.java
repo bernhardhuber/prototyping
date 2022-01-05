@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.lanterna.examples1;
+package org.huberb.prototyping.lanterna;
 
 import java.util.Objects;
 
