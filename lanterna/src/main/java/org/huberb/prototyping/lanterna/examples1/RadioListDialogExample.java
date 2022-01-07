@@ -19,8 +19,8 @@ import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.util.Arrays;
 import java.util.List;
 import org.huberb.prototyping.lanterna.ItemLabel;
-import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
 
 /**
@@ -31,7 +31,6 @@ public class RadioListDialogExample extends LanternaDialogTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(RadioListDialogExample.class, args);
-
     }
 
     @Override
