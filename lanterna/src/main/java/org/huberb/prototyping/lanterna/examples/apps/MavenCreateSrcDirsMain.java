@@ -18,11 +18,14 @@ package org.huberb.prototyping.lanterna.examples.apps;
 import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
+import com.googlecode.lanterna.gui2.dialogs.DirectoryDialogBuilder;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
+import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialogBuilder;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 
 /**
@@ -46,26 +49,27 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
         showDialog(textGUI);
     }
 
+    //---
     void showDialog(MultiWindowTextGUI textGUI) {
         showDialogMavenProjectDirectory(textGUI);
         showDialogCreateDirectories(textGUI);
+        // TODO create directories
     }
 
+    //---
     void showDialogMavenProjectDirectory(MultiWindowTextGUI textGUI) {
         final TerminalSize dialogSize = new TerminalSize(40, 15);
-
-        final DirectoryDialog​ dd = new DirectoryDialog​(
-                "Maven Project Directory",
-                "description:\n" + formatApplicationContext(),
-                "Select",
-                dialogSize,
-                true, //boolean showHiddenDirs,
-                null //File selectedObject
-        );
+        final DirectoryDialog dd;
+        final DirectoryDialogBuilder ddb = new DirectoryDialogBuilder()
+                .setActionLabel("Select")
+                .setDescription("description:\n" + formatApplicationContext())
+                .setSelectedDirectory(null)
+                .setSuggestedSize(dialogSize)
+                .setTitle("Maven Project Directory");
+        dd = ddb.build();
 
         final File result = dd.showDialog(textGUI);
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
-        //this.context.storeResult(Widgets.jbakeDir, result);
         this.config.setProperty("showDialogMavenProjectDirectory.result", result.getPath());
     }
 
@@ -80,15 +84,14 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
                 new ItemLabel("src/test/resources", "src_test_resources")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final List<ItemLabel> result
-                = CheckListDialog.showDialog(
-                        textGUI,
-                        "Maven Project Create Directories",
-                        "description:\n" + formatApplicationContext(),
-                        items
-                );
+        final CheckListDialog<IItemLabel> cld = new CheckListDialogBuilder<>()
+                .setDescription("description:\n" + formatApplicationContext())
+                .setTitle("Maven Project Create Directories")
+                .addListItems(items)
+                .build();
+        final List<IItemLabel> result = cld.showDialog(textGUI);
+
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
-        //this.context.storeResult(Widgets.templateType, result);
         this.config.setProperty("showDialogCreateDirectories.result", result);
     }
 
