@@ -33,6 +33,10 @@ public class RadioListDialogExample extends LanternaDialogTemplate {
         LanternaLauncher.launchWithClass(RadioListDialogExample.class, args);
     }
 
+    public RadioListDialogExample() {
+        super(RadioListDialogExample.class.getName());
+    }
+
     @Override
     protected void setupComponents() {
         showDialog(this.getTextGUI());

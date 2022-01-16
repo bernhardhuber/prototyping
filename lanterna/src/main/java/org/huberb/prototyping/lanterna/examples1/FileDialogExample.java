@@ -19,8 +19,8 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.FileDialog;
 import java.io.File;
-import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
@@ -30,6 +30,10 @@ public class FileDialogExample extends LanternaDialogTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(FileDialogExample.class, args);
+    }
+
+    public FileDialogExample() {
+        super(FileDialogExample.class.getName());
     }
 
     @Override

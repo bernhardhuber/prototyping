@@ -19,8 +19,8 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
 import java.io.File;
-import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
@@ -30,6 +30,10 @@ public class DirectoryDialogExample extends LanternaDialogTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(DirectoryDialogExample.class, args);
+    }
+
+    public DirectoryDialogExample() {
+        super(DirectoryDialogExample.class.getName());
     }
 
     @Override

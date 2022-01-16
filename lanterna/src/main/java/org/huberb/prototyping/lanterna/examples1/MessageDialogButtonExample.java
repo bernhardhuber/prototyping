@@ -31,6 +31,10 @@ public class MessageDialogButtonExample extends LanternaDialogTemplate {
         LanternaLauncher.launchWithClass(MessageDialogButtonExample.class, args);
     }
 
+    public MessageDialogButtonExample() {
+        super(MessageDialogButtonExample.class.getName());
+    }
+
     @Override
     protected void setupComponents() {
         showDialog(this.getTextGUI());

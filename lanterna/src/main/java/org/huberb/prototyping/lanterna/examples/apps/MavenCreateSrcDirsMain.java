@@ -19,7 +19,6 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
 import java.io.File;
-import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
@@ -32,12 +31,13 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemL
  */
 public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         final MavenCreateSrcDirsMain mavenCreateSrcTestDirsMain = new MavenCreateSrcDirsMain();
         mavenCreateSrcTestDirsMain.launch();
     }
 
     public MavenCreateSrcDirsMain() {
+        super("mavencreatesrcdirs");
     }
 
     @Override
@@ -66,11 +66,12 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
         final File result = dd.showDialog(textGUI);
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
         //this.context.storeResult(Widgets.jbakeDir, result);
+        this.config.setProperty("showDialogMavenProjectDirectory.result", result.getPath());
     }
 
     void showDialogCreateDirectories(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
-                new ItemLabel("src", "src"),
+                new ItemLabel("src", "src", false),
                 new ItemLabel("src/main", "src_main"),
                 new ItemLabel("src/main/java", "src_main_java"),
                 new ItemLabel("src/main/resources", "src_main_resources"),
@@ -88,6 +89,7 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
                 );
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
         //this.context.storeResult(Widgets.templateType, result);
+        this.config.setProperty("showDialogCreateDirectories.result", result);
     }
 
     private String formatApplicationContext() {

@@ -41,7 +41,7 @@ import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
  */
 public class JBakeInitProjectDirMain extends LanternaDialogTemplate {
 
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) throws Exception {
         final JBakeInitProjectDirMain jbakeInitProjectDirMain = new JBakeInitProjectDirMain();
         jbakeInitProjectDirMain.launch();
     }
@@ -49,6 +49,7 @@ public class JBakeInitProjectDirMain extends LanternaDialogTemplate {
     private final Context context;
 
     public JBakeInitProjectDirMain() throws IOException {
+        super("jbakeinitprojectdir");
         this.context = new Context();
     }
 
@@ -116,7 +117,7 @@ public class JBakeInitProjectDirMain extends LanternaDialogTemplate {
 
     void showDialogTemplateType(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
-                new ItemLabel("freemarker", "freemarker"),
+                new ItemLabel("freemarker", "freemarker",true),
                 new ItemLabel("groovy", "groovy"),
                 new ItemLabel("groovy-mte", "groovy-mte"),
                 new ItemLabel("thymeleaf", "thymeleaf"),

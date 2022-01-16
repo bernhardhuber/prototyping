@@ -33,6 +33,10 @@ public class ActionListDialogExample extends LanternaDialogTemplate {
         LanternaLauncher.launchWithClass(ActionListDialogExample.class, args);
     }
 
+    public ActionListDialogExample() {
+        super(ActionListDialogExample.class.getName());
+    }
+
     @Override
     protected void setupComponents() {
         showDialog(this.getTextGUI());

@@ -21,8 +21,8 @@ import com.googlecode.lanterna.gui2.dialogs.ListSelectDialog;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
-import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
@@ -33,6 +33,10 @@ public class ListSelectDialogExample extends LanternaDialogTemplate {
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(ListSelectDialogExample.class, args);
 
+    }
+
+    public ListSelectDialogExample() {
+        super(ListSelectDialogExample.class.getName());
     }
 
     @Override

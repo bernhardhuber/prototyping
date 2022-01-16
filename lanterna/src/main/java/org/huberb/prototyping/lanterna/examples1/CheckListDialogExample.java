@@ -34,6 +34,10 @@ public class CheckListDialogExample extends LanternaDialogTemplate {
         LanternaLauncher.launchWithClass(CheckListDialogExample.class, args);
     }
 
+    public CheckListDialogExample() {
+        super(CheckListDialogExample.class.getName());
+    }
+
     @Override
     protected void setupComponents() {
         showDialog(this.getTextGUI());

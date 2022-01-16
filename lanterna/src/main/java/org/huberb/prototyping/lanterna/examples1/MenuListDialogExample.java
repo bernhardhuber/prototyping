@@ -34,6 +34,10 @@ public class MenuListDialogExample extends LanternaDialogTemplate {
 
     }
 
+    public MenuListDialogExample() {
+        super(MenuListDialogExample.class.getName());
+    }
+
     @Override
     protected void setupComponents() {
         showDialog(this.getTextGUI());
