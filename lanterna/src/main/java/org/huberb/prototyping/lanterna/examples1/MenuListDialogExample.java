@@ -18,9 +18,9 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.util.Arrays;
 import java.util.List;
-import org.huberb.prototyping.lanterna.ItemLabel;
-import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialog;
 
 /**
@@ -40,15 +40,15 @@ public class MenuListDialogExample extends LanternaDialogTemplate {
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {
-        final List<ItemLabel<String>> itemLabelList = Arrays.asList(
-                new ItemLabel<>("mn1Label", "mn1Value"),
-                new ItemLabel<>("mn2Label", "mn2Value"),
-                new ItemLabel<>("mn3Label", "mn3Value"),
-                new ItemLabel<>("mn4Label", "mn4Value"),
-                new ItemLabel<>("mn5Label", "mn5Value")
+        final List<ItemLabel> itemLabelList = Arrays.asList(
+                new ItemLabel("mn1Label", "mn1Value"),
+                new ItemLabel("mn2Label", "mn2Value"),
+                new ItemLabel("mn3Label", "mn3Value"),
+                new ItemLabel("mn4Label", "mn4Value"),
+                new ItemLabel("mn5Label", "mn5Value")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final ItemLabel<String> result = MenuListDialog.showDialog(
+        final ItemLabel result = MenuListDialog.showDialog(
                 textGUI,
                 this.getClass().getName(),
                 "description",

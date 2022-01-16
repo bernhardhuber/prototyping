@@ -19,7 +19,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import org.huberb.prototyping.lanterna.ItemLabel;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 
 /**
  *
@@ -55,9 +55,9 @@ public class Factories {
                 .kv("description", "titleValue")
                 .kv("dialogType", DialogType.checkListDialog)
                 .kv("items", Arrays.asList(
-                        new ItemLabel<>("cb1Label", "cb1Value"),
-                        new ItemLabel<>("cb2Label", "cb2Value"),
-                        new ItemLabel<>("cb3Label", "cb3Value")))
+                        new ItemLabel("cb1Label", "cb1Value"),
+                        new ItemLabel("cb2Label", "cb2Value"),
+                        new ItemLabel("cb3Label", "cb3Value")))
                 .build();
         return result;
     }
@@ -68,16 +68,16 @@ public class Factories {
         String description;
         DialogType dialogType;
         List<String> content;
-        List<ItemLabel<String>> items;
+        List<ItemLabel> items;
 
-        ItemLabel<String>[] itemsAsArray() {
-            final ItemLabel<String>[] arr = new ItemLabel[items.size()];
+        ItemLabel[] itemsAsArray() {
+            final ItemLabel[] arr = new ItemLabel[items.size()];
             return items.toArray(arr);
         }
     }
 
     CheckListDialog createCheckListDialog(DialogBean dialogBean) {
-        CheckListDialog instance = new CheckListDialogBuilder<ItemLabel<String>>()
+        CheckListDialog instance = new CheckListDialogBuilder<ItemLabel>()
                 .setTitle(dialogBean.title)
                 .setDescription(dialogBean.description)
                 .addListItems(dialogBean.itemsAsArray())

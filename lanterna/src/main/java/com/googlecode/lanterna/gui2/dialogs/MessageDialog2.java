@@ -13,35 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.lanterna;
-
-import java.util.HashMap;
-import java.util.Map;
+package com.googlecode.lanterna.gui2.dialogs;
 
 /**
  *
  * @author berni3
  */
-public class LanternaApplicationContext {
+public class MessageDialog2 extends MessageDialog {
 
-    private final Map<String, Object> m;
-
-    public LanternaApplicationContext() {
-        this.m = new HashMap<>();
-    }
-
-    public Map<String, Object> getM() {
-        return m;
-    }
-
-    public Object get(String key) {
-        return this.m.get(key);
-    }
-
-    public void put(String key, Object value) {
-        this.m.put(key, value);
-    }
-
-
+    MessageDialog2(String title, String text, MessageDialogButton... buttons) {
+        super(title, text, buttons);
+    } //super(title);
 
 }

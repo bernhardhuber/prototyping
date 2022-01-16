@@ -32,13 +32,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
 
 /**
  *
  * @author pi
  * @param <T>
  */
-public class CheckListDialog<T> extends DialogWindow {
+public class CheckListDialog<T extends IItemLabel> extends DialogWindow {
 
     private final Set<T> resultSelected;
     private T result;
@@ -55,10 +56,14 @@ public class CheckListDialog<T> extends DialogWindow {
         if (content.isEmpty()) {
             throw new IllegalStateException("CheckListDialog needs at least one item");
         }
-
         final CheckBoxList<T> checkBoxList = new CheckBoxList<>(listBoxPreferredSize);
         for (final T item : content) {
             checkBoxList.addItem(item);
+        }
+        for (final T item : content) {
+            if (item.isSelected()) {
+                checkBoxList.setChecked(item, true);
+            }
         }
         checkBoxList.addListener(new Listener() {
             @Override
@@ -142,7 +147,7 @@ public class CheckListDialog<T> extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     @SafeVarargs
-    public static <T> List<T> showDialog(WindowBasedTextGUI textGUI,
+    public static <T extends IItemLabel> List<T> showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             T... items) {
         return showDialog(textGUI, title, description, null, items);
@@ -161,7 +166,7 @@ public class CheckListDialog<T> extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     @SafeVarargs
-    public static <T> List<T> showDialog(WindowBasedTextGUI textGUI,
+    public static <T extends IItemLabel> List<T> showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             int listBoxHeight,
             T... items) {
@@ -186,7 +191,7 @@ public class CheckListDialog<T> extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     @SafeVarargs
-    public static <T> List<T> showDialog(WindowBasedTextGUI textGUI,
+    public static <T extends IItemLabel> List<T> showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             TerminalSize listBoxSize,
             T... items) {

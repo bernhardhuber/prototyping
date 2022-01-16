@@ -18,9 +18,9 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.util.Arrays;
 import java.util.List;
-import org.huberb.prototyping.lanterna.ItemLabel;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
 
 /**
@@ -39,15 +39,15 @@ public class RadioListDialogExample extends LanternaDialogTemplate {
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {
-        final List<ItemLabel<String>> itemLabelList = Arrays.asList(
-                new ItemLabel<>("rb1Label", "rb1Value"),
-                new ItemLabel<>("rb2Label", "rb2Value"),
-                new ItemLabel<>("rb3Label", "rb3Value"),
-                new ItemLabel<>("rb4Label", "rb4Value"),
-                new ItemLabel<>("rb5Label", "rb5Value")
+        final List<ItemLabel> itemLabelList = Arrays.asList(
+                new ItemLabel("rb1Label", "rb1Value"),
+                new ItemLabel("rb2Label", "rb2Value"),
+                new ItemLabel("rb3Label", "rb3Value"),
+                new ItemLabel("rb4Label", "rb4Value"),
+                new ItemLabel("rb5Label", "rb5Value")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final ItemLabel<String> result = RadioListDialog.showDialog(
+        final ItemLabel result = RadioListDialog.showDialog(
                 textGUI,
                 this.getClass().getName(),
                 "description",

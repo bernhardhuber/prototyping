@@ -20,13 +20,14 @@ import com.googlecode.lanterna.gui2.dialogs.AbstractDialogBuilder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
 
 /**
  *
  * @author pi
  * @param <T>
  */
-public class CheckListDialogBuilder<T> extends AbstractDialogBuilder<CheckListDialogBuilder<T>, CheckListDialog<T>> {
+public class CheckListDialogBuilder<T extends IItemLabel> extends AbstractDialogBuilder<CheckListDialogBuilder<T>, CheckListDialog<T>> {
 
     private final List<T> content;
     private TerminalSize listBoxSize;

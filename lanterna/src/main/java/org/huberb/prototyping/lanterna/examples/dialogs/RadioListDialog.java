@@ -28,13 +28,14 @@ import com.googlecode.lanterna.gui2.RadioBoxList;
 import com.googlecode.lanterna.gui2.WindowBasedTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DialogWindow;
 import java.util.List;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
 
 /**
  *
  * @author pi
  * @param <T>
  */
-public class RadioListDialog<T> extends DialogWindow {
+public class RadioListDialog<T extends IItemLabel> extends DialogWindow {
 
     private T result;
 
@@ -53,6 +54,11 @@ public class RadioListDialog<T> extends DialogWindow {
         final RadioBoxList<T> radioBoxList = new RadioBoxList<>(listBoxPreferredSize);
         for (final T item : content) {
             radioBoxList.addItem(item);
+        }
+        for (final T item : content) {
+            if (item.isSelected()) {
+                radioBoxList.setCheckedItem(item);
+            }
         }
         radioBoxList.addListener(new RadioBoxList.Listener() {
             @Override
@@ -132,7 +138,7 @@ public class RadioListDialog<T> extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     @SafeVarargs
-    public static <T> T showDialog(WindowBasedTextGUI textGUI,
+    public static <T extends IItemLabel> T showDialog(WindowBasedTextGUI textGUI,
             String title, String description,
             T... items) {
         return showDialog(textGUI, title, description, null, items);
@@ -151,7 +157,7 @@ public class RadioListDialog<T> extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     @SafeVarargs
-    public static <T> T showDialog(WindowBasedTextGUI textGUI,
+    public static <T extends IItemLabel> T showDialog(WindowBasedTextGUI textGUI,
             String title,
             String description,
             int listBoxHeight,
@@ -177,7 +183,7 @@ public class RadioListDialog<T> extends DialogWindow {
      * @return The selected item or {@code null} if cancelled
      */
     @SafeVarargs
-    public static <T> T showDialog(WindowBasedTextGUI textGUI,
+    public static <T extends IItemLabel> T showDialog(WindowBasedTextGUI textGUI,
             String title,
             String description,
             TerminalSize listBoxSize,

@@ -33,6 +33,7 @@ import java.util.List;
 import java.util.function.Supplier;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialogBuilder;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialogBuilder;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
@@ -199,11 +200,14 @@ class DialogWindowCreators {
                 final ListSelectDialog<String> listSelectDialog = listSelectDialogBuilder.build();
                 dialogWindow = listSelectDialog;
             } else if (mode == Mode.checkListDialog) {
-                final CheckListDialogBuilder<String> checkListDialogBuilder = new CheckListDialogBuilder<String>()
+                final CheckListDialogBuilder<ItemLabel> checkListDialogBuilder = new CheckListDialogBuilder<ItemLabel>()
                         .setTitle(title)
                         .setDescription(description);
-                listStringParams.forEach((String s) -> checkListDialogBuilder.addListItem(s));
-                final CheckListDialog<String> checkListDialog = checkListDialogBuilder.build();
+                listStringParams.forEach((String s) -> {
+                    final ItemLabel il = new ItemLabel(s, s);
+                    checkListDialogBuilder.addListItem(il);
+                });
+                final CheckListDialog<ItemLabel> checkListDialog = checkListDialogBuilder.build();
                 dialogWindow = checkListDialog;
             } else if (mode == Mode.menuListDialog) {
                 final MenuListDialogBuilder<String> menuListDialogBuilder = new MenuListDialogBuilder<String>()
@@ -213,11 +217,14 @@ class DialogWindowCreators {
                 final MenuListDialog<String> menuListDialog = menuListDialogBuilder.build();
                 dialogWindow = menuListDialog;
             } else if (mode == Mode.radioListDialog) {
-                final RadioListDialogBuilder<String> radioListDialogBuilder = new RadioListDialogBuilder<String>()
+                final RadioListDialogBuilder<ItemLabel> radioListDialogBuilder = new RadioListDialogBuilder<ItemLabel>()
                         .setTitle(title)
                         .setDescription(description);
-                listStringParams.forEach((String s) -> radioListDialogBuilder.addListItem(s));
-                final RadioListDialog<String> radioListDialog = radioListDialogBuilder.build();
+                listStringParams.forEach((String s) -> {
+                    final ItemLabel il = new ItemLabel(s, s);
+                    radioListDialogBuilder.addListItem(il);
+                });
+                final RadioListDialog<ItemLabel> radioListDialog = radioListDialogBuilder.build();
                 dialogWindow = radioListDialog;
             } else if (mode == Mode.textBoxDialog) {
                 final TextBoxDialogBuilder textBoxDialogBuilder = new TextBoxDialogBuilder()
@@ -337,11 +344,14 @@ class DialogWindowCreators {
                 final ListSelectDialog<String> listSelectDialog = listSelectDialogBuilder.build();
                 dialogWindow = listSelectDialog;
             } else if (mode == Mode.checkListDialog) {
-                final CheckListDialogBuilder<String> checkListDialogBuilder = new CheckListDialogBuilder<String>()
+                final CheckListDialogBuilder<ItemLabel> checkListDialogBuilder = new CheckListDialogBuilder<ItemLabel>()
                         .setTitle(title)
                         .setDescription(description);
-                listStringParams.forEach((String s) -> checkListDialogBuilder.addListItem(s));
-                final CheckListDialog<String> checkListDialog = checkListDialogBuilder.build();
+                listStringParams.forEach((String s) -> {
+                    ItemLabel il = new ItemLabel(s, s);
+                    checkListDialogBuilder.addListItem(il);
+                });
+                final CheckListDialog<ItemLabel> checkListDialog = checkListDialogBuilder.build();
                 dialogWindow = checkListDialog;
             } else if (mode == Mode.menuListDialog) {
                 final MenuListDialogBuilder<String> menuListDialogBuilder = new MenuListDialogBuilder<String>()
@@ -351,11 +361,14 @@ class DialogWindowCreators {
                 final MenuListDialog<String> menuListDialog = menuListDialogBuilder.build();
                 dialogWindow = menuListDialog;
             } else if (mode == Mode.radioListDialog) {
-                final RadioListDialogBuilder<String> radioListDialogBuilder = new RadioListDialogBuilder<String>()
+                final RadioListDialogBuilder<ItemLabel> radioListDialogBuilder = new RadioListDialogBuilder<ItemLabel>()
                         .setTitle(title)
                         .setDescription(description);
-                listStringParams.forEach((String s) -> radioListDialogBuilder.addListItem(s));
-                final RadioListDialog<String> radioListDialog = radioListDialogBuilder.build();
+                listStringParams.forEach((String s) -> {
+                    ItemLabel il = new ItemLabel(s, s);
+                    radioListDialogBuilder.addListItem(il);
+                });
+                final RadioListDialog<ItemLabel> radioListDialog = radioListDialogBuilder.build();
                 dialogWindow = radioListDialog;
             } else if (mode == Mode.textBoxDialog) {
                 final TextBoxDialogBuilder textBoxDialogBuilder = new TextBoxDialogBuilder()

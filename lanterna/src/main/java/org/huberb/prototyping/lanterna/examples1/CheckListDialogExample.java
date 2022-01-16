@@ -19,10 +19,10 @@ import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.huberb.prototyping.lanterna.ItemLabel;
-import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 
 /**
  *
@@ -40,15 +40,15 @@ public class CheckListDialogExample extends LanternaDialogTemplate {
     }
 
     void showDialog(MultiWindowTextGUI textGUI) {
-        final List<ItemLabel<String>> itemLabelList = Arrays.asList(
-                new ItemLabel<>("cb1Label", "cb1Value"),
-                new ItemLabel<>("cb2Label", "cb2Value"),
-                new ItemLabel<>("cb3Label", "cb3Value"),
-                new ItemLabel<>("cb4Label", "cb4Value"),
-                new ItemLabel<>("cb5Label", "cb5Value")
+        final List<ItemLabel> itemLabelList = Arrays.asList(
+                new ItemLabel("cb1Label", "cb1Value"),
+                new ItemLabel("cb2Label", "cb2Value"),
+                new ItemLabel("cb3Label", "cb3Value"),
+                new ItemLabel("cb4Label", "cb4Value"),
+                new ItemLabel("cb5Label", "cb5Value")
         );
         final ItemLabel[] items = itemLabelList.toArray(ItemLabel[]::new);
-        final List<ItemLabel<String>> result = CheckListDialog.showDialog(
+        final List<ItemLabel> result = CheckListDialog.showDialog(
                 textGUI,
                 this.getClass().getName(),
                 "description",
