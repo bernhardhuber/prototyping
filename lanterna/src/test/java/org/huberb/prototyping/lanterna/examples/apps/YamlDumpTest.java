@@ -15,6 +15,7 @@
  */
 package org.huberb.prototyping.lanterna.examples.apps;
 
+import java.io.File;
 import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Date;
@@ -23,10 +24,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.UUID;
+import org.huberb.prototyping.lanterna.examples.apps.YamlDumpTest.RepresentersConstructors.YamlConstructors;
+import org.huberb.prototyping.lanterna.examples.apps.YamlDumpTest.RepresentersConstructors.YamlRepresenters;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.DumperOptions.FlowStyle;
 import org.yaml.snakeyaml.Yaml;
+import org.yaml.snakeyaml.constructor.AbstractConstruct;
+import org.yaml.snakeyaml.constructor.Constructor;
+import org.yaml.snakeyaml.nodes.Node;
+import org.yaml.snakeyaml.nodes.ScalarNode;
+import org.yaml.snakeyaml.nodes.Tag;
+import org.yaml.snakeyaml.representer.Represent;
+import org.yaml.snakeyaml.representer.Representer;
 
 /**
  *
@@ -131,6 +142,7 @@ public class YamlDumpTest {
         m.put("bean1Key08GregorianCalendar", GregorianCalendar.getInstance());
         m.put("bean1Key09LocalDateTime", java.time.LocalDateTime.now().minusDays(7).format(DateTimeFormatter.ISO_DATE));
         m.put("bean1Key10", "100+200-100");
+        m.put("bean1Key11", new File("."));
         props = new Properties();
         props.setProperty("bean1PropK1", "bean1PropV1");
         props.setProperty("bean1PropK2", "bean1PropV2");
@@ -140,7 +152,10 @@ public class YamlDumpTest {
         m.put("bean1Key92SystemEnv", System.getenv());
 
         final DumperOptions dumperOptions = createDumperOptions();
-        Yaml yaml = new Yaml(dumperOptions);
+      final  Yaml yaml = new Yaml(
+                new YamlConstructors(),
+                new YamlRepresenters(),
+                dumperOptions);
 
         System.out.printf("test2%n%s%n", yaml.dump(m));
     }
@@ -154,5 +169,64 @@ public class YamlDumpTest {
         dumperOptions.setIndentWithIndicator(true);
         //dumperOptions.setCanonical(true);
         return dumperOptions;
+    }
+
+    static class RepresentersConstructors {
+
+        static class YamlRepresenters extends Representer {
+
+            class RepresentUUID implements Represent {
+
+                @Override
+                public Node representData(Object o) {
+                    final UUID uuid = (UUID) o;
+                    return representScalar(new Tag("!uuid"), uuid.getMostSignificantBits() + " " + uuid.getLeastSignificantBits());
+                }
+            }
+
+            class RepresentFile implements Represent {
+
+                @Override
+                public Node representData(Object arg0) {
+                    final File file = (File) arg0;
+                    return representScalar(new Tag("!file"), file.getPath());
+                }
+            }
+
+            public YamlRepresenters() {
+                this.representers.put(UUID.class, new RepresentUUID());
+                this.representers.put(File.class, new RepresentFile());
+            }
+
+        }
+
+        static class YamlConstructors extends Constructor {
+
+            private class ConstructUUID extends AbstractConstruct {
+
+                @Override
+                public Object construct(Node node) {
+                    final Object o = constructScalar((ScalarNode) node);
+                    final String[] uuidBits = o.toString().split(" ");
+                    return new UUID(Long.parseLong(uuidBits[0]), Long.parseLong(uuidBits[1]));
+                }
+            }
+
+            class ConstructFile extends AbstractConstruct {
+
+                @Override
+                public Object construct(Node arg0) {
+                    final Object o = constructScalar((ScalarNode) arg0);
+                    final String filename = o.toString();
+                    return new File(filename);
+                }
+            }
+
+            public YamlConstructors() {
+                this.yamlConstructors.put(new Tag("!uuid"), new ConstructUUID());
+                this.yamlConstructors.put(new Tag("!file"), new ConstructFile());
+            }
+
+        }
     }
 }
