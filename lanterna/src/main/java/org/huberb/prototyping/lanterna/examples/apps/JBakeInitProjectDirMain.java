@@ -117,7 +117,7 @@ public class JBakeInitProjectDirMain extends LanternaDialogTemplate {
 
     void showDialogTemplateType(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
-                new ItemLabel("freemarker", "freemarker",true),
+                new ItemLabel("freemarker", "freemarker", true),
                 new ItemLabel("groovy", "groovy"),
                 new ItemLabel("groovy-mte", "groovy-mte"),
                 new ItemLabel("thymeleaf", "thymeleaf"),
@@ -195,8 +195,6 @@ public class JBakeInitProjectDirMain extends LanternaDialogTemplate {
             summary(String.class);
 
             Class<?> resultClass;
-            //String defaultValue;
-            //String resultValue;
 
             Widgets(Class<?> resultClass) {
                 this.resultClass = resultClass;
