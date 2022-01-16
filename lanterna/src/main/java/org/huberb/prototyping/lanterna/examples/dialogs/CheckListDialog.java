@@ -42,7 +42,6 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItem
 public class CheckListDialog<T extends IItemLabel> extends DialogWindow {
 
     private final Set<T> resultSelected;
-    private T result;
 
     public CheckListDialog(
             String title,
@@ -51,7 +50,6 @@ public class CheckListDialog<T extends IItemLabel> extends DialogWindow {
             List<T> content) {
 
         super(title);
-        this.result = null;
         this.resultSelected = new HashSet<>();
         if (content.isEmpty()) {
             throw new IllegalStateException("CheckListDialog needs at least one item");
@@ -63,6 +61,7 @@ public class CheckListDialog<T extends IItemLabel> extends DialogWindow {
         for (final T item : content) {
             if (item.isSelected()) {
                 checkBoxList.setChecked(item, true);
+                this.resultSelected.add(item);
             }
         }
         checkBoxList.addListener(new Listener() {
@@ -118,7 +117,7 @@ public class CheckListDialog<T extends IItemLabel> extends DialogWindow {
     }
 
     private void onCancel() {
-        this.result = null;
+        this.resultSelected.clear();
         close();
     }
 
@@ -131,7 +130,7 @@ public class CheckListDialog<T extends IItemLabel> extends DialogWindow {
      */
     @Override
     public List<T> showDialog(WindowBasedTextGUI textGUI) {
-        result = null;
+        //result = null;
         super.showDialog(textGUI);
         return new ArrayList(this.resultSelected);
     }

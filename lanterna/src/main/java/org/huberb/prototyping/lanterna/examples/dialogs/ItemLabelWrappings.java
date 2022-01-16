@@ -42,10 +42,10 @@ public class ItemLabelWrappings {
         private final String item;
 
         public ItemLabel(String label, String item) {
-            this(label, item, false, true);
+            this(label, item, false);
         }
 
-        public ItemLabel(String label, String item, boolean selected, boolean enabled) {
+        public ItemLabel(String label, String item, boolean selected) {
             this.label = label;
             this.item = item;
             this.selected = selected;

@@ -58,6 +58,7 @@ public class RadioListDialog<T extends IItemLabel> extends DialogWindow {
         for (final T item : content) {
             if (item.isSelected()) {
                 radioBoxList.setCheckedItem(item);
+                result = item;
             }
         }
         radioBoxList.addListener(new RadioBoxList.Listener() {
