@@ -15,7 +15,7 @@
 *.war
 *.nar
 *.ear
-*.zip
+#*.zip
 *.tar.gz
 *.rar
 
@@ -23,6 +23,7 @@
 hs_err_pid*
 
 **/target/
+**/.lanterna/
 /project4_java_laterna/
 /lanterna/nbproject/
 /apacheconfig/nbproject/
