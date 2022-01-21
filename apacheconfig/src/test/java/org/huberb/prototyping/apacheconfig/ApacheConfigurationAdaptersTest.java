@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.lanterna.examples.apps;
+package org.huberb.prototyping.apacheconfig;
 
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialogBuilder;

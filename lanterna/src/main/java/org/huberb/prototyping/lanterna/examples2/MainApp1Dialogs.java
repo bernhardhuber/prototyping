@@ -31,6 +31,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import org.huberb.prototyping.lanterna.AppContext;
 import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowCreatorParameter;
 import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowFactory;
 import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.Mode;
@@ -120,13 +121,13 @@ public class MainApp1Dialogs {
         void action(Object mdbObject) {
             final String mdb = (String) mdbObject;
             if ("M1".equals(mdb)) {
-                appContext.currentDialog = "M1";
+                appContext.setAppName("M1");
             } else if ("M2".equals(mdb)) {
-                appContext.currentDialog = "M2";
+                appContext.setAppName("M2");
             } else if ("M3".equals(mdb)) {
-                appContext.currentDialog = "M3";
+                appContext.setAppName("M3");
             } else {
-                appContext.currentDialog = "menuDialogCreatorParameter";
+                appContext.setAppName("menuDialogCreatorParameter");
             }
         }
     }
@@ -146,7 +147,7 @@ public class MainApp1Dialogs {
 
         @Override
         void action(Object mdb) {
-            appContext.currentDialog = "menuDialogCreatorParameter";
+            appContext.setAppName("menuDialogCreatorParameter");
         }
     }
 
@@ -165,7 +166,7 @@ public class MainApp1Dialogs {
 
         @Override
         void action(Object mdb) {
-            appContext.currentDialog = "menuDialogCreatorParameter";
+            appContext.setAppName("menuDialogCreatorParameter");
         }
 
     }
@@ -185,13 +186,13 @@ public class MainApp1Dialogs {
 
         @Override
         void action(Object mdb) {
-            appContext.currentDialog = "menuDialogCreatorParameter";
+            appContext.setAppName("menuDialogCreatorParameter");
         }
     }
 
     static class TerminalScreeenTemplateImpl extends TerminalScreeenTemplate {
 
-        private final AppContext<String> appContext;
+        private final AppContext appContext;
         private final Map<String, DialogWindowHandler> m;
         //---
 
@@ -211,10 +212,10 @@ public class MainApp1Dialogs {
 
             for (;;) {
                 //--- start showDialog
-                if (this.appContext == null || this.appContext.currentDialog == null) {
+                if (this.appContext == null || this.appContext.getAppName() == null) {
                     return;
                 }
-                final String currentDialog = this.appContext.currentDialog;
+                final String currentDialog = this.appContext.getAppName();
                 final DialogWindowHandler dwh = this.m.getOrDefault(currentDialog, null);
                 if (dwh == null) {
                     return;

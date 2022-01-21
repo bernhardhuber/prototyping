@@ -31,7 +31,7 @@ public class Factories {
         checkListDialog
     }
 
-    static class MapBuilder<K, V> {
+    public static class MapBuilder<K, V> {
 
         final Map<K, V> m;
 
@@ -39,12 +39,12 @@ public class Factories {
             this.m = new HashMap<>();
         }
 
-        MapBuilder<K, V> kv(K k, V v) {
+        public MapBuilder<K, V> kv(K k, V v) {
             this.m.put(k, v);
             return this;
         }
 
-        Map<K, V> build() {
+        public Map<K, V> build() {
             return this.m;
         }
     }

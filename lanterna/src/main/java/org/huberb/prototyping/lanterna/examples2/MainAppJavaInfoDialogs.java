@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.Callable;
+import org.huberb.prototyping.lanterna.AppContext;
 import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.DialogWindowBuilder;
 import org.huberb.prototyping.lanterna.examples2.DialogWindowCreators.Mode;
 
@@ -98,7 +99,6 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
         protected abstract void doWork(Screen screen);
     }
 
-
     static abstract class DialogWindowHandler implements Serializable {
 
         protected final AppContext<String> appContext;
@@ -146,15 +146,15 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
         void action(Object mdbObject) {
             final String mdb = (String) mdbObject;
             if ("SystemProperties".equals(mdb)) {
-                appContext.currentDialog = SYSTEM_PROPERTIES_DIALOG;
+                appContext.setAppName(SYSTEM_PROPERTIES_DIALOG);
             } else if ("SystemEnv".equals(mdb)) {
-                appContext.currentDialog = SYSTEM_ENV_DIALOG;
+                appContext.setAppName(SYSTEM_ENV_DIALOG);
             } else if ("Locales".equals(mdb)) {
-                appContext.currentDialog = LOCALES_DIALOG;
+                appContext.setAppName(LOCALES_DIALOG);
             } else if ("SecurityProviders".equals(mdb)) {
-                appContext.currentDialog = SECURITY_PROVIDERS_DIALOG;
+                appContext.setAppName(SECURITY_PROVIDERS_DIALOG);
             } else {
-                appContext.currentDialog = MENU_DIALOG_CREATOR_PARAMETER;
+                appContext.setAppName(MENU_DIALOG_CREATOR_PARAMETER);
             }
         }
 
@@ -186,7 +186,7 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
         @Override
         void action(Object mdb) {
-            appContext.currentDialog = MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER;
+            appContext.setAppName(MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER);
         }
     }
 
@@ -216,7 +216,7 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
         @Override
         void action(Object mdb) {
-            appContext.currentDialog = MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER;
+            appContext.setAppName(MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER);
         }
     }
 
@@ -248,7 +248,7 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
         @Override
         void action(Object mdb) {
-            appContext.currentDialog = MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER;
+            appContext.setAppName(MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER);
         }
     }
 
@@ -279,24 +279,24 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
         @Override
         void action(Object mdb) {
-            appContext.currentDialog = MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER;
+            appContext.setAppName(MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER);
         }
     }
 
     static class TerminalScreeenTemplateImpl extends TerminalScreeenTemplate {
 
-        private final AppContext<String> appContext;
+        private final AppContext appContext;
 
         //---
         public TerminalScreeenTemplateImpl() {
-            this.appContext = new AppContext<>(MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER);
+            this.appContext = new AppContext(MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER);
             final Map<String, DialogWindowHandler> m = new HashMap<>();
             m.put(MenuDialogWindowHandler.MENU_DIALOG_CREATOR_PARAMETER, new MenuDialogWindowHandler(this.appContext));
             m.put(MenuDialogWindowHandler.SYSTEM_PROPERTIES_DIALOG, new SystemPropertiesDialogWindowHandler(this.appContext));
             m.put(MenuDialogWindowHandler.SYSTEM_ENV_DIALOG, new SystemEnvDialogWindowHandler(this.appContext));
             m.put(MenuDialogWindowHandler.LOCALES_DIALOG, new LocalesDialogWindowHandler(this.appContext));
             m.put(MenuDialogWindowHandler.SECURITY_PROVIDERS_DIALOG, new SecurityProvidersDialogWindowHandler(this.appContext));
-            this.appContext.m.putAll(m);
+            this.appContext.getM().putAll(m);
         }
 
         @Override
@@ -306,11 +306,11 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
             for (;;) {
                 //--- start showDialog
-                if (this.appContext == null || this.appContext.currentDialog == null) {
+                if (this.appContext == null || this.appContext.getAppName() == null) {
                     return;
                 }
-                final String currentDialog = this.appContext.currentDialog;
-                final DialogWindowHandler dwh = (DialogWindowHandler) this.appContext.m.getOrDefault(currentDialog, null);
+                final String currentDialog = this.appContext.getAppName();
+                final DialogWindowHandler dwh = (DialogWindowHandler) this.appContext.getM().getOrDefault(currentDialog, null);
                 if (dwh == null) {
                     return;
                 }

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package org.huberb.prototyping.lanterna.examples2;
+package org.huberb.prototyping.lanterna;
 
 import java.io.Serializable;
 import java.util.HashMap;
@@ -23,22 +23,30 @@ import java.util.Map;
  *
  * @author berni3
  */
-class AppContext<T> implements Serializable {
+public class AppContext<T> implements Serializable {
 
-    T currentDialog;
-    final Map<T, Object> m;
+    String appName;
+    final Map<String, Object> m;
 
-    public AppContext(T currentDialog) {
-        this.currentDialog = currentDialog;
+    public AppContext(String appName) {
+        this.appName = this.appName;
         this.m = new HashMap<>();
     }
 
-    public T getCurrentDialog() {
-        return currentDialog;
+    public void setAppName(String appName) {
+        this.appName = appName;
     }
 
-    public Map<T, Object> getM() {
+    public String getAppName() {
+        return appName;
+    }
+
+    public Map<String, Object> getM() {
         return m;
+    }
+
+    public void setProperty(String key, Object value) {
+        m.put(key, value);
     }
 
 }

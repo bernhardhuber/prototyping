@@ -21,12 +21,16 @@ import java.util.Arrays;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.UUID;
 import org.huberb.prototyping.lanterna.examples.apps.YamlDumpTest.RepresentersConstructors.YamlConstructors;
 import org.huberb.prototyping.lanterna.examples.apps.YamlDumpTest.RepresentersConstructors.YamlRepresenters;
+import org.huberb.prototyping.lanterna.examples.dialogs.Factories.MapBuilder;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.DumperOptions;
 import org.yaml.snakeyaml.DumperOptions.FlowStyle;
@@ -45,14 +49,105 @@ import org.yaml.snakeyaml.representer.Representer;
  */
 public class YamlDumpTest {
 
+    @Test
+    public void given_Bean1_dump_and_load() {
+        final Bean1 bean1 = new Bean1();
+        bean1.l = Arrays.asList("l1", "l2", "l3");
+        bean1.i1 = 1;
+        bean1.s1 = "s1StringValue";
+
+        final DumperOptions dumperOptions = createDumperOptions();
+        final Yaml yaml = new Yaml(dumperOptions);
+        final String yamlDumpResult = yaml.dump(bean1);
+        System.out.printf("given_Bean1_dump_and_load%n%s%n", yamlDumpResult);
+
+        final Object yamlLoadResult = yaml.load(yamlDumpResult);
+        assertNotNull(yamlLoadResult);
+        assertEquals(Bean1.class.getName(), yamlLoadResult.getClass().getName());
+        final Bean1 bean1FromYamlLoadResult = (Bean1) yamlLoadResult;
+        assertEquals(bean1.l, bean1FromYamlLoadResult.l);
+        assertEquals(bean1.i1, bean1FromYamlLoadResult.i1);
+        assertEquals(bean1.s1, bean1FromYamlLoadResult.s1);
+    }
+
+    @Test
+    public void given_HierarchyOfMaps_dump_load() {
+        final Map<String, Object> m = new MapBuilder<String, Object>()
+                .kv("key1", Arrays.asList("v1", "v2", "v3"))
+                .kv("key2", Arrays.asList(
+                        new MapBuilder<String, String>().kv("key211", "v21").kv("key212", "12").kv("keys213", "abc").build(),
+                        new MapBuilder<String, Integer>().kv("key221", -1).kv("key222", 0).kv("keys223", 1).build(),
+                        new MapBuilder<String, Object>().kv("key231", -100).kv("key232", "0").kv("keys233", 100.100d).build()
+                )).build();
+        final DumperOptions dumperOptions = createDumperOptions();
+        final Yaml yaml = new Yaml(dumperOptions);
+        final String yamlDumpResult = yaml.dump(m);
+        System.out.printf("given_HierarchOfMaps_dump_load%n%s%n", yamlDumpResult);
+
+        final Object yamlLoadResult = yaml.load(yamlDumpResult);
+        assertNotNull(yamlLoadResult);
+        assertEquals(LinkedHashMap.class.getName(), yamlLoadResult.getClass().getName());
+        final HashMap<String, Object> mFromYamlLoadResult = (HashMap<String, Object>) yamlLoadResult;
+        assertEquals("[v1, v2, v3]", m.get("key1").toString());
+        assertEquals("[{keys213=abc, key212=12, key211=v21}, "
+                + "{keys223=1, key222=0, key221=-1}, "
+                + "{key231=-100, keys233=100.1, key232=0}]", m.get("key2").toString());
+    }
+
+    @Test
+    public void given_Map_dump() {
+        final Map<String, Object> m = new HashMap<>();
+        m.put("bean1Key00", "bean1Value0");
+        m.put("bean1Key01", "bean1-Value-1");
+        m.put("bean1Key02", "bean1\tValue\n2");
+        m.put("bean1Key03", "bean1Value3");
+
+        m.put("bean1Key04Integer", 100);
+        m.put("bean1Key05Double", 100.0d);
+        m.put("bean1Key06Date", new Date());
+        m.put("bean1Key07List", Arrays.asList("l1", "l2", "l3"));
+        m.put("bean1Key08GregorianCalendar", GregorianCalendar.getInstance());
+        m.put("bean1Key09LocalDateTime", java.time.LocalDateTime.now().minusDays(7).format(DateTimeFormatter.ISO_DATE));
+        m.put("bean1Key10", "100+200-100");
+        m.put("bean1Key11", new File("."));
+        //---
+        final Properties props = new Properties();
+        props.setProperty("bean1PropK1", "bean1PropV1");
+        props.setProperty("bean1PropK2", "bean1PropV2");
+        props.setProperty("bean1PropK3", "bean1PropV3");
+        m.put("bean1Key90Props", props);
+        m.put("bean1Key91SystemProps", System.getProperties());
+        m.put("bean1Key92SystemEnv", System.getenv());
+
+        final DumperOptions dumperOptions = createDumperOptions();
+        final Yaml yaml = new Yaml(
+                new YamlConstructors(),
+                new YamlRepresenters(),
+                dumperOptions);
+
+        System.out.printf("test2%n%s%n", yaml.dump(m));
+    }
+
+    DumperOptions createDumperOptions() {
+        final DumperOptions dumperOptions = new DumperOptions();
+        dumperOptions.setDefaultFlowStyle(FlowStyle.BLOCK);
+        dumperOptions.setPrettyFlow(true);
+        dumperOptions.setIndent(2);
+        dumperOptions.setIndicatorIndent(2);
+        dumperOptions.setIndentWithIndicator(true);
+        //dumperOptions.setCanonical(true);
+        return dumperOptions;
+    }
+
+    // *must* be public for snake-yaml being able to create an instance
     public static class Bean1 {
 
-        List<String> l;
-        String s1;
-        int i1;
+        private List<String> l;
+        private String s1;
+        private int i1;
 
-        Map<String, String> m;
-        Properties props;
+        private Map<String, String> m;
+        private Properties props;
 
         public Bean1() {
             l = Arrays.asList("bean1L1", "bean1L2", "bean1L3");
@@ -109,66 +204,6 @@ public class YamlDumpTest {
             this.props = props;
         }
 
-    }
-
-    @Test
-    public void test1() {
-        Bean1 bean1 = new Bean1();
-        bean1.l = Arrays.asList("l1", "l2", "l3");
-        bean1.i1 = 1;
-        bean1.s1 = "s1StringValue";
-
-        final DumperOptions dumperOptions = createDumperOptions();
-        Yaml yaml = new Yaml(dumperOptions);
-        System.out.printf("test1%n%s%n", yaml.dump(bean1));
-    }
-
-    @Test
-    public void test2() {
-
-        Map<String, Object> m;
-        Properties props;
-
-        m = new HashMap<>();
-        m.put("bean1Key00", "bean1Value0");
-        m.put("bean1Key01", "bean1-Value-1");
-        m.put("bean1Key02", "bean1\tValue\n2");
-        m.put("bean1Key03", "bean1Value3");
-
-        m.put("bean1Key04Integer", 100);
-        m.put("bean1Key05Double", 100.0d);
-        m.put("bean1Key06Date", new Date());
-        m.put("bean1Key07List", Arrays.asList("l1", "l2", "l3"));
-        m.put("bean1Key08GregorianCalendar", GregorianCalendar.getInstance());
-        m.put("bean1Key09LocalDateTime", java.time.LocalDateTime.now().minusDays(7).format(DateTimeFormatter.ISO_DATE));
-        m.put("bean1Key10", "100+200-100");
-        m.put("bean1Key11", new File("."));
-        props = new Properties();
-        props.setProperty("bean1PropK1", "bean1PropV1");
-        props.setProperty("bean1PropK2", "bean1PropV2");
-        props.setProperty("bean1PropK3", "bean1PropV3");
-        m.put("bean1Key90Props", props);
-        m.put("bean1Key91SystemProps", System.getProperties());
-        m.put("bean1Key92SystemEnv", System.getenv());
-
-        final DumperOptions dumperOptions = createDumperOptions();
-      final  Yaml yaml = new Yaml(
-                new YamlConstructors(),
-                new YamlRepresenters(),
-                dumperOptions);
-
-        System.out.printf("test2%n%s%n", yaml.dump(m));
-    }
-
-    DumperOptions createDumperOptions() {
-        final DumperOptions dumperOptions = new DumperOptions();
-        dumperOptions.setDefaultFlowStyle(FlowStyle.BLOCK);
-        dumperOptions.setPrettyFlow(true);
-        dumperOptions.setIndent(2);
-        dumperOptions.setIndicatorIndent(2);
-        dumperOptions.setIndentWithIndicator(true);
-        //dumperOptions.setCanonical(true);
-        return dumperOptions;
     }
 
     static class RepresentersConstructors {

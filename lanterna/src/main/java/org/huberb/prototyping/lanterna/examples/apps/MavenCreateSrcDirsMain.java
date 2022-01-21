@@ -27,12 +27,15 @@ import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialogBuilder;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
+import org.huberb.prototyping.lanterna.AppContext;
 
 /**
  *
  * @author berni3
  */
 public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
+
+    private AppContext appContext = new AppContext("mavencreatesrcdirsmain");
 
     public static void main(String[] args) throws Exception {
         final MavenCreateSrcDirsMain mavenCreateSrcTestDirsMain = new MavenCreateSrcDirsMain();
@@ -70,7 +73,7 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
 
         final File result = dd.showDialog(textGUI);
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
-        this.config.setProperty("showDialogMavenProjectDirectory.result", result.getPath());
+        this.appContext.setProperty("showDialogMavenProjectDirectory.result", result.getPath());
     }
 
     void showDialogCreateDirectories(MultiWindowTextGUI textGUI) {
@@ -92,7 +95,7 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
         final List<IItemLabel> result = cld.showDialog(textGUI);
 
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
-        this.config.setProperty("showDialogCreateDirectories.result", result);
+        this.appContext.setProperty("showDialogCreateDirectories.result", result);
     }
 
     private String formatApplicationContext() {

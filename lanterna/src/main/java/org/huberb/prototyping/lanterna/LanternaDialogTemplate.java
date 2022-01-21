@@ -25,22 +25,7 @@ import com.googlecode.lanterna.screen.Screen;
 import com.googlecode.lanterna.screen.TerminalScreen;
 import com.googlecode.lanterna.terminal.DefaultTerminalFactory;
 import com.googlecode.lanterna.terminal.Terminal;
-import java.io.File;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
-import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.FileBasedConfiguration;
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
-import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.apache.commons.configuration2.ex.ConfigurationException;
-import org.apache.commons.configuration2.io.ClasspathLocationStrategy;
-import org.apache.commons.configuration2.io.CombinedLocationStrategy;
-import org.apache.commons.configuration2.io.FileLocationStrategy;
-import org.apache.commons.configuration2.io.FileSystemLocationStrategy;
-import org.apache.commons.configuration2.io.HomeDirectoryLocationStrategy;
-import org.apache.commons.configuration2.io.ProvidedURLLocationStrategy;
 
 /**
  *
@@ -53,14 +38,10 @@ public abstract class LanternaDialogTemplate {
     final MultiWindowTextGUI textGUI;
 
     final String appName;
-    private FileBasedConfigurationBuilder<FileBasedConfiguration> builder;
-    protected Configuration config;
 
     protected LanternaDialogTemplate(String appName) throws RuntimeException {
         this.appName = appName;
         try {
-            setupApacheConfiguration();
-
             final DefaultTerminalFactory defaultTerminalFactory = new DefaultTerminalFactory();
             setupDefaultTerminalFactoryFromConfig(defaultTerminalFactory);
 
@@ -73,8 +54,6 @@ public abstract class LanternaDialogTemplate {
             this.textGUI = setupMultiWindowTextGUIFromConfig();
         } catch (IOException ioex) {
             throw new RuntimeException("Cannot create lanterna terminal/screen/textGUI", ioex);
-        } catch (ConfigurationException confex) {
-            throw new RuntimeException("Cannot load apache configuration", confex);
         }
     }
 
@@ -90,7 +69,7 @@ public abstract class LanternaDialogTemplate {
         return textGUI;
     }
 
-    public void launch() throws IOException, ConfigurationException {
+    public void launch() throws IOException {
         try (this.terminal) {
             try (this.screen) {
                 screen.startScreen();
@@ -98,38 +77,28 @@ public abstract class LanternaDialogTemplate {
                 setupComponents();
             }
         } finally {
-            builder.save();
         }
     }
 
-    void setupApacheConfiguration() throws ConfigurationException, IOException {
-        final String filename = appName + ".properties";
-        final Parameters params = new Parameters();
+    Config config = new Config();
 
-        new File(".lanterna", filename).createNewFile();
+    static class Config {
 
-        final List<FileLocationStrategy> subs = Arrays.asList(
-                new ProvidedURLLocationStrategy(),
-                new FileSystemLocationStrategy(),
-                new HomeDirectoryLocationStrategy(true),
-                new ClasspathLocationStrategy());
-        final FileLocationStrategy strategy = new CombinedLocationStrategy(subs);
+        private boolean getBoolean(String key, boolean defaultValue) {
+            return defaultValue;
+        }
 
-        builder = new FileBasedConfigurationBuilder<FileBasedConfiguration>(PropertiesConfiguration.class)
-                .configure(params.fileBased()
-                        //.setLocationStrategy(strategy)
-                        .setBasePath(".lanterna")
-                        .setFileName(filename)
-                );
+        private String getString(String key, String defaultValue) {
+            return defaultValue;
+        }
 
-//        builder.getFileHandler().setFileLocator(
-//                FileLocatorUtils.fileLocator()
-//                        .basePath(".lanterna")
-//                        .fileName(filename)
-//                        .locationStrategy(new ProvidedURLLocationStrategy())
-//                        .create()
-//        );
-        config = builder.getConfiguration();
+        private int getInt(String key, int defaultValue) {
+            return defaultValue;
+        }
+
+        private <T> T get(Class<T> aClass, String key, T defaultValue) {
+            return defaultValue;
+        }
 
     }
 
