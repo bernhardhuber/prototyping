@@ -101,7 +101,7 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
     static abstract class DialogWindowHandler implements Serializable {
 
-        protected final AppContext<String> appContext;
+        protected final AppContext appContext;
 
         public DialogWindowHandler() {
             this(null);
@@ -127,7 +127,7 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
         private final DialogWindowBuilder dialogWindowBuilder;
 
-        MenuDialogWindowHandler(AppContext<String> appContext) {
+        MenuDialogWindowHandler(AppContext appContext) {
             super(appContext);
             this.dialogWindowBuilder = new DialogWindowBuilder()
                     .mode(Mode.listSelectDialog)
@@ -162,7 +162,7 @@ public class MainAppJavaInfoDialogs implements Callable<Integer> {
 
     static class SystemPropertiesDialogWindowHandler extends DialogWindowHandler {
 
-        public SystemPropertiesDialogWindowHandler(AppContext<String> appContext) {
+        public SystemPropertiesDialogWindowHandler(AppContext appContext) {
             super(appContext);
         }
 

@@ -22,12 +22,13 @@ import com.googlecode.lanterna.gui2.dialogs.DirectoryDialogBuilder;
 import java.io.File;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map.Entry;
+import org.huberb.prototyping.lanterna.AppContext;
 import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialogBuilder;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
-import org.huberb.prototyping.lanterna.AppContext;
 
 /**
  *
@@ -99,7 +100,16 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
     }
 
     private String formatApplicationContext() {
-        return "";
+        final StringBuilder sb = new StringBuilder();
+        sb.append(String.format("AppName: %s%n", this.appContext.getAppName()));
+        this.appContext.getM().entrySet().stream()
+                .sorted((Entry<String, Object> arg0, Entry<String, Object> arg1) -> arg0.getKey().compareTo(arg1.getKey()))
+                .forEach((Entry<String, Object> arg0)
+                        -> sb
+                        .append(String.format("%s: %s%n", arg0.getKey(), arg0.getValue()))
+                );
+
+        return sb.toString();
     }
 
 }

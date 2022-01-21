@@ -23,7 +23,7 @@ import java.util.Map;
  *
  * @author berni3
  */
-public class AppContext<T> implements Serializable {
+public class AppContext implements Serializable {
 
     String appName;
     final Map<String, Object> m;
