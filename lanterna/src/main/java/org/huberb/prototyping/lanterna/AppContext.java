@@ -29,7 +29,7 @@ public class AppContext<T> implements Serializable {
     final Map<String, Object> m;
 
     public AppContext(String appName) {
-        this.appName = this.appName;
+        this.appName = appName;
         this.m = new HashMap<>();
     }
 

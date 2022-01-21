@@ -38,6 +38,7 @@ public abstract class LanternaDialogTemplate {
     final MultiWindowTextGUI textGUI;
 
     final String appName;
+    Config config = new Config();
 
     protected LanternaDialogTemplate(String appName) throws RuntimeException {
         this.appName = appName;
@@ -80,7 +81,32 @@ public abstract class LanternaDialogTemplate {
         }
     }
 
-    Config config = new Config();
+    protected void setupDefaultTerminalFactoryFromConfig(DefaultTerminalFactory defaultTerminalFactory) throws IOException {
+        //---
+        defaultTerminalFactory.setAutoOpenTerminalEmulatorWindow(config.getBoolean("autoOpenTerminalEmulatorWindow", true));
+        defaultTerminalFactory.setForceTextTerminal(config.getBoolean("forceTextTerminal", false));
+        defaultTerminalFactory.setPreferTerminalEmulator(config.getBoolean("preferTerminalEmulator", false));
+        defaultTerminalFactory.setForceAWTOverSwing(config.getBoolean("forceAWTOverSwing", false));
+        defaultTerminalFactory.setTerminalEmulatorTitle(config.getString("terminalEmulatorTitle", appName));
+
+        final int initialTerminalSizeColumns = config.getInt("initialTerminalSizeColumns", 80);
+        final int initialTerminalSizeRows = config.getInt("initialTerminalSizeRows", 25);
+        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(initialTerminalSizeColumns, initialTerminalSizeRows));
+    }
+
+    protected MultiWindowTextGUI setupMultiWindowTextGUIFromConfig() {
+        final TextColor.ANSI backgroundColor = config.get(TextColor.ANSI.class, "backgroundColor", TextColor.ANSI.BLUE);
+        final MultiWindowTextGUI textGUI = new MultiWindowTextGUI(screen,
+                new DefaultWindowManager(),
+                new EmptySpace(backgroundColor));
+
+        final String themeName = config.getString("themeName", "default");
+
+        textGUI.setTheme(LanternaThemes.getRegisteredTheme(themeName));
+        return textGUI;
+    }
+
+    protected abstract void setupComponents();
 
     static class Config {
 
@@ -101,41 +127,5 @@ public abstract class LanternaDialogTemplate {
         }
 
     }
-
-    void setupDefaultTerminalFactoryFromConfig(DefaultTerminalFactory defaultTerminalFactory) throws IOException {
-        //---
-        defaultTerminalFactory.setAutoOpenTerminalEmulatorWindow(
-                config.getBoolean("autoOpenTerminalEmulatorWindow", true));
-
-        defaultTerminalFactory.setForceTextTerminal(
-                config.getBoolean("forceTextTerminal", false));
-
-        defaultTerminalFactory.setPreferTerminalEmulator(
-                config.getBoolean("preferTerminalEmulator", false));
-
-        defaultTerminalFactory.setForceAWTOverSwing(
-                config.getBoolean("forceAWTOverSwing", false));
-
-        defaultTerminalFactory.setTerminalEmulatorTitle(
-                config.getString("terminalEmulatorTitle", appName));
-
-        final int initialTerminalSizeColumns = config.getInt("initialTerminalSizeColumns", 80);
-        final int initialTerminalSizeRows = config.getInt("initialTerminalSizeRows", 25);
-        defaultTerminalFactory.setInitialTerminalSize(new TerminalSize(initialTerminalSizeColumns, initialTerminalSizeRows));
-    }
-
-    MultiWindowTextGUI setupMultiWindowTextGUIFromConfig() {
-        final TextColor.ANSI backgroundColor = config.get(TextColor.ANSI.class, "backgroundColor", TextColor.ANSI.BLUE);
-        MultiWindowTextGUI textGUI = new MultiWindowTextGUI(screen,
-                new DefaultWindowManager(),
-                new EmptySpace(backgroundColor));
-
-        final String themeName = config.getString("themeName", "default");
-
-        textGUI.setTheme(LanternaThemes.getRegisteredTheme(themeName));
-        return textGUI;
-    }
-
-    protected abstract void setupComponents();
 
 }
