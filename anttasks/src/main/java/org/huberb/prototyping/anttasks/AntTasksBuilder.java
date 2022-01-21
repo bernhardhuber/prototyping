@@ -23,8 +23,11 @@ import org.apache.tools.ant.taskdefs.Concat;
 import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Expand;
+import org.apache.tools.ant.taskdefs.Mkdir;
+import org.apache.tools.ant.taskdefs.Move;
 
 /**
+ * Build ant task action.
  *
  * @author berni3
  */
@@ -32,21 +35,21 @@ public class AntTasksBuilder {
 
     final Project project;
 
-    AntTasksBuilder() {
-        project = new Project();
-        final BuildLogger logger = new NoBannerLogger();
+    public AntTasksBuilder() {
+        // setup project
+        this.project = new Project();
 
+        final BuildLogger logger = new NoBannerLogger();
         logger.setMessageOutputLevel(org.apache.tools.ant.Project.MSG_DEBUG);
         logger.setOutputPrintStream(System.out);
         logger.setErrorPrintStream(System.err);
 
         project.addBuildListener(logger);
-
         project.init();
         project.getBaseDir();
     }
 
-    AntTasksBuilder name(String name) {
+    public AntTasksBuilder name(String name) {
         this.project.setName(name);
         return this;
     }
@@ -55,34 +58,59 @@ public class AntTasksBuilder {
         project.executeTarget(targetName);
     }
 
-    Expand unzip(String zipFilepath, String destinationDir) {
+    //---
+    public Concat concat(String text, String destination) {
+        final Concat concat = (Concat) project.createTask("concat");
+
+        concat.addText(text);
+        final File destinationFile = new File(destination);
+        concat.setDestfile(destinationFile);
+        return concat;
+    }
+
+    public Copy copy(String source, String dest) {
+        final Copy copy = (Copy) project.createTask("copy");
+        copy.setOverwrite(false);
+
+        final File sourceFile = new File(source);
+        final File destFile = new File(dest);
+        copy.setFile(sourceFile);
+        copy.setTofile(destFile);
+        return copy;
+    }
+
+    public Echo echo(String message) {
+        final Echo echo = (Echo) project.createTask("echo");
+
+        echo.setMessage(message);
+        return echo;
+    }
+
+    public Mkdir mkdir(String dir) {
+        final Mkdir mkdir = (Mkdir) project.createTask("mkdir");
+
+        final File dirFile = new File(dir);
+        mkdir.setDir(dirFile);
+        return mkdir;
+    }
+
+    public Move move(String source, String dest) {
+        final Move move = (Move) project.createTask("move");
+        move.setOverwrite(false);
+
+        final File sourceFile = new File(source);
+        final File destFile = new File(dest);
+        move.setFile(sourceFile);
+        move.setTofile(destFile);
+        return move;
+    }
+
+    public Expand unzip(String zipFilepath, String destinationDir) {
         final Expand expand = (Expand) project.createTask("unzip");
         expand.setTaskName("unzip");
 
         expand.setSrc(new File(zipFilepath));
         expand.setDest(new File(destinationDir));
         return expand;
-    }
-
-    Copy copy(String sourceFile, String destFile) {
-        final Copy copy = (Copy) project.createTask("copy");
-        copy.setTaskName("copy");
-        copy.setFile(new File(sourceFile));
-        copy.setTofile(new File(destFile));
-        return copy;
-    }
-
-    Echo echo(String message) {
-        final Echo echo = (Echo) project.createTask("echo");
-        echo.setTaskName("echo");
-        echo.setMessage(message);
-        return echo;
-    }
-
-    Concat concat(String text, String destinationFile) {
-        Concat concat = (Concat) project.createTask("concat");
-        concat.addText(text);
-        concat.setDestfile(new File(destinationFile));
-        return concat;
     }
 }
