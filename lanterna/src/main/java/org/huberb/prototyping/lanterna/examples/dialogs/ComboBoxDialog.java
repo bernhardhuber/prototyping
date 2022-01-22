@@ -128,7 +128,6 @@ public class ComboBoxDialog<T extends IItemLabel> extends DialogWindow {
      */
     @Override
     public List<T> showDialog(WindowBasedTextGUI textGUI) {
-        //result = null;
         super.showDialog(textGUI);
         return new ArrayList(this.resultSelected);
     }

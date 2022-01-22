@@ -143,10 +143,6 @@ public class TextBoxDialog extends DialogWindow {
             int listBoxHeight,
             String content) {
         int width = 40;
-//        for (T item : items) {
-//            width = Math.max(width, TerminalTextUtils.getColumnWidth(item.toString()));
-//        }
-//        width += 2;
         return showDialog(textGUI, title, description, new TerminalSize(width, listBoxHeight), content);
     }
 
