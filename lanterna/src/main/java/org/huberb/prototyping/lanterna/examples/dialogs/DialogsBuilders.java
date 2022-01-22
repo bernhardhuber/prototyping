@@ -16,7 +16,7 @@
 package org.huberb.prototyping.lanterna.examples.dialogs;
 
 import com.googlecode.lanterna.TerminalSize;
-import com.googlecode.lanterna.gui2.dialogs.ActionListDialogBuilder;
+import com.googlecode.lanterna.gui2.dialogs.ListSelectDialogBuilder;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder2;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialogBuilder;
@@ -75,15 +75,17 @@ public class DialogsBuilders {
         return b;
     }
 
-    void menu(String title, String description, int h, int w, List<ItemLabel> l) {
+    public ListSelectDialogBuilder<ItemLabel> menu(String title, String description, int h, int w, List<ItemLabel> l) {
         // TODO
-        new ActionListDialogBuilder()
+        ListSelectDialogBuilder<ItemLabel> b = new ListSelectDialogBuilder<ItemLabel>()
                 .setTitle(title)
-                .setDescription(description);
+                .setDescription(description)
+                .addListItems(l.toArray(ItemLabel[]::new))
+                .setListBoxSize(new TerminalSize(w, h));
+        return b;
     }
 
     public CheckListDialogBuilder<ItemLabel> checklist(String title, String description, int h, int w, List<ItemLabel> l) {
-        // TODO
         final CheckListDialogBuilder<ItemLabel> b = new CheckListDialogBuilder<ItemLabel>()
                 .setTitle(title)
                 .setDescription(description)

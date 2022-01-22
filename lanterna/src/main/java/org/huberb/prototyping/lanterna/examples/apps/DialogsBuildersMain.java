@@ -16,6 +16,7 @@
 package org.huberb.prototyping.lanterna.examples.apps;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
+import com.googlecode.lanterna.gui2.dialogs.ListSelectDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog2;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
@@ -59,6 +60,7 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
         showYesno(textGUI);
         showInputbox(textGUI);
         showPasswordbox(textGUI);
+        showMenu(textGUI);
         showChecklist(textGUI);
         showRadiolist(textGUI);
         showMsgbox(textGUI);
@@ -128,17 +130,36 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     "showPasswordbox",
                     descriptionText.get(),
                     "init",
-                    15, 40)
+                    1, 40)
                     .build();
             final String result = md.showDialog(textGUI);
             this.storeResult("showPasswordbox.result", result);
         }
     }
 
+    void showMenu(MultiWindowTextGUI textGUI) {
+        final List<ItemLabel> itemLabelList = Arrays.asList(
+                new ItemLabel("label1Menu", "item1Menu"),
+                new ItemLabel("label2Menu", "item2Menu", true),
+                new ItemLabel("label3Menu", "item3Menu")
+        );
+        {
+            final DialogsBuilders db = new DialogsBuilders();
+            final ListSelectDialog<ItemLabel> cld = db.menu(
+                    "showMenu",
+                    descriptionText.get(),
+                    15, 40,
+                    itemLabelList)
+                    .build();
+            final ItemLabel result = cld.showDialog(textGUI);
+            this.storeResult("showMenu.result", result);
+        }
+    }
+
     void showChecklist(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
-                new ItemLabel("label1Checkbox", "item1Checkbox", false),
-                new ItemLabel("label2Checkbox", "item2Checkbox", false),
+                new ItemLabel("label1Checkbox", "item1Checkbox" ),
+                new ItemLabel("label2Checkbox", "item2Checkbox", true),
                 new ItemLabel("label3Checkbox", "item3Checkbox")
         );
         {
@@ -157,7 +178,7 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
     void showRadiolist(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
                 new ItemLabel("label1Radiobox", "item1Radiobox", false),
-                new ItemLabel("label2Radiobox", "item2Radiobox", false),
+                new ItemLabel("label2Radiobox", "item2Radiobox", true),
                 new ItemLabel("label3Radiobox", "item3Radiobox")
         );
         {
