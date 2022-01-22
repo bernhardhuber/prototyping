@@ -28,7 +28,7 @@ import java.util.Properties;
 import java.util.UUID;
 import org.huberb.prototyping.lanterna.examples.apps.YamlDumpTest.RepresentersConstructors.YamlConstructors;
 import org.huberb.prototyping.lanterna.examples.apps.YamlDumpTest.RepresentersConstructors.YamlRepresenters;
-import org.huberb.prototyping.lanterna.examples.dialogs.Factories.MapBuilder;
+import org.huberb.prototyping.lanterna.MapBuilder;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import org.junit.jupiter.api.Test;

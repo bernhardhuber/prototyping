@@ -16,10 +16,13 @@
 package org.huberb.prototyping.lanterna.examples.apps;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
+import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
+import com.googlecode.lanterna.gui2.dialogs.FileDialog;
 import com.googlecode.lanterna.gui2.dialogs.ListSelectDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog2;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
@@ -63,26 +66,12 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
         showMenu(textGUI);
         showChecklist(textGUI);
         showRadiolist(textGUI);
+        showDselect(textGUI);
+        showFselect(textGUI);
         showMsgbox(textGUI);
     }
 
     Supplier<String> descriptionText = () -> String.format("description%n%s", formatApplicationContext());
-
-    void storeResult(String k, String v) {
-        appContext.setProperty(k, v);
-    }
-
-    void storeResult(String k, MessageDialogButton v) {
-        appContext.setProperty(k, v);
-    }
-
-    void storeResult(String k, ItemLabel v) {
-        appContext.setProperty(k, v);
-    }
-
-    void storeResult(String k, List<ItemLabel> v) {
-        appContext.setProperty(k, v);
-    }
 
     //---
     void showMsgbox(MultiWindowTextGUI textGUI) {
@@ -93,7 +82,7 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     descriptionText.get())
                     .build();
             final MessageDialogButton result = md.showDialog(textGUI);
-            this.storeResult("showMsgbox.result", result);
+            this.appContext.storeResult("showMsgbox.result", result);
         }
     }
 
@@ -105,7 +94,7 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     descriptionText.get())
                     .build();
             final MessageDialogButton result = md.showDialog(textGUI);
-            this.storeResult("showYesno.result", result);
+            this.appContext.storeResult("showYesno.result", result);
         }
     }
 
@@ -119,7 +108,7 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     1, 40)
                     .build();
             final String result = md.showDialog(textGUI);
-            this.storeResult("showInputbox.result", result);
+            this.appContext.storeResult("showInputbox.result", result);
         }
     }
 
@@ -133,7 +122,7 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     1, 40)
                     .build();
             final String result = md.showDialog(textGUI);
-            this.storeResult("showPasswordbox.result", result);
+            this.appContext.storeResult("showPasswordbox.result", result);
         }
     }
 
@@ -152,13 +141,13 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     itemLabelList)
                     .build();
             final ItemLabel result = cld.showDialog(textGUI);
-            this.storeResult("showMenu.result", result);
+            this.appContext.storeResult("showMenu.result", result);
         }
     }
 
     void showChecklist(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
-                new ItemLabel("label1Checkbox", "item1Checkbox" ),
+                new ItemLabel("label1Checkbox", "item1Checkbox"),
                 new ItemLabel("label2Checkbox", "item2Checkbox", true),
                 new ItemLabel("label3Checkbox", "item3Checkbox")
         );
@@ -171,7 +160,7 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     itemLabelList)
                     .build();
             final List<ItemLabel> result = cld.showDialog(textGUI);
-            this.storeResult("showCheckList.result", result);
+            this.appContext.storeResult("showCheckList.result", result);
         }
     }
 
@@ -189,8 +178,34 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                     itemLabelList)
                     .build();
             final ItemLabel result = rld.showDialog(textGUI);
-            this.storeResult("showRadioList.result", result);
+            this.appContext.storeResult("showRadioList.result", result);
         }
+    }
+
+    void showFselect(MultiWindowTextGUI textGUI) {
+        final DialogsBuilders db = new DialogsBuilders();
+        File selectedFile = null;
+        FileDialog fd = db.fselect(
+                "showFselect",
+                descriptionText.get(),
+                15, 40,
+                selectedFile)
+                .build();
+        File result = fd.showDialog(textGUI);
+        this.appContext.storeResult("showFselect.result", result);
+    }
+
+    void showDselect(MultiWindowTextGUI textGUI) {
+        final DialogsBuilders db = new DialogsBuilders();
+        File selectedFile = null;
+        DirectoryDialog fd = db.dselect(
+                "showDselect",
+                descriptionText.get(),
+                15, 40,
+                selectedFile)
+                .build();
+        File result = fd.showDialog(textGUI);
+        this.appContext.storeResult("showDselect.result", result);
     }
 
     private String formatApplicationContext() {

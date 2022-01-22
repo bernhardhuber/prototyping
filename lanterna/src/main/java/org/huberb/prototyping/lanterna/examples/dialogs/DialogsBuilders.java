@@ -16,10 +16,13 @@
 package org.huberb.prototyping.lanterna.examples.dialogs;
 
 import com.googlecode.lanterna.TerminalSize;
+import com.googlecode.lanterna.gui2.dialogs.DirectoryDialogBuilder;
+import com.googlecode.lanterna.gui2.dialogs.FileDialogBuilder;
 import com.googlecode.lanterna.gui2.dialogs.ListSelectDialogBuilder;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogBuilder2;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialogBuilder;
+import java.io.File;
 import java.util.List;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 
@@ -76,7 +79,6 @@ public class DialogsBuilders {
     }
 
     public ListSelectDialogBuilder<ItemLabel> menu(String title, String description, int h, int w, List<ItemLabel> l) {
-        // TODO
         ListSelectDialogBuilder<ItemLabel> b = new ListSelectDialogBuilder<ItemLabel>()
                 .setTitle(title)
                 .setDescription(description)
@@ -95,12 +97,29 @@ public class DialogsBuilders {
     }
 
     public RadioListDialogBuilder<ItemLabel> radiolist(String title, String description, int h, int w, List<ItemLabel> l) {
-        // TODO
         final RadioListDialogBuilder<ItemLabel> b = new RadioListDialogBuilder<ItemLabel>()
                 .setTitle(title)
                 .setDescription(description)
                 .addListItems(l)
                 .setListBoxSize(new TerminalSize(w, h));
+        return b;
+    }
+
+    public DirectoryDialogBuilder dselect(String title, String description, int h, int w, File selectedDir) {
+        final DirectoryDialogBuilder b = new DirectoryDialogBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setSelectedDirectory(selectedDir)
+                .setSuggestedSize(new TerminalSize(w, h));
+        return b;
+    }
+
+    public FileDialogBuilder fselect(String title, String description, int h, int w, File selectedFile) {
+        final FileDialogBuilder b = new FileDialogBuilder()
+                .setTitle(title)
+                .setDescription(description)
+                .setSelectedFile(selectedFile)
+                .setSuggestedSize(new TerminalSize(w, h));
         return b;
     }
 

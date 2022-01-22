@@ -74,7 +74,7 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
 
         final File result = dd.showDialog(textGUI);
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
-        this.appContext.setProperty("showDialogMavenProjectDirectory.result", result.getPath());
+        this.appContext.storeResult("showDialogMavenProjectDirectory.result", result.getPath());
     }
 
     void showDialogCreateDirectories(MultiWindowTextGUI textGUI) {
@@ -96,7 +96,7 @@ public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
         final List<IItemLabel> result = cld.showDialog(textGUI);
 
         System.out.printf("%s result %s%n", MavenCreateSrcDirsMain.class.getName(), result);
-        this.appContext.setProperty("showDialogCreateDirectories.result", result);
+        this.appContext.storeResult("showDialogCreateDirectories.result", result);
     }
 
     private String formatApplicationContext() {

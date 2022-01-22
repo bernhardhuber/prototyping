@@ -15,9 +15,13 @@
  */
 package org.huberb.prototyping.lanterna;
 
+import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
+import java.io.File;
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
 
 /**
  *
@@ -47,6 +51,26 @@ public class AppContext implements Serializable {
 
     public void setProperty(String key, Object value) {
         m.put(key, value);
+    }
+
+    public void storeResult(String k, String v) {
+        this.setProperty(k, v);
+    }
+
+    public void storeResult(String k, MessageDialogButton v) {
+        this.setProperty(k, v);
+    }
+
+    public void storeResult(String k, IItemLabel v) {
+        this.setProperty(k, v);
+    }
+
+    public void storeResult(String k, List<? extends IItemLabel> v) {
+        this.setProperty(k, v);
+    }
+
+    public void storeResult(String k, File v) {
+        this.setProperty(k, v);
     }
 
 }
