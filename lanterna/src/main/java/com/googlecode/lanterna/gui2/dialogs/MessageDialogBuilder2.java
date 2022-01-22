@@ -24,7 +24,7 @@ import java.util.List;
  *
  * @author berni3
  */
-public class MessageDialogBuilder2 extends AbstractDialogBuilder<MessageDialogBuilder2, MessageDialog> {
+public class MessageDialogBuilder2 extends AbstractDialogBuilder<MessageDialogBuilder2, MessageDialog2> {
 
     private final List<MessageDialogButton> buttons;
 
@@ -45,7 +45,7 @@ public class MessageDialogBuilder2 extends AbstractDialogBuilder<MessageDialogBu
     }
 
     @Override
-    protected MessageDialog buildDialog() {
+    protected MessageDialog2 buildDialog() {
         MessageDialog2 messageDialog = new MessageDialog2(title, description, buttons.toArray(new MessageDialogButton[0]));
         messageDialog.setHints(extraWindowHints);
         return messageDialog;

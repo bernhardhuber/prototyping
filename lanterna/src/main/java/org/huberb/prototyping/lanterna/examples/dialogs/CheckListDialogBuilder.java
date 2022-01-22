@@ -101,6 +101,11 @@ public class CheckListDialogBuilder<T extends IItemLabel> extends AbstractDialog
         return this;
     }
 
+    public final CheckListDialogBuilder<T> addListItems(List<T> items) {
+        this.content.addAll(items);
+        return this;
+    }
+
     /**
      * Returns a copy of the list of items in the list box
      *

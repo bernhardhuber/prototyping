@@ -1,0 +1,99 @@
+## YAML Template.
+---
+options:
+    autoOpenTerminalEmulatorWindow: true
+    forceTextTerminal: false
+    preferTerminalEmulator: false
+    forceAWTOverSwing: false
+    terminalEmulatorTitle: appName
+
+    initialTerminalSizeColumns: 80
+    initialTerminalSizeRows: 25
+
+    backgroundColor: 'BLUE'
+    themeName: default
+
+dialogs:
+    - type: msgbox
+      name: msgbox1
+      description: 'some text'
+      height: 40
+      width: 20
+    - type: yesno
+      name: yesno1
+      description: 'some text'
+      height: 40
+      width: 20
+    - type: infobox
+      name: infobox1
+      description: 'some text'
+      height: 40
+      width: 20
+    - type: inputbox
+      name: inputbox1
+      description: 'some text'
+      height: 40
+      width: 20
+      init: init
+    - type: passwordbox
+      name: passwordbox1
+      description: 'some text'
+      height: 40
+      width: 20
+      init: init
+    - type: textbox
+      name: textbox1
+      file: 'some file'
+      height: 40
+      width: 20
+    - type: menu
+      name: menu1
+      description: 'some text'
+      height: 40
+      width: 20
+      listheight: 15
+      tagsItems:
+       - tag: 'some tag1'
+         item: 'some item1'
+    - type: checklist
+      name: checklist1
+      description: 'some text'
+      height: 40
+      width: 20
+      listheight: 15
+      tagsItems:
+       - tag: 'some tag1'
+         item: 'some item1'
+         status: 'some status on/off'
+    - type: radiolist
+      name: radiolist1
+      description: 'some text'
+      height: 40
+      width: 20
+      listheight: 15
+      tagsItems:
+       - tag: 'some tag1'
+         item: 'some item1'
+         status: 'some status on/off'
+    - type: gauge
+      name: gauge1
+      description: 'some text'
+      height: 40
+      width: 20
+      percent: 50
+
+results:
+    checklist1:
+      result:
+        - tag: 'some tag1'
+          item: 'some item1'
+        - tag: 'some tag3'
+          item: 'some item3'
+    radiolist1:
+      result:
+        tag: 'some tag1'
+        item: 'some item1'
+    msgbox1:
+      result: 'OK'
+    type: 
+      result: 'Yes'

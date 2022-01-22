@@ -100,6 +100,10 @@ public class RadioListDialogBuilder<T extends IItemLabel> extends AbstractDialog
         this.content.addAll(Arrays.asList(items));
         return this;
     }
+    public final RadioListDialogBuilder<T> addListItems(List<T> items) {
+        this.content.addAll(items);
+        return this;
+    }
 
     /**
      * Returns a copy of the list of items in the list box
