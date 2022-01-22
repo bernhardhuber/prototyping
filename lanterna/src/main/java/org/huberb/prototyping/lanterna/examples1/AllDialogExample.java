@@ -37,6 +37,7 @@ public class AllDialogExample {
         TextInputDialogExample.main(theArgs);
         //---
         CheckListDialogExample.main(theArgs);
+        ComboBoxDialogExample.main(theArgs);
         MenuListDialogExample.main(theArgs);
         RadioListDialogExample.main(theArgs);
         invokeMain(TextBoxDialogExample.class, theArgs);
