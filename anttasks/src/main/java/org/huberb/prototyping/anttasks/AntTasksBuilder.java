@@ -37,28 +37,28 @@ import org.apache.tools.ant.taskdefs.Touch;
  * @author berni3
  */
 public class AntTasksBuilder {
-    
+
     final Project project;
-    
+
     public AntTasksBuilder() {
         // setup project
         this.project = new Project();
-        
+
         final BuildLogger logger = new NoBannerLogger();
         logger.setMessageOutputLevel(org.apache.tools.ant.Project.MSG_DEBUG);
         logger.setOutputPrintStream(System.out);
         logger.setErrorPrintStream(System.err);
-        
+
         project.addBuildListener(logger);
         project.init();
         project.getBaseDir();
     }
-    
+
     public AntTasksBuilder name(String name) {
         this.project.setName(name);
         return this;
     }
-    
+
     void executeTarget(String targetName) {
         project.executeTarget(targetName);
     }
@@ -66,91 +66,109 @@ public class AntTasksBuilder {
     //---
     public Concat concat(String text, String destination) {
         final Concat concat = (Concat) project.createTask("concat");
-        
+
         concat.addText(text);
         final File destinationFile = new File(destination);
         concat.setDestfile(destinationFile);
         return concat;
     }
-    
-    public Copy copy(String source, String dest) {
-        final Copy copy = (Copy) project.createTask("copy");
-        copy.setOverwrite(false);
-        
-        final File sourceFile = new File(source);
-        final File destFile = new File(dest);
-        copy.setFile(sourceFile);
-        copy.setTofile(destFile);
-        return copy;
+
+    static class CopyBuilder {
+
+        private final Copy copy;
+
+        CopyBuilder(Project project) {
+            this.copy = (Copy) project.createTask("copy");
+            copy.setOverwrite(false);
+        }
+
+        CopyBuilder file(String f) {
+            this.copy.setFile(new File(f));
+            return this;
+        }
+
+        CopyBuilder toFile(String f) {
+            this.copy.setTofile(new File(f));
+            return this;
+        }
+
+        CopyBuilder toDir(String d) {
+            this.copy.setTodir(new File(d));
+            return this;
+        }
+
+        Copy build() {
+            return this.copy;
+        }
     }
-    
+
     public Echo echo(String message) {
         final Echo echo = (Echo) project.createTask("echo");
-        
+
         echo.setMessage(message);
         return echo;
     }
-    
+
     public Mkdir mkdir(String dir) {
         final Mkdir mkdir = (Mkdir) project.createTask("mkdir");
-        
+
         final File dirFile = new File(dir);
         mkdir.setDir(dirFile);
         return mkdir;
     }
-    
+
     public Move move(String source, String dest) {
         final Move move = (Move) project.createTask("move");
         move.setOverwrite(false);
-        
+
         final File sourceFile = new File(source);
         final File destFile = new File(dest);
         move.setFile(sourceFile);
         move.setTofile(destFile);
         return move;
     }
-    
+
     public GUnzip gunzip(String source) {
         final GUnzip gunzip = (GUnzip) project.createTask("gunzip");
-        
+
         gunzip.setSrc(new File(source));
         return gunzip;
     }
-    
+
     public GZip gzip(String source, String dest) {
         final GZip gzip = (GZip) project.createTask("gzip");
-        
+
         gzip.setSrc(new File(source));
-gzip.setDestfile( new File(dest));
+        gzip.setDestfile(new File(dest));
         return gzip;
     }
-    
+
     public Touch touch(String source) {
         final Touch touch = (Touch) project.createTask("touch");
-        
+
         touch.setFile(new File(source));
         return touch;
     }
-    
+
     public Available available(String source) {
         final Available touch = (Available) project.createTask("available");
-        
+
         touch.setFile(new File(source));
         touch.setProperty("available");
         return touch;
     }
-    
+
     public Length length(String source) {
         final Length touch = (Length) project.createTask("length");
-        
+
         touch.setFile(new File(source));
         touch.setProperty("length");
         return touch;
     }
-    
+
     public Expand unzip(String zipFilepath, String destinationDir) {
         final Expand expand = (Expand) project.createTask("unzip");
-        
+
         expand.setSrc(new File(zipFilepath));
         expand.setDest(new File(destinationDir));
         return expand;

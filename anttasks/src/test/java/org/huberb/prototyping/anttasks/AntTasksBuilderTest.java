@@ -1,5 +1,3 @@
-package org.huberb.prototyping.anttasks;
-
 /*
  * Copyright 2021 berni3.
  *
@@ -15,6 +13,8 @@ package org.huberb.prototyping.anttasks;
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+package org.huberb.prototyping.anttasks;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -23,7 +23,6 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Available;
 import org.apache.tools.ant.taskdefs.Concat;
-import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.GUnzip;
@@ -66,32 +65,6 @@ public class AntTasksBuilderTest {
         concat.execute();
 
         assertTrue(new File("target/concat1.txt").canRead());
-    }
-
-    @Test
-    public void testCopy() throws IOException {
-        assertNotNull(sharedTempDir);
-
-        final Path srcPath = sharedTempDir.resolve("copy-src-test-file1");
-        final File srcFile = srcPath.toFile();
-        assertFalse(srcFile.exists(), String.format("srcFile %s", srcFile.getPath()));
-        final File destinationFile = new File(srcFile.getPath() + ".gz");
-        assertFalse(destinationFile.exists(), String.format("destinationFile %s", destinationFile.getPath()));
-        //---
-        assertTrue(srcFile.createNewFile());
-        final String content = "testCopyContent";
-        createFileContent(srcFile, content, 100);
-        final long expectedLength = content.length() * 100L;
-        assertEquals(expectedLength, srcFile.length());
-        //---
-        final Copy copy = new AntTasksBuilder().copy(srcFile.getPath(), destinationFile.getPath());
-        copy.execute();
-        //---
-        Assertions.assertAll(
-                () -> assertTrue(srcFile.exists(), String.format("srcFile %s", srcFile.getPath())),
-                () -> assertTrue(destinationFile.exists(), String.format("destinationFile %s", destinationFile)),
-                () -> assertEquals(expectedLength, destinationFile.length())
-        );
     }
 
     @Test
