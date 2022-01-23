@@ -69,6 +69,7 @@ public class AntTasksBuilderTest {
     }
 
     @Test
+    @Disabled(value = "test not implemented, yet")
     public void testCopy() {
         assertNotNull(sharedTempDir);
     }
