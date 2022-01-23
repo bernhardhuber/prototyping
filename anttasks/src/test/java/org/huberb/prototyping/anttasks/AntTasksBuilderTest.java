@@ -22,8 +22,6 @@ import java.net.URISyntaxException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Available;
-import org.apache.tools.ant.taskdefs.Concat;
-import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.GUnzip;
 import org.apache.tools.ant.taskdefs.GZip;
@@ -31,7 +29,6 @@ import org.apache.tools.ant.taskdefs.Length;
 import org.apache.tools.ant.taskdefs.Mkdir;
 import org.apache.tools.ant.taskdefs.Move;
 import org.apache.tools.ant.taskdefs.Touch;
-import org.apache.tools.ant.types.resources.StringResource;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -52,38 +49,7 @@ public class AntTasksBuilderTest {
     public AntTasksBuilderTest() {
     }
 
-    @Test
-    public void testConcat() {
-        final Concat concat = new AntTasksBuilder()
-                .name("project1")
-                .concat("Hello world!", "target/concat1.txt");
-        Assertions.assertAll(
-                () -> assertEquals("concat", concat.getTaskName()),
-                () -> assertEquals("concat", concat.getTaskType())
-        );
-        //---
-        concat.execute();
-
-        assertTrue(new File("target/concat1.txt").canRead());
-    }
-
-    @Test
-    public void testEcho() {
-        final Echo echo = new AntTasksBuilder()
-                .name("echo1")
-                .echo("Hello world!");
-        Assertions.assertAll(
-                () -> assertEquals("echo", echo.getTaskName()),
-                () -> assertEquals("echo", echo.getTaskType())
-        );
-
-        //---
-        final StringResource sr = new StringResource();
-        echo.setOutput(sr);
-        echo.execute();
-
-        assertEquals("Hello world!", sr.getValue());
-    }
+  
 
     @Test
     public void testMkdir() {
@@ -102,8 +68,8 @@ public class AntTasksBuilderTest {
     public void testMove() throws IOException {
         assertNotNull(sharedTempDir);
 
-        final String source = sharedTempDir.resolve("source.txt").toString();
-        final String dest = sharedTempDir.resolve("dest.txt").toString();
+        final String source = sharedTempDir.resolve("move-test-source1.txt").toString();
+        final String dest = sharedTempDir.resolve("move-test-dest1.txt").toString();
         final File sourceFile = new File(source);
         sourceFile.createNewFile();
         assertTrue(sourceFile.exists(), String.format("sourceFile %s", sourceFile.getPath()));
@@ -159,7 +125,7 @@ public class AntTasksBuilderTest {
     public void testTouch() throws IOException {
         assertNotNull(sharedTempDir);
 
-        final Path touchPath = sharedTempDir.resolve("touch-test-file1");
+        final Path touchPath = sharedTempDir.resolve("touch-test-file1.txt");
         final File touchFile = touchPath.toFile();
         assertFalse(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
         //---
@@ -173,7 +139,7 @@ public class AntTasksBuilderTest {
     public void testGzip() throws IOException {
         assertNotNull(sharedTempDir);
 
-        final Path gzipPath = sharedTempDir.resolve("gzip-test-file1");
+        final Path gzipPath = sharedTempDir.resolve("gzip-test-file1.txt");
         final File gzipFile = gzipPath.toFile();
         assertFalse(gzipFile.exists(), String.format("gzipFile %s", gzipFile.getPath()));
         final File gzippedFile = new File(gzipFile.getPath() + ".gz");
@@ -198,7 +164,7 @@ public class AntTasksBuilderTest {
         final File gzippedFile = new File("target/test-classes/sample-lorem-ipsum.md.gz");
         assertTrue(gzippedFile.exists());
 
-        final Path gunzippedPath = sharedTempDir.resolve("touch-gunzipped-file1");
+        final Path gunzippedPath = sharedTempDir.resolve("gunzipped-test-file1.md");
         final File gunzippedFile = gunzippedPath.toFile();
         assertFalse(gunzippedFile.exists());
         //---
@@ -217,7 +183,7 @@ public class AntTasksBuilderTest {
 
         final File zipFilepath = new File("target/test-classes/sample.zip");
         assertTrue(zipFilepath.exists(), String.format("zipFilepath %s", zipFilepath.getPath()));
-        final File destinationDirFile = sharedTempDir.resolve("unzip-dir1").toFile();
+        final File destinationDirFile = sharedTempDir.resolve("unzip-test-dir1").toFile();
         assertTrue(destinationDirFile.mkdirs());
         assertTrue(destinationDirFile.exists(), String.format("destinationDirFile %s", destinationDirFile.getPath()));
         //---

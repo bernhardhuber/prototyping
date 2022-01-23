@@ -64,16 +64,31 @@ public class AntTasksBuilder {
     }
 
     //---
-    public Concat concat(String text, String destination) {
-        final Concat concat = (Concat) project.createTask("concat");
+    public static class ConcatBuilder {
 
-        concat.addText(text);
-        final File destinationFile = new File(destination);
-        concat.setDestfile(destinationFile);
-        return concat;
+        private final Concat concat;
+
+        public ConcatBuilder(Project project) {
+            this.concat = (Concat) project.createTask("concat");
+        }
+
+        public ConcatBuilder concat(String text) {
+            concat.addText(text);
+            return this;
+        }
+
+        public ConcatBuilder destination(String destination) {
+            final File destinationFile = new File(destination);
+            concat.setDestfile(destinationFile);
+            return this;
+        }
+
+        public Concat build() {
+            return concat;
+        }
     }
 
-    static class CopyBuilder {
+    public static class CopyBuilder {
 
         private final Copy copy;
 
@@ -102,11 +117,23 @@ public class AntTasksBuilder {
         }
     }
 
-    public Echo echo(String message) {
-        final Echo echo = (Echo) project.createTask("echo");
+    public static class EchoBuilder {
 
-        echo.setMessage(message);
-        return echo;
+        private final Echo echo;
+
+        public EchoBuilder(Project project) {
+            this.echo = (Echo) project.createTask("echo");
+        }
+
+        public EchoBuilder message(String message) {
+
+            echo.setMessage(message);
+            return this;
+        }
+
+        public Echo build() {
+            return echo;
+        }
     }
 
     public Mkdir mkdir(String dir) {
