@@ -23,6 +23,7 @@ import java.nio.charset.Charset;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Available;
 import org.apache.tools.ant.taskdefs.Concat;
+import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Expand;
 import org.apache.tools.ant.taskdefs.GUnzip;
@@ -37,7 +38,6 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -69,9 +69,29 @@ public class AntTasksBuilderTest {
     }
 
     @Test
-    @Disabled(value = "test not implemented, yet")
-    public void testCopy() {
+    public void testCopy() throws IOException {
         assertNotNull(sharedTempDir);
+
+        final Path srcPath = sharedTempDir.resolve("copy-src-test-file1");
+        final File srcFile = srcPath.toFile();
+        assertFalse(srcFile.exists(), String.format("srcFile %s", srcFile.getPath()));
+        final File destinationFile = new File(srcFile.getPath() + ".gz");
+        assertFalse(destinationFile.exists(), String.format("destinationFile %s", destinationFile.getPath()));
+        //---
+        assertTrue(srcFile.createNewFile());
+        final String content = "testCopyContent";
+        createFileContent(srcFile, content, 100);
+        final long expectedLength = content.length() * 100L;
+        assertEquals(expectedLength, srcFile.length());
+        //---
+        final Copy copy = new AntTasksBuilder().copy(srcFile.getPath(), destinationFile.getPath());
+        copy.execute();
+        //---
+        Assertions.assertAll(
+                () -> assertTrue(srcFile.exists(), String.format("srcFile %s", srcFile.getPath())),
+                () -> assertTrue(destinationFile.exists(), String.format("destinationFile %s", destinationFile)),
+                () -> assertEquals(expectedLength, destinationFile.length())
+        );
     }
 
     @Test
@@ -120,8 +140,10 @@ public class AntTasksBuilderTest {
         final Move move = new AntTasksBuilder().move(source, dest);
         move.execute();
         //---
-        assertFalse(sourceFile.exists(), String.format("sourceFile %s", sourceFile.getPath()));
-        assertTrue(destFile.exists(), String.format("destFIle %s", destFile.getPath()));
+        Assertions.assertAll(
+                () -> assertFalse(sourceFile.exists(), String.format("sourceFile %s", sourceFile.getPath())),
+                () -> assertTrue(destFile.exists(), String.format("destFIle %s", destFile.getPath()))
+        );
     }
 
     @Test
@@ -136,8 +158,10 @@ public class AntTasksBuilderTest {
         final Available available = new AntTasksBuilder().available(availableFile.getPath());
         available.execute();
         //---
-        assertTrue(availableFile.exists());
-        assertEquals("true", available.getProject().getProperty("available"));
+        Assertions.assertAll(
+                () -> assertTrue(availableFile.exists()),
+                () -> assertEquals("true", available.getProject().getProperty("available"))
+        );
     }
 
     @Test
@@ -146,14 +170,16 @@ public class AntTasksBuilderTest {
 
         final Path lengthPath = sharedTempDir.resolve("length-test-file1");
         final File lengthFile = lengthPath.toFile();
-        assertFalse(lengthFile.exists());
+        assertFalse(lengthFile.exists(), String.format("lengthFile %s", lengthFile.getPath()));
         assertTrue(lengthFile.createNewFile());
         //---
         final Length length = new AntTasksBuilder().length(lengthFile.getPath());
         length.execute();
         //---
-        assertTrue(lengthFile.exists());
-        assertEquals("0", length.getProject().getProperty("length"));
+        Assertions.assertAll(
+                () -> assertTrue(lengthFile.exists(), String.format("lengthFile %s", lengthFile.getPath())),
+                () -> assertEquals("0", length.getProject().getProperty("length"))
+        );
     }
 
     @Test
@@ -162,12 +188,12 @@ public class AntTasksBuilderTest {
 
         final Path touchPath = sharedTempDir.resolve("touch-test-file1");
         final File touchFile = touchPath.toFile();
-        assertFalse(touchFile.exists());
+        assertFalse(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
         //---
         final Touch touch = new AntTasksBuilder().touch(touchFile.getPath());
         touch.execute();
         //---
-        assertTrue(touchFile.exists());
+        assertTrue(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
     }
 
     @Test
@@ -176,37 +202,40 @@ public class AntTasksBuilderTest {
 
         final Path gzipPath = sharedTempDir.resolve("gzip-test-file1");
         final File gzipFile = gzipPath.toFile();
-        assertFalse(gzipFile.exists());
+        assertFalse(gzipFile.exists(), String.format("gzipFile %s", gzipFile.getPath()));
         final File gzippedFile = new File(gzipFile.getPath() + ".gz");
-        assertFalse(gzippedFile.exists());
+        assertFalse(gzippedFile.exists(), String.format("gzippedFile %s", gzippedFile.getPath()));
         //---
         assertTrue(gzipFile.createNewFile());
-        try ( FileWriter fw = new FileWriter(gzipFile, Charset.forName("UTF-8"))) {
-            for (int i = 0; i < 99; i++) {
-                fw.append("testGzip");
-            }
-        }
+        createFileContent(gzipFile, "testGzipContent", 100);
         //---
         final GZip gzip = new AntTasksBuilder().gzip(gzipFile.getPath(), gzippedFile.getPath());
         gzip.execute();
         //---
-        assertTrue(gzipFile.exists(), String.format("gzipFile %s", gzipFile.getPath()));
-        assertTrue(gzippedFile.exists(), String.format("gzippedFile %s", gzippedFile));
+        Assertions.assertAll(
+                () -> assertTrue(gzipFile.exists(), String.format("gzipFile %s", gzipFile.getPath())),
+                () -> assertTrue(gzippedFile.exists(), String.format("gzippedFile %s", gzippedFile))
+        );
     }
 
     @Test
-    @Disabled(value = "test not implemented, yet")
     public void testGunzip() throws IOException {
         assertNotNull(sharedTempDir);
 
-        final Path touchPath = sharedTempDir.resolve("touch-test-file1");
-        final File touchFile = touchPath.toFile();
-        assertFalse(touchFile.exists());
+        final File gzippedFile = new File("target/test-classes/sample-lorem-ipsum.md.gz");
+        assertTrue(gzippedFile.exists());
+
+        final Path gunzippedPath = sharedTempDir.resolve("touch-gunzipped-file1");
+        final File gunzippedFile = gunzippedPath.toFile();
+        assertFalse(gunzippedFile.exists());
         //---
-        final GUnzip touch = new AntTasksBuilder().gunzip(touchFile.getPath());
-        touch.execute();
+        final GUnzip gunzip = new AntTasksBuilder().gunzip(gzippedFile.getPath());
+        gunzip.execute();
         //---
-        assertTrue(touchFile.exists());
+        Assertions.assertAll(
+                () -> assertTrue(gzippedFile.exists()),
+                () -> assertFalse(gunzippedFile.exists())
+        );
     }
 
     @Test
@@ -223,9 +252,19 @@ public class AntTasksBuilderTest {
         expand.execute();
         //---
         final File f1 = new File(destinationDirFile, "sample-3rows2cols.csv");
-        assertTrue(f1.exists(), String.format("unzipped file %s", f1.getPath()));
         final File f2 = new File(destinationDirFile, "sample-lorem-ipsum.md");
-        assertTrue(f2.exists(), String.format("unzipped file %s", f2.getPath()));
+        Assertions.assertAll(
+                () -> assertTrue(f1.exists(), String.format("unzipped file %s", f1.getPath())),
+                () -> assertTrue(f2.exists(), String.format("unzipped file %s", f2.getPath()))
+        );
+    }
+
+    private void createFileContent(File aFile, String content, int repeatCount) throws IOException {
+        try ( FileWriter fw = new FileWriter(aFile, Charset.forName("UTF-8"))) {
+            for (int i = 0; i < repeatCount; i++) {
+                fw.append(content);
+            }
+        }
     }
 
 }
