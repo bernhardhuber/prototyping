@@ -16,20 +16,28 @@ package org.huberb.prototyping.anttasks;
  * limitations under the License.
  */
 import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.nio.charset.Charset;
 import java.nio.file.Path;
+import org.apache.tools.ant.taskdefs.Available;
 import org.apache.tools.ant.taskdefs.Concat;
 import org.apache.tools.ant.taskdefs.Echo;
 import org.apache.tools.ant.taskdefs.Expand;
+import org.apache.tools.ant.taskdefs.GUnzip;
+import org.apache.tools.ant.taskdefs.GZip;
+import org.apache.tools.ant.taskdefs.Length;
 import org.apache.tools.ant.taskdefs.Mkdir;
 import org.apache.tools.ant.taskdefs.Move;
+import org.apache.tools.ant.taskdefs.Touch;
 import org.apache.tools.ant.types.resources.StringResource;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -99,9 +107,10 @@ public class AntTasksBuilderTest {
     @Test
     public void testMove() throws IOException {
         assertNotNull(sharedTempDir);
-        String source = sharedTempDir.resolve("source.txt").toString();
-        String dest = sharedTempDir.resolve("dest.txt").toString();
-        File sourceFile = new File(source);
+
+        final String source = sharedTempDir.resolve("source.txt").toString();
+        final String dest = sharedTempDir.resolve("dest.txt").toString();
+        final File sourceFile = new File(source);
         sourceFile.createNewFile();
         assertTrue(sourceFile.exists(), String.format("sourceFile %s", sourceFile.getPath()));
         final File destFile = new File(dest);
@@ -115,8 +124,94 @@ public class AntTasksBuilderTest {
     }
 
     @Test
+    public void testAvailable() throws IOException {
+        assertNotNull(sharedTempDir);
+
+        final Path availablePath = sharedTempDir.resolve("available-test-file1");
+        final File availableFile = availablePath.toFile();
+        assertFalse(availableFile.exists());
+        assertTrue(availableFile.createNewFile());
+        //---
+        final Available available = new AntTasksBuilder().available(availableFile.getPath());
+        available.execute();
+        //---
+        assertTrue(availableFile.exists());
+        assertEquals("true", available.getProject().getProperty("available"));
+    }
+
+    @Test
+    public void testLength() throws IOException {
+        assertNotNull(sharedTempDir);
+
+        final Path lengthPath = sharedTempDir.resolve("length-test-file1");
+        final File lengthFile = lengthPath.toFile();
+        assertFalse(lengthFile.exists());
+        assertTrue(lengthFile.createNewFile());
+        //---
+        final Length length = new AntTasksBuilder().length(lengthFile.getPath());
+        length.execute();
+        //---
+        assertTrue(lengthFile.exists());
+        assertEquals("0", length.getProject().getProperty("length"));
+    }
+
+    @Test
+    public void testTouch() throws IOException {
+        assertNotNull(sharedTempDir);
+
+        final Path touchPath = sharedTempDir.resolve("touch-test-file1");
+        final File touchFile = touchPath.toFile();
+        assertFalse(touchFile.exists());
+        //---
+        final Touch touch = new AntTasksBuilder().touch(touchFile.getPath());
+        touch.execute();
+        //---
+        assertTrue(touchFile.exists());
+    }
+
+    @Test
+    public void testGzip() throws IOException {
+        assertNotNull(sharedTempDir);
+
+        final Path gzipPath = sharedTempDir.resolve("gzip-test-file1");
+        final File gzipFile = gzipPath.toFile();
+        assertFalse(gzipFile.exists());
+        final File gzippedFile = new File(gzipFile.getPath() + ".gz");
+        assertFalse(gzippedFile.exists());
+        //---
+        assertTrue(gzipFile.createNewFile());
+        try ( FileWriter fw = new FileWriter(gzipFile, Charset.forName("UTF-8"))) {
+            for (int i = 0; i < 99; i++) {
+                fw.append("testGzip");
+            }
+        }
+        //---
+        final GZip gzip = new AntTasksBuilder().gzip(gzipFile.getPath(), gzippedFile.getPath());
+        gzip.execute();
+        //---
+        assertTrue(gzipFile.exists(), String.format("gzipFile %s", gzipFile.getPath()));
+        assertTrue(gzippedFile.exists(), String.format("gzippedFile %s", gzippedFile));
+    }
+
+    @Test
+    @Disabled(value = "test not implemented, yet")
+    public void testGunzip() throws IOException {
+        assertNotNull(sharedTempDir);
+
+        final Path touchPath = sharedTempDir.resolve("touch-test-file1");
+        final File touchFile = touchPath.toFile();
+        assertFalse(touchFile.exists());
+        //---
+        final GUnzip touch = new AntTasksBuilder().gunzip(touchFile.getPath());
+        touch.execute();
+        //---
+        assertTrue(touchFile.exists());
+    }
+
+    @Test
     public void testUnzip() throws URISyntaxException {
         assertNotNull(sharedTempDir);
+
         final File zipFilepath = new File("target/test-classes/sample.zip");
         assertTrue(zipFilepath.exists(), String.format("zipFilepath %s", zipFilepath.getPath()));
         final File destinationDirFile = sharedTempDir.resolve("unzip-dir1").toFile();
