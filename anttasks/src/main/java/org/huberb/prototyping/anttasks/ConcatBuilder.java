@@ -29,7 +29,7 @@ public class ConcatBuilder {
         this.concat = (Concat) project.createTask("concat");
     }
 
-    public ConcatBuilder concat(String text) {
+    public ConcatBuilder addText(String text) {
         concat.addText(text);
         return this;
     }

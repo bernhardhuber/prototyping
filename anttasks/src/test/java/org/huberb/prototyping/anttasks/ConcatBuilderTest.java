@@ -46,7 +46,7 @@ public class ConcatBuilderTest {
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
 
         final Concat concat = new ConcatBuilder(antTasksBuilder.project)
-                .concat("Hello world!")
+                .addText("Hello world!")
                 .destination(destinationFile.getPath())
                 .build();
         Assertions.assertAll(
