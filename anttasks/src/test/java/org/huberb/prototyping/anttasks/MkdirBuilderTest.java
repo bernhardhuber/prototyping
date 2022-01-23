@@ -15,38 +15,32 @@
  */
 package org.huberb.prototyping.anttasks;
 
-import org.apache.tools.ant.taskdefs.Echo;
-import org.apache.tools.ant.types.resources.StringResource;
+import java.nio.file.Path;
+import org.apache.tools.ant.taskdefs.Mkdir;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 /**
  *
  * @author berni3
  */
-public class EchoBuilderTest {
+public class MkdirBuilderTest {
 
-    public EchoBuilderTest() {
-    }
+    @TempDir
+    static Path sharedTempDir;
 
     @Test
-    public void testEcho() {
+    public void testMkdir() {
+        Assertions.assertNotNull(sharedTempDir);
+        final Path mkdirTestDir1 = sharedTempDir.resolve("mkdir-test-dir1");
+        final String mkdirTestDir1AsString = mkdirTestDir1.toFile().getPath();
+        final String m = String.format("Create directory %s", mkdirTestDir1AsString);
+        Assertions.assertFalse(mkdirTestDir1.toFile().exists(), m);
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final Echo echo = new EchoBuilder(antTasksBuilder.project)
-                .message("Hello world!")
-                .build();
-        echo.execute();
-        Assertions.assertAll(
-                () -> assertEquals("echo", echo.getTaskName()),
-                () -> assertEquals("echo", echo.getTaskType())
-        );
-
-        //---
-        final StringResource sr = new StringResource();
-        echo.setOutput(sr);
-        echo.execute();
-
-        assertEquals("Hello world!", sr.getValue());
+        final Mkdir mkdir = new MkdirBuilder(antTasksBuilder.project).dir(mkdirTestDir1AsString).build();
+        mkdir.execute();
+        Assertions.assertTrue(mkdirTestDir1.toFile().exists(), m);
     }
+
 }

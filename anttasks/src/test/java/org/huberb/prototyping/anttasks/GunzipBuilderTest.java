@@ -16,12 +16,10 @@
 package org.huberb.prototyping.anttasks;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Path;
-import org.apache.tools.ant.taskdefs.Concat;
+import org.apache.tools.ant.taskdefs.GUnzip;
 import org.junit.jupiter.api.Assertions;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -29,34 +27,28 @@ import org.junit.jupiter.api.io.TempDir;
  *
  * @author berni3
  */
-public class ConcatBuilderTest {
+public class GunzipBuilderTest {
 
     @TempDir
     static Path sharedTempDir;
 
-    public ConcatBuilderTest() {
-    }
-
     @Test
-    public void testConcat() {
-        assertNotNull(sharedTempDir);
-
-        final Path destination = sharedTempDir.resolve("concat-test-file1.txt");
-        final File destinationFile = destination.toFile();
-        final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-
-        final Concat concat = new ConcatBuilder(antTasksBuilder.project)
-                .concat("Hello world!")
-                .destination(destinationFile.getPath())
-                .build();
-        Assertions.assertAll(
-                () -> assertEquals("concat", concat.getTaskName()),
-                () -> assertEquals("concat", concat.getTaskType())
-        );
+    public void testGunzip() throws IOException {
+        Assertions.assertNotNull(sharedTempDir);
+        final File gzippedFile = new File("target/test-classes/sample-lorem-ipsum.md.gz");
+        Assertions.assertTrue(gzippedFile.exists());
+        final Path gunzippedPath = sharedTempDir.resolve("gunzipped-test-file1.md");
+        final File gunzippedFile = gunzippedPath.toFile();
+        Assertions.assertFalse(gunzippedFile.exists());
         //---
-        concat.execute();
-
-        assertTrue(destinationFile.canRead());
+        final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
+        final GUnzip gunzip = new GUnzipBuilder(antTasksBuilder.project).src(gzippedFile.getPath()).dest(gunzippedFile.getPath()).build();
+        gunzip.execute();
+        //---
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(gzippedFile.exists()),
+                () -> Assertions.assertTrue(gunzippedFile.exists())
+        );
     }
 
 }

@@ -16,12 +16,9 @@
 package org.huberb.prototyping.anttasks;
 
 import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.Charset;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Copy;
-import org.huberb.prototyping.anttasks.AntTasksBuilder.CopyBuilder;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -54,7 +51,7 @@ public class CopyBuilderTest {
         //---
         assertTrue(srcFile.createNewFile());
         final String content = "testCopyContent";
-        createFileContent(srcFile, content, 100);
+        AntTasksBuilderTest.createFileContent(srcFile, content, 100);
         final long expectedLength = content.length() * 100L;
         assertEquals(expectedLength, srcFile.length());
         //---
@@ -72,11 +69,4 @@ public class CopyBuilderTest {
         );
     }
 
-    private void createFileContent(File aFile, String content, int repeatCount) throws IOException {
-        try ( FileWriter fw = new FileWriter(aFile, Charset.forName("UTF-8"))) {
-            for (int i = 0; i < repeatCount; i++) {
-                fw.append(content);
-            }
-        }
-    }
 }
