@@ -18,7 +18,8 @@ package org.huberb.prototyping.anttasks;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import org.apache.tools.ant.taskdefs.GUnzip;
+import org.apache.tools.ant.taskdefs.Touch;
+import org.huberb.prototyping.anttasks.AntTasksBuilder.TouchBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -27,28 +28,23 @@ import org.junit.jupiter.api.io.TempDir;
  *
  * @author berni3
  */
-public class GunzipBuilderTest {
-
+public class TouchBuilderTest {
+ 
     @TempDir
     private static Path sharedTempDir;
-
+   
     @Test
-    public void testGunzip() throws IOException {
+    public void testTouch() throws IOException {
         Assertions.assertNotNull(sharedTempDir);
-        final File gzippedFile = new File("target/test-classes/sample-lorem-ipsum.md.gz");
-        Assertions.assertTrue(gzippedFile.exists());
-        final Path gunzippedPath = sharedTempDir.resolve("gunzipped-test-file1.md");
-        final File gunzippedFile = gunzippedPath.toFile();
-        Assertions.assertFalse(gunzippedFile.exists());
+        final Path touchPath = sharedTempDir.resolve("touch-test-file1.txt");
+        final File touchFile = touchPath.toFile();
+        Assertions.assertFalse(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
         //---
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final GUnzip gunzip = new GUnzipBuilder(antTasksBuilder.project).src(gzippedFile.getPath()).dest(gunzippedFile.getPath()).build();
-        gunzip.execute();
+        final Touch touch = new TouchBuilder(antTasksBuilder.project).file(touchFile.getPath()).build();
+        touch.execute();
         //---
-        Assertions.assertAll(
-                () -> Assertions.assertTrue(gzippedFile.exists()),
-                () -> Assertions.assertTrue(gunzippedFile.exists())
-        );
+        Assertions.assertTrue(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
     }
-
+    
 }

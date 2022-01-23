@@ -56,19 +56,42 @@ public class AntTasksBuilder {
         project.executeTarget(targetName);
     }
 
-    public Touch touch(String source) {
-        final Touch touch = (Touch) project.createTask("touch");
+    public static class TouchBuilder {
 
-        touch.setFile(new File(source));
-        return touch;
+        private final Touch touch;
+
+        public TouchBuilder(Project project) {
+            this.touch = (Touch) project.createTask("touch");
+        }
+
+        public TouchBuilder file(String source) {
+
+            touch.setFile(new File(source));
+            return this;
+        }
+
+        public Touch build() {
+            return touch;
+        }
     }
 
-    public Available available(String source) {
-        final Available touch = (Available) project.createTask("available");
+    public static class AvailableBuilder {
 
-        touch.setFile(new File(source));
-        touch.setProperty("available");
-        return touch;
+        private final Available available;
+
+        public AvailableBuilder(Project project) {
+            this.available = (Available) project.createTask("available");
+            available.setProperty("available");
+        }
+
+        public AvailableBuilder file(String source) {
+            available.setFile(new File(source));
+            return this;
+        }
+
+        public Available build() {
+            return available;
+        }
     }
 
     public Length length(String source) {
@@ -79,11 +102,26 @@ public class AntTasksBuilder {
         return touch;
     }
 
-    public Expand unzip(String zipFilepath, String destinationDir) {
-        final Expand expand = (Expand) project.createTask("unzip");
+    public static class ExpandBuilder {
 
-        expand.setSrc(new File(zipFilepath));
-        expand.setDest(new File(destinationDir));
-        return expand;
+        private final Expand expand;
+
+        public ExpandBuilder(Project project) {
+            this.expand = (Expand) project.createTask("unzip");
+        }
+
+        public ExpandBuilder src(String zipFilepath) {
+            expand.setSrc(new File(zipFilepath));
+            return this;
+        }
+
+        public ExpandBuilder dest(String destinationDir) {
+            expand.setDest(new File(destinationDir));
+            return this;
+        }
+
+        public Expand build() {
+            return expand;
+        }
     }
 }

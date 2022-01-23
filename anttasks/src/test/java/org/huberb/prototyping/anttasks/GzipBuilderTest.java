@@ -30,7 +30,7 @@ import org.junit.jupiter.api.io.TempDir;
 public class GzipBuilderTest {
 
     @TempDir
-    static Path sharedTempDir;
+    private static Path sharedTempDir;
 
     @Test
     public void testGzip() throws IOException {

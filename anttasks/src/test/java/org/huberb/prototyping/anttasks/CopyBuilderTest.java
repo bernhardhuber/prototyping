@@ -34,7 +34,7 @@ import org.junit.jupiter.api.io.TempDir;
 public class CopyBuilderTest {
 
     @TempDir
-    static Path sharedTempDir;
+    private static Path sharedTempDir;
 
     public CopyBuilderTest() {
     }

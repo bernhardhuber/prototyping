@@ -30,7 +30,7 @@ import org.junit.jupiter.api.io.TempDir;
 public class MoveBuilderTest {
 
     @TempDir
-    static Path sharedTempDir;
+    private static Path sharedTempDir;
 
     @Test
     public void testMove() throws IOException {

@@ -19,6 +19,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Expand;
+import org.huberb.prototyping.anttasks.AntTasksBuilder.ExpandBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -30,7 +31,7 @@ import org.junit.jupiter.api.io.TempDir;
 public class UnzipBuilderTest {
 
     @TempDir
-    static Path sharedTempDir;
+    private static Path sharedTempDir;
 
     @Test
     public void testUnzip() throws URISyntaxException {
@@ -41,7 +42,11 @@ public class UnzipBuilderTest {
         Assertions.assertTrue(destinationDirFile.mkdirs());
         Assertions.assertTrue(destinationDirFile.exists(), String.format("destinationDirFile %s", destinationDirFile.getPath()));
         //---
-        final Expand expand = new AntTasksBuilder().unzip(zipFilepath.getPath(), destinationDirFile.getPath());
+        final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
+        final Expand expand = new ExpandBuilder(antTasksBuilder.project)
+                .src(zipFilepath.getPath())
+                .dest(destinationDirFile.getPath())
+                .build();
         expand.execute();
         //---
         final File f1 = new File(destinationDirFile, "sample-3rows2cols.csv");

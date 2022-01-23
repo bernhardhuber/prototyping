@@ -20,9 +20,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Path;
-import org.apache.tools.ant.taskdefs.Available;
 import org.apache.tools.ant.taskdefs.Length;
-import org.apache.tools.ant.taskdefs.Touch;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -38,27 +36,9 @@ import org.junit.jupiter.api.io.TempDir;
 public class AntTasksBuilderTest {
 
     @TempDir
-    static Path sharedTempDir;
+    private static Path sharedTempDir;
 
     public AntTasksBuilderTest() {
-    }
-
-    @Test
-    public void testAvailable() throws IOException {
-        assertNotNull(sharedTempDir);
-
-        final Path availablePath = sharedTempDir.resolve("available-test-file1");
-        final File availableFile = availablePath.toFile();
-        assertFalse(availableFile.exists());
-        assertTrue(availableFile.createNewFile());
-        //---
-        final Available available = new AntTasksBuilder().available(availableFile.getPath());
-        available.execute();
-        //---
-        Assertions.assertAll(
-                () -> assertTrue(availableFile.exists()),
-                () -> assertEquals("true", available.getProject().getProperty("available"))
-        );
     }
 
     @Test
@@ -77,20 +57,6 @@ public class AntTasksBuilderTest {
                 () -> assertTrue(lengthFile.exists(), String.format("lengthFile %s", lengthFile.getPath())),
                 () -> assertEquals("0", length.getProject().getProperty("length"))
         );
-    }
-
-    @Test
-    public void testTouch() throws IOException {
-        assertNotNull(sharedTempDir);
-
-        final Path touchPath = sharedTempDir.resolve("touch-test-file1.txt");
-        final File touchFile = touchPath.toFile();
-        assertFalse(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
-        //---
-        final Touch touch = new AntTasksBuilder().touch(touchFile.getPath());
-        touch.execute();
-        //---
-        assertTrue(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
     }
 
     public static void createFileContent(File aFile, String content, int repeatCount) throws IOException {

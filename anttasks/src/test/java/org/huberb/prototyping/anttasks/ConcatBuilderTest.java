@@ -32,7 +32,7 @@ import org.junit.jupiter.api.io.TempDir;
 public class ConcatBuilderTest {
 
     @TempDir
-    static Path sharedTempDir;
+    private static Path sharedTempDir;
 
     public ConcatBuilderTest() {
     }

@@ -28,7 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
 public class MkdirBuilderTest {
 
     @TempDir
-    static Path sharedTempDir;
+    private static Path sharedTempDir;
 
     @Test
     public void testMkdir() {
