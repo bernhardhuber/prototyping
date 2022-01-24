@@ -18,7 +18,8 @@ package org.huberb.prototyping.anttasks;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import org.apache.tools.ant.taskdefs.Touch;
+import org.apache.tools.ant.taskdefs.Length;
+import org.huberb.prototyping.anttasks.LengthBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -27,25 +28,28 @@ import org.junit.jupiter.api.io.TempDir;
  *
  * @author berni3
  */
-public class TouchBuilderTest {
+public class LengthBuilderTest {
 
     @TempDir
     private static Path sharedTempDir;
 
     @Test
-    public void testTouch() throws IOException {
+    public void testLength() throws IOException {
         Assertions.assertNotNull(sharedTempDir);
-        final Path touchPath = sharedTempDir.resolve("touch-test-file1.txt");
-        final File touchFile = touchPath.toFile();
-        Assertions.assertFalse(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
+        final Path lengthPath = sharedTempDir.resolve("length-test-file1");
+        final File lengthFile = lengthPath.toFile();
+        Assertions.assertFalse(lengthFile.exists(), String.format("lengthFile %s", lengthFile.getPath()));
+        Assertions.assertTrue(lengthFile.createNewFile());
         //---
-        final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final Touch touch = new TouchBuilder(antTasksBuilder.project)
-                .file(touchFile.getPath())
+        AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
+        final Length length = new LengthBuilder(antTasksBuilder.project)
+                .file(lengthFile.getPath())
                 .build();
-        touch.execute();
+        length.execute();
         //---
-        Assertions.assertTrue(touchFile.exists(), String.format("touchFile %s", touchFile.getPath()));
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(lengthFile.exists(), String.format("lengthFile %s", lengthFile.getPath())),
+                () -> Assertions.assertEquals("0", length.getProject().getProperty("length")));
     }
 
 }

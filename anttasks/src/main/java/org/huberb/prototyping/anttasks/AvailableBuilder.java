@@ -1,5 +1,5 @@
 /*
- * Copyright 2021 berni3.
+ * Copyright 2022 berni3.
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,30 +16,29 @@
 package org.huberb.prototyping.anttasks;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.charset.Charset;
-import java.nio.file.Path;
-import org.junit.jupiter.api.io.TempDir;
+import org.apache.tools.ant.Project;
+import org.apache.tools.ant.taskdefs.Available;
 
 /**
  *
  * @author berni3
  */
-public class AntTasksBuilderTest {
+public class AvailableBuilder {
+    
+    private final Available available;
 
-    @TempDir
-    private static Path sharedTempDir;
-
-    public AntTasksBuilderTest() {
+    public AvailableBuilder(Project project) {
+        this.available = (Available) project.createTask("available");
+        available.setProperty("available");
     }
 
-
-    public static void createFileContent(File aFile, String content, int repeatCount) throws IOException {
-        try ( FileWriter fw = new FileWriter(aFile, Charset.forName("UTF-8"))) {
-            for (int i = 0; i < repeatCount; i++) {
-                fw.append(content);
-            }
-        }
+    public AvailableBuilder file(String source) {
+        available.setFile(new File(source));
+        return this;
     }
+
+    public Available build() {
+        return available;
+    }
+    
 }

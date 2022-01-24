@@ -19,7 +19,7 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Expand;
-import org.huberb.prototyping.anttasks.AntTasksBuilder.ExpandBuilder;
+import org.huberb.prototyping.anttasks.ExpandBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;

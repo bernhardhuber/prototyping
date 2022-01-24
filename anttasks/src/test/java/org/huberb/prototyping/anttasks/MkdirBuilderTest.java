@@ -38,7 +38,9 @@ public class MkdirBuilderTest {
         final String m = String.format("Create directory %s", mkdirTestDir1AsString);
         Assertions.assertFalse(mkdirTestDir1.toFile().exists(), m);
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final Mkdir mkdir = new MkdirBuilder(antTasksBuilder.project).dir(mkdirTestDir1AsString).build();
+        final Mkdir mkdir = new MkdirBuilder(antTasksBuilder.project)
+                .dir(mkdirTestDir1AsString)
+                .build();
         mkdir.execute();
         Assertions.assertTrue(mkdirTestDir1.toFile().exists(), m);
     }

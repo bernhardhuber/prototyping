@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Available;
-import org.huberb.prototyping.anttasks.AntTasksBuilder.AvailableBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -42,10 +41,14 @@ public class AvailableBuilderTest {
         Assertions.assertTrue(availableFile.createNewFile());
         //---
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final Available available = new AvailableBuilder(antTasksBuilder.project).file(availableFile.getPath()).build();
+        final Available available = new AvailableBuilder(antTasksBuilder.project)
+                .file(availableFile.getPath())
+                .build();
         available.execute();
         //---
-        Assertions.assertAll(() -> Assertions.assertTrue(availableFile.exists()), () -> Assertions.assertEquals("true", available.getProject().getProperty("available")));
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(availableFile.exists()),
+                () -> Assertions.assertEquals("true", available.getProject().getProperty("available")));
     }
 
 }

@@ -45,7 +45,10 @@ public class GzipBuilderTest {
         AntTasksBuilderTest.createFileContent(gzipFile, "testGzipContent", 100);
         //---
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final GZip gzip = new GZipBuilder(antTasksBuilder.project).src(gzipFile.getPath()).destfile(gzippedFile.getPath()).build();
+        final GZip gzip = new GZipBuilder(antTasksBuilder.project)
+                .src(gzipFile.getPath())
+                .destfile(gzippedFile.getPath())
+                .build();
         gzip.execute();
         //---
         Assertions.assertAll(

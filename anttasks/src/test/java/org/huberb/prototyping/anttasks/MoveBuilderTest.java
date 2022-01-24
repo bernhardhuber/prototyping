@@ -44,7 +44,10 @@ public class MoveBuilderTest {
         Assertions.assertFalse(destFile.exists(), String.format("destFile %s", destFile.getPath()));
         //---
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final Move move = new MoveBuilder(antTasksBuilder.project).file(source).tofile(dest).build();
+        final Move move = new MoveBuilder(antTasksBuilder.project)
+                .file(source)
+                .tofile(dest)
+                .build();
         move.execute();
         //---
         Assertions.assertAll(

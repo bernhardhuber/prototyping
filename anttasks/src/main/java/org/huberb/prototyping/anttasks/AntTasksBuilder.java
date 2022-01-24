@@ -15,14 +15,9 @@
  */
 package org.huberb.prototyping.anttasks;
 
-import java.io.File;
 import org.apache.tools.ant.BuildLogger;
 import org.apache.tools.ant.NoBannerLogger;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Available;
-import org.apache.tools.ant.taskdefs.Expand;
-import org.apache.tools.ant.taskdefs.Length;
-import org.apache.tools.ant.taskdefs.Touch;
 
 /**
  * Build ant task action.
@@ -56,72 +51,4 @@ public class AntTasksBuilder {
         project.executeTarget(targetName);
     }
 
-    public static class TouchBuilder {
-
-        private final Touch touch;
-
-        public TouchBuilder(Project project) {
-            this.touch = (Touch) project.createTask("touch");
-        }
-
-        public TouchBuilder file(String source) {
-
-            touch.setFile(new File(source));
-            return this;
-        }
-
-        public Touch build() {
-            return touch;
-        }
-    }
-
-    public static class AvailableBuilder {
-
-        private final Available available;
-
-        public AvailableBuilder(Project project) {
-            this.available = (Available) project.createTask("available");
-            available.setProperty("available");
-        }
-
-        public AvailableBuilder file(String source) {
-            available.setFile(new File(source));
-            return this;
-        }
-
-        public Available build() {
-            return available;
-        }
-    }
-
-    public Length length(String source) {
-        final Length touch = (Length) project.createTask("length");
-
-        touch.setFile(new File(source));
-        touch.setProperty("length");
-        return touch;
-    }
-
-    public static class ExpandBuilder {
-
-        private final Expand expand;
-
-        public ExpandBuilder(Project project) {
-            this.expand = (Expand) project.createTask("unzip");
-        }
-
-        public ExpandBuilder src(String zipFilepath) {
-            expand.setSrc(new File(zipFilepath));
-            return this;
-        }
-
-        public ExpandBuilder dest(String destinationDir) {
-            expand.setDest(new File(destinationDir));
-            return this;
-        }
-
-        public Expand build() {
-            return expand;
-        }
-    }
 }

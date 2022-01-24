@@ -42,7 +42,10 @@ public class GunzipBuilderTest {
         Assertions.assertFalse(gunzippedFile.exists());
         //---
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final GUnzip gunzip = new GUnzipBuilder(antTasksBuilder.project).src(gzippedFile.getPath()).dest(gunzippedFile.getPath()).build();
+        final GUnzip gunzip = new GUnzipBuilder(antTasksBuilder.project)
+                .src(gzippedFile.getPath())
+                .dest(gunzippedFile.getPath())
+                .build();
         gunzip.execute();
         //---
         Assertions.assertAll(
