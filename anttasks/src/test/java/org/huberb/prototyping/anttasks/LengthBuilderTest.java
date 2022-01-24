@@ -19,7 +19,6 @@ import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Length;
-import org.huberb.prototyping.anttasks.LengthBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -34,14 +33,14 @@ public class LengthBuilderTest {
     private static Path sharedTempDir;
 
     @Test
-    public void testLength() throws IOException {
+    public void given_empty_file_calc_length() throws IOException {
         Assertions.assertNotNull(sharedTempDir);
         final Path lengthPath = sharedTempDir.resolve("length-test-file1");
         final File lengthFile = lengthPath.toFile();
         Assertions.assertFalse(lengthFile.exists(), String.format("lengthFile %s", lengthFile.getPath()));
         Assertions.assertTrue(lengthFile.createNewFile());
         //---
-        AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
+        final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
         final Length length = new LengthBuilder(antTasksBuilder.project)
                 .file(lengthFile.getPath())
                 .build();
@@ -52,4 +51,30 @@ public class LengthBuilderTest {
                 () -> Assertions.assertEquals("0", length.getProject().getProperty("length")));
     }
 
+    @Test
+    public void given_file_with_content_calc_length() throws IOException {
+        Assertions.assertNotNull(sharedTempDir);
+        final Path lengthPath = sharedTempDir.resolve("length-test-file2.txt");
+        final File lengthFile = lengthPath.toFile();
+
+        final String content = "testLengthContent";
+        AntTasksBuilderTest.createFileContent(lengthFile, content, 100);
+        final long expectedLength = content.length() * 100L;
+        Assertions.assertEquals(1700L, expectedLength);
+
+        Assertions.assertTrue(lengthFile.exists());
+
+        //---
+        final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
+        final Length length = new LengthBuilder(antTasksBuilder.project)
+                .file(lengthFile.getPath())
+                .build();
+        length.execute();
+        //---
+        Assertions.assertAll(
+                () -> Assertions.assertTrue(lengthFile.exists(), String.format("lengthFile %s", lengthFile.getPath())),
+                () -> Assertions.assertEquals(expectedLength, Long.valueOf(length.getProject().getProperty("length")))
+        );
+
+    }
 }
