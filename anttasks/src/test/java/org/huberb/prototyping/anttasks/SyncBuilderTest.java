@@ -18,7 +18,8 @@ package org.huberb.prototyping.anttasks;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Path;
-import org.apache.tools.ant.taskdefs.Copy;
+import org.apache.tools.ant.taskdefs.Sync;
+import org.apache.tools.ant.types.FileSet;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -31,41 +32,46 @@ import org.junit.jupiter.api.io.TempDir;
  *
  * @author berni3
  */
-public class CopyBuilderTest {
+public class SyncBuilderTest {
 
     @TempDir
     private static Path sharedTempDir;
 
-    public CopyBuilderTest() {
+    public SyncBuilderTest() {
     }
 
     @Test
-    public void testCopy() throws IOException {
+    public void testSync() throws IOException {
         assertNotNull(sharedTempDir);
 
-        final Path srcPath = sharedTempDir.resolve("copy-src-test-file1.ext1");
+        final Path srcPath = sharedTempDir.resolve("sync-src-test-file1.ext1");
         final File srcFile = srcPath.toFile();
         assertFalse(srcFile.exists(), String.format("srcFile %s", srcFile.getPath()));
-        final File destinationFile = new File(srcFile.getPath() + ".copied");
-        assertFalse(destinationFile.exists(), String.format("destinationFile %s", destinationFile.getPath()));
+        final File destinationDir = sharedTempDir.resolve("sync-destination-dir-1").toFile();
+        assertTrue(destinationDir.mkdir(), "" + destinationDir);
+        final File destinationFile = new File(destinationDir, "sync-src-test-file1.ext1");
+        assertFalse(destinationFile.exists(), "" + destinationFile);
+
         //---
         assertTrue(srcFile.createNewFile());
-        final String content = "testCopyContent";
+        final String content = "testSyncContent";
         AntTasksBuilderTest.createFileContent(srcFile, content, 100);
         final long expectedLength = content.length() * 100L;
         assertEquals(expectedLength, srcFile.length());
         //---
+        final FileSet fileSet = new FileSetBuilder().dir(sharedTempDir.toString()).includes("*.ext1").build();
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
-        final Copy copy = new CopyBuilder(antTasksBuilder.project)
-                .file(srcFile.getPath())
-                .tofile(destinationFile.getPath())
+        final Sync copy = new SyncBuilder(antTasksBuilder.project)
+                .addfileset(fileSet)
+                .todir(destinationDir.getPath())
                 .build();
         copy.execute();
         //---
         Assertions.assertAll(
                 () -> assertTrue(srcFile.exists(), String.format("srcFile %s", srcFile.getPath())),
-                () -> assertTrue(destinationFile.exists(), String.format("destinationFile %s", destinationFile)),
-                () -> assertEquals(expectedLength, destinationFile.length())
+                () -> assertEquals(expectedLength, srcFile.length(), String.format("srcFile %s", srcFile.getPath())),
+                () -> assertTrue(destinationFile.exists(), String.format("destinationFile %s", destinationDir)),
+                () -> assertEquals(expectedLength, destinationFile.length(), String.format("destinationFile %s", destinationDir))
         );
     }
 

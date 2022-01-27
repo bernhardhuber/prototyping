@@ -17,46 +17,35 @@ package org.huberb.prototyping.anttasks;
 
 import java.io.File;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Copy;
+import org.apache.tools.ant.taskdefs.Sync;
 import org.apache.tools.ant.types.FileSet;
 
 /**
  *
  * @author berni3
  */
-public class CopyBuilder {
+public class SyncBuilder {
 
-    private final Copy copy;
+    private final Sync sync;
 
-    public CopyBuilder(Project project) {
-        this.copy = (Copy) project.createTask("copy");
-        this.copy.init();
-        copy.setOverwrite(false);
+    public SyncBuilder(Project project) {
+        this.sync = (Sync) project.createTask("sync");
+        this.sync.init();
+        sync.setOverwrite(false);
     }
 
-    public CopyBuilder file(String f) {
-        this.copy.setFile(new File(f));
+    public SyncBuilder todir(String f) {
+        this.sync.setTodir(new File(f));
         return this;
     }
 
-    public CopyBuilder tofile(String f) {
-        this.copy.setTofile(new File(f));
+    public SyncBuilder addfileset(FileSet fileSet) {
+        this.sync.addFileset(fileSet);
         return this;
     }
 
-    public CopyBuilder addfileset(FileSet fileSet) {
-        this.copy.addFileset(fileSet);
-        return this;
+    public Sync build() {
+        return this.sync;
     }
-
-    public CopyBuilder todir(String d) {
-        this.copy.setTodir(new File(d));
-        return this;
-    }
-
-    public Copy build() {
-        return this.copy;
-    }
-
 
 }

@@ -16,47 +16,32 @@
 package org.huberb.prototyping.anttasks;
 
 import java.io.File;
-import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
 
 /**
  *
  * @author berni3
  */
-public class CopyBuilder {
+public class FileSetBuilder {
+    
+    private final FileSet fileSet;
 
-    private final Copy copy;
-
-    public CopyBuilder(Project project) {
-        this.copy = (Copy) project.createTask("copy");
-        this.copy.init();
-        copy.setOverwrite(false);
+    public FileSetBuilder() {
+        this.fileSet = new FileSet();
     }
 
-    public CopyBuilder file(String f) {
-        this.copy.setFile(new File(f));
+    public FileSetBuilder dir(String dir) {
+        fileSet.setDir(new File(dir));
         return this;
     }
 
-    public CopyBuilder tofile(String f) {
-        this.copy.setTofile(new File(f));
+    public FileSetBuilder includes(String include) {
+        fileSet.appendIncludes(new String[]{include});
         return this;
     }
 
-    public CopyBuilder addfileset(FileSet fileSet) {
-        this.copy.addFileset(fileSet);
-        return this;
+    public FileSet build() {
+        return fileSet;
     }
-
-    public CopyBuilder todir(String d) {
-        this.copy.setTodir(new File(d));
-        return this;
-    }
-
-    public Copy build() {
-        return this.copy;
-    }
-
-
+    
 }

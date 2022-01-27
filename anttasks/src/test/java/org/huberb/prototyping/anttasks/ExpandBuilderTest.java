@@ -28,7 +28,7 @@ import org.junit.jupiter.api.io.TempDir;
  *
  * @author berni3
  */
-public class UnzipBuilderTest {
+public class ExpandBuilderTest {
 
     @TempDir
     private static Path sharedTempDir;
