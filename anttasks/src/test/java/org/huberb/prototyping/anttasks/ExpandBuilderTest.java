@@ -19,7 +19,6 @@ import java.io.File;
 import java.net.URISyntaxException;
 import java.nio.file.Path;
 import org.apache.tools.ant.taskdefs.Expand;
-import org.huberb.prototyping.anttasks.ExpandBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -36,6 +35,7 @@ public class ExpandBuilderTest {
     @Test
     public void testUnzip() throws URISyntaxException {
         Assertions.assertNotNull(sharedTempDir);
+
         final File zipFilepath = new File("target/test-classes/sample.zip");
         Assertions.assertTrue(zipFilepath.exists(), String.format("zipFilepath %s", zipFilepath.getPath()));
         final File destinationDirFile = sharedTempDir.resolve("unzip-test-dir1").toFile();

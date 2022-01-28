@@ -17,29 +17,43 @@ package org.huberb.prototyping.anttasks;
 
 import java.io.File;
 import org.apache.tools.ant.Project;
-import org.apache.tools.ant.taskdefs.Available;
+import org.apache.tools.ant.taskdefs.Zip;
 
 /**
  *
  * @author berni3
  */
-public class AvailableBuilder {
-    
-    private final Available available;
+public class ZipBuilder {
 
-    public AvailableBuilder(Project project) {
-        this.available = (Available) project.createTask("available");
-this.available.init();
-        available.setProperty("available");
+    private final Zip zip;
+
+    public ZipBuilder(Project project) {
+        this.zip = (Zip) project.createTask("zip");
+this.zip.init();
     }
 
-    public AvailableBuilder file(String source) {
-        available.setFile(new File(source));
+    public ZipBuilder destFile(String destFile) {
+        zip.setDestFile(new File(destFile));
         return this;
     }
 
-    public Available build() {
-        return available;
+    public ZipBuilder basedir(String basedir) {
+        zip.setBasedir(new File(basedir));
+        return this;
     }
-    
+
+    public ZipBuilder includes(String includes) {
+        zip.setIncludes(includes);
+        return this;
+    }
+
+    public ZipBuilder excludes(String excludes) {
+        zip.setExcludes(excludes);
+        return this;
+    }
+
+    public Zip build() {
+        return zip;
+    }
+
 }

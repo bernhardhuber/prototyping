@@ -16,6 +16,7 @@
 package org.huberb.prototyping.anttasks;
 
 import java.io.File;
+import java.util.List;
 import org.apache.tools.ant.types.FileSet;
 
 /**
@@ -23,7 +24,7 @@ import org.apache.tools.ant.types.FileSet;
  * @author berni3
  */
 public class FileSetBuilder {
-    
+
     private final FileSet fileSet;
 
     public FileSetBuilder() {
@@ -35,13 +36,42 @@ public class FileSetBuilder {
         return this;
     }
 
-    public FileSetBuilder includes(String include) {
-        fileSet.appendIncludes(new String[]{include});
+    //----
+    public FileSetBuilder includes(String includes) {
+        fileSet.setIncludes(includes);
+        return this;
+    }
+
+    public FileSetBuilder includes(List<String> includesAsList) {
+        return includes(includesAsList.toArray(String[]::new));
+    }
+
+    public FileSetBuilder includes(String... includes) {
+        if (includes != null && includes.length > 0) {
+            fileSet.appendIncludes(includes);
+        }
+        return this;
+    }
+
+    //----
+    public FileSetBuilder excludes(String excludes) {
+        fileSet.setExcludes(excludes);
+        return this;
+    }
+
+    public FileSetBuilder excludes(List<String> excludesAsList) {
+        return excludes(excludesAsList.toArray(String[]::new));
+    }
+
+    public FileSetBuilder excludes(String... excludes) {
+        if (excludes != null && excludes.length > 0) {
+            fileSet.appendExcludes(excludes);
+        }
         return this;
     }
 
     public FileSet build() {
         return fileSet;
     }
-    
+
 }
