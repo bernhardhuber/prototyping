@@ -25,6 +25,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.logging.Logger;
 import org.huberb.prototyping.transhuelle.TransHuelle.Supports.MapBuilder;
 import org.huberb.prototyping.transhuelle.TransHuelle.Supports.SetBuilder;
 
@@ -33,32 +34,6 @@ import org.huberb.prototyping.transhuelle.TransHuelle.Supports.SetBuilder;
  * @author berni3
  */
 public class TransHuelle {
-
-    public static void main(String[] args) {
-        final List<Data> dinList = Arrays.asList(
-                //                new DataFactory().createDataSample1(),
-                //                new DataFactory().createDataSample2(),
-                //                new DataFactory().createDataSample3(),
-                //                new DataFactory().createDataSample4(),
-                new DataFactory().createDataSample5()
-        );
-        for (int i = 0; i < dinList.size(); i++) {
-            final Data din = dinList.get(i);
-            System.out.println(String.format(">>>%n%s %d%n"
-                    + "din: %s%n",
-                    TransHuelle.class, i,
-                    din.toString()
-            ));
-            final Data dout = new Algorithm().evaluate(din);
-            System.out.println(String.format("%n%s %d%n"
-                    + "din: %s%n"
-                    + "dout: %s%n"
-                    + "<<<%n",
-                    TransHuelle.class, i,
-                    din.toString(), dout.toString()
-            ));
-        }
-    }
 
     /**
      * Wrapper for input, and out aka merged-data
@@ -237,6 +212,8 @@ public class TransHuelle {
      */
     static class Algorithm {
 
+        private static final Logger logger = Logger.getLogger(Algorithm.class.getName());
+
         /**
          *
          * @param in
@@ -320,7 +297,7 @@ public class TransHuelle {
                     }
                 }
                 // Process opList
-                System.out.println(String.format("Process opList: %s", opList));
+                logger.info(String.format("Process opList: %s", opList));
                 for (final Map<String, Object> opElement : opList) {
 
                     final String op = (String) opElement.getOrDefault("op", "-");
@@ -345,7 +322,7 @@ public class TransHuelle {
                         );
                     } else if ("delete".equals(op)) {
                         // delete matched
-                        final  Set<String>  op_ingname = (Set<String>) opElement.get("ingname");
+                        final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
                         final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
                         final Set<String> op_outnames = (Set<String>) opElement.get("outnames");
                         final Set<String> op_outgmembers = (Set<String>) opElement.get("outgmembers");
@@ -357,7 +334,7 @@ public class TransHuelle {
                 }
             }
             final long endTime = System.currentTimeMillis();
-            System.out.println(String.format("evaluate start %d ms, end %d ms, duration %d ms",
+            logger.info(String.format("evaluate start %d ms, end %d ms, duration %d ms",
                     startTime, endTime,
                     (endTime - startTime))
             );
