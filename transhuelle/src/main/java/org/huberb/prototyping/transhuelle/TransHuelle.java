@@ -62,10 +62,10 @@ public class TransHuelle {
             this(name, new ArrayList<>(), new ArrayList<>());
         }
 
-        public Data(String name, List<Map<String, Set<String>>> groupsIn, List<Map<String, Set<String>>> groupsMerged) {
+        public Data(String name, List<Map<String, Set<String>>> groupsInList, List<Map<String, Set<String>>> groupsMergedList) {
             this.name = name;
-            this.groupsInList = groupsIn;
-            this.groupsMergedList = groupsMerged;
+            this.groupsInList = groupsInList;
+            this.groupsMergedList = groupsMergedList;
         }
 
         @Override
@@ -227,12 +227,13 @@ public class TransHuelle {
             //---
             for (final Map<String, Set<String>> groupsInElement : out.groupsInList) {
                 // Consider ingname, and ingmembers
+                // eg. ingname = "S1", ingmembers = [ "A1" , "A2" ]
                 final String ingname = groupsInElement.get(Data.kName).iterator().next();
                 final Set<String> ingmembers = groupsInElement.get(Data.kGroup);
                 //---
                 final List<Map<String, Object>> opList = new ArrayList<>();
                 if (out.groupsMergedList.isEmpty()) {
-                    // merged list empty insert [ ingname, ingmembers ]
+                    // merged list is empty insert [ ingname, ingmembers ]
                     final Map<String, Object> opInsert = new MapBuilder<String, Object>()
                             .kv("op", "insert")
                             .kv("ingname", ingname)
@@ -240,13 +241,13 @@ public class TransHuelle {
                             .build();
                     opList.add(opInsert);
                 } else {
-                    // find a match for [ingname, ingmembers] in mergedList
+                    // find a match for [ingname, ingmembers] in groupsMergedList
                     int matchCount = 0;
                     for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
                         final Set<String> outnames = groupsMergedElement.get(Data.kName);
                         final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
 
-                        final boolean match = ingmembers.stream().anyMatch((ingmember) -> outgmembers.contains(ingmember));
+                        final boolean match = ingmembers.stream().anyMatch((theIngmember) -> outgmembers.contains(theIngmember));
                         if (match) {
                             // Thers is already a group containing ingmember
                             if (matchCount == 0) {
@@ -261,8 +262,8 @@ public class TransHuelle {
                                 opList.add(opMerge);
                             } else {
                                 // This is another match
-                                // we have alreay merged
                                 final Map<String, Object> opMergeMatchCount0 = opList.get(0);
+                                // merge current match to first merge
                                 final Map<String, Object> opMerge = new MapBuilder<String, Object>()
                                         .kv("op", "merge")
                                         .kv("ingname", outnames)
@@ -272,7 +273,7 @@ public class TransHuelle {
                                         .build();
                                 opList.add(opMerge);
 
-                                // 
+                                // delete current match
                                 final Map<String, Object> opDelete = new MapBuilder<String, Object>()
                                         .kv("op", "delete")
                                         .kv("ingname", SetBuilder.newSetBuilderVs(ingname))
@@ -298,40 +299,7 @@ public class TransHuelle {
                 }
                 // Process opList
                 logger.info(String.format("Process opList: %s", opList));
-                for (final Map<String, Object> opElement : opList) {
-
-                    final String op = (String) opElement.getOrDefault("op", "-");
-                    if ("merge".equals(op)) {
-                        // can merge
-                        final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
-                        final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
-                        final Set<String> op_outnames = (Set<String>) opElement.get("outnames");
-                        final Set<String> op_outgmembers = (Set<String>) opElement.get("outgmembers");
-
-                        op_outnames.addAll(op_ingname);
-                        op_outgmembers.addAll(op_ingmembers);
-                    } else if ("insert".equals(op)) {
-                        // add in to out
-                        final String op_ingname = (String) opElement.get("ingname");
-                        final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
-
-                        out.groupsMergedList.add(new MapBuilder<String, Set<String>>()
-                                .kv(Data.kName, new HashSet<String>(Arrays.asList(op_ingname)))
-                                .kv(Data.kGroup, new HashSet<>(op_ingmembers))
-                                .build()
-                        );
-                    } else if ("delete".equals(op)) {
-                        // delete matched
-                        final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
-                        final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
-                        final Set<String> op_outnames = (Set<String>) opElement.get("outnames");
-                        final Set<String> op_outgmembers = (Set<String>) opElement.get("outgmembers");
-                        final Predicate<Map<String, Set<String>>> p = (m
-                                -> m.get(Data.kName) == op_outnames
-                                && m.get(Data.kGroup) == op_outgmembers);
-                        out.groupsMergedList.removeIf(p);
-                    }
-                }
+                processOpList(out, opList);
             }
             final long endTime = System.currentTimeMillis();
             logger.info(String.format("evaluate start %d ms, end %d ms, duration %d ms",
@@ -339,6 +307,50 @@ public class TransHuelle {
                     (endTime - startTime))
             );
             return out;
+        }
+
+        /**
+         * Process opList
+         *
+         * @param out
+         * @param opList
+         */
+        void processOpList(Data out, final List<Map<String, Object>> opList) {
+            logger.info(String.format("Process opList: %s", opList));
+            for (final Map<String, Object> opElement : opList) {
+
+                final String op = (String) opElement.getOrDefault("op", "-");
+                if ("merge".equals(op)) {
+                    // can merge
+                    final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
+                    final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
+                    final Set<String> op_outnames = (Set<String>) opElement.get("outnames");
+                    final Set<String> op_outgmembers = (Set<String>) opElement.get("outgmembers");
+
+                    op_outnames.addAll(op_ingname);
+                    op_outgmembers.addAll(op_ingmembers);
+                } else if ("insert".equals(op)) {
+                    // add in to out
+                    final String op_ingname = (String) opElement.get("ingname");
+                    final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
+
+                    out.groupsMergedList.add(new MapBuilder<String, Set<String>>()
+                            .kv(Data.kName, new HashSet<>(Arrays.asList(op_ingname)))
+                            .kv(Data.kGroup, new HashSet<>(op_ingmembers))
+                            .build()
+                    );
+                } else if ("delete".equals(op)) {
+                    // delete matched
+                    final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
+                    final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
+                    final Set<String> op_outnames = (Set<String>) opElement.get("outnames");
+                    final Set<String> op_outgmembers = (Set<String>) opElement.get("outgmembers");
+                    final Predicate<Map<String, Set<String>>> p = (m
+                            -> m.get(Data.kName) == op_outnames
+                            && m.get(Data.kGroup) == op_outgmembers);
+                    out.groupsMergedList.removeIf(p);
+                }
+            }
         }
     }
 
