@@ -25,9 +25,9 @@ import java.util.stream.Stream;
 import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 import org.huberb.prototyping.transhuelle.TransHuelle.DataFactory;
-import org.junit.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.Test;
 import org.yaml.snakeyaml.Yaml;
 
 /**
