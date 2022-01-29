@@ -36,10 +36,11 @@ public class TransHuelle {
 
     public static void main(String[] args) {
         final List<Data> dinList = Arrays.asList(
-                new DataFactory().createDataSample1(),
-                new DataFactory().createDataSample2(),
-                new DataFactory().createDataSample3(),
-                new DataFactory().createDataSample4()
+                //                new DataFactory().createDataSample1(),
+                //                new DataFactory().createDataSample2(),
+                //                new DataFactory().createDataSample3(),
+                //                new DataFactory().createDataSample4(),
+                new DataFactory().createDataSample5()
         );
         for (int i = 0; i < dinList.size(); i++) {
             final Data din = dinList.get(i);
@@ -194,6 +195,41 @@ public class TransHuelle {
             data.groupsInList.addAll(arg0);
             return data;
         }
+
+        Data createDataSample5() {
+            final Data data = new Data("dataSample5 merge+insert+merge");
+            final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
+            arg0.add(new MapBuilder<String, Set<String>>()
+                    .kv(Data.kName, new HashSet<>(Arrays.asList("S1")))
+                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A1", "A2")))
+                    .build());
+            arg0.add(new MapBuilder<String, Set<String>>()
+                    .kv(Data.kName, new HashSet<>(Arrays.asList("S2")))
+                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A2", "A3")))
+                    .build());
+            arg0.add(new MapBuilder<String, Set<String>>()
+                    .kv(Data.kName, new HashSet<>(Arrays.asList("S3")))
+                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A4")))
+                    .build());
+            arg0.add(new MapBuilder<String, Set<String>>()
+                    .kv(Data.kName, new HashSet<>(Arrays.asList("S4")))
+                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A5")))
+                    .build());
+            arg0.add(new MapBuilder<String, Set<String>>()
+                    .kv(Data.kName, new HashSet<>(Arrays.asList("S5")))
+                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A4", "A6")))
+                    .build());
+            arg0.add(new MapBuilder<String, Set<String>>()
+                    .kv(Data.kName, new HashSet<>(Arrays.asList("S6")))
+                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A5", "A7")))
+                    .build());
+            arg0.add(new MapBuilder<String, Set<String>>()
+                    .kv(Data.kName, new HashSet<>(Arrays.asList("S7")))
+                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A1", "A6", "A7")))
+                    .build());
+            data.groupsInList.addAll(arg0);
+            return data;
+        }
     }
 
     /**
@@ -201,11 +237,11 @@ public class TransHuelle {
      */
     static class Algorithm {
 
-/**
-
-@param in 
-@return 
-*/
+        /**
+         *
+         * @param in
+         * @return
+         */
         Data evaluate(final Data in) {
             final long startTime = System.currentTimeMillis();
             final Data out = new Data(in.name);
@@ -213,12 +249,13 @@ public class TransHuelle {
 
             //---
             for (final Map<String, Set<String>> groupsInElement : out.groupsInList) {
+                // Consider ingname, and ingmembers
                 final String ingname = groupsInElement.get(Data.kName).iterator().next();
                 final Set<String> ingmembers = groupsInElement.get(Data.kGroup);
                 //---
                 final List<Map<String, Object>> opList = new ArrayList<>();
                 if (out.groupsMergedList.isEmpty()) {
-                    // add in to out
+                    // merged list empty insert [ ingname, ingmembers ]
                     final Map<String, Object> opInsert = new MapBuilder<String, Object>()
                             .kv("op", "insert")
                             .kv("ingname", ingname)
@@ -226,6 +263,7 @@ public class TransHuelle {
                             .build();
                     opList.add(opInsert);
                 } else {
+                    // find a match for [ingname, ingmembers] in mergedList
                     int matchCount = 0;
                     for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
                         final Set<String> outnames = groupsMergedElement.get(Data.kName);
@@ -233,19 +271,34 @@ public class TransHuelle {
 
                         final boolean match = ingmembers.stream().anyMatch((ingmember) -> outgmembers.contains(ingmember));
                         if (match) {
+                            // Thers is already a group containing ingmember
                             if (matchCount == 0) {
+                                // this the first match merge ingname, ingmember
                                 final Map<String, Object> opMerge = new MapBuilder<String, Object>()
                                         .kv("op", "merge")
-                                        .kv("ingname", ingname)
+                                        .kv("ingname", SetBuilder.newSetBuilderVs(ingname))
                                         .kv("ingmembers", ingmembers)
                                         .kv("outnames", outnames)
                                         .kv("outgmembers", outgmembers)
                                         .build();
                                 opList.add(opMerge);
                             } else {
+                                // This is another match
+                                // we have alreay merged
+                                final Map<String, Object> opMergeMatchCount0 = opList.get(0);
+                                final Map<String, Object> opMerge = new MapBuilder<String, Object>()
+                                        .kv("op", "merge")
+                                        .kv("ingname", outnames)
+                                        .kv("ingmembers", outgmembers)
+                                        .kv("outnames", opMergeMatchCount0.get("outnames"))
+                                        .kv("outgmembers", opMergeMatchCount0.get("outgmembers"))
+                                        .build();
+                                opList.add(opMerge);
+
+                                // 
                                 final Map<String, Object> opDelete = new MapBuilder<String, Object>()
                                         .kv("op", "delete")
-                                        .kv("ingname", ingname)
+                                        .kv("ingname", SetBuilder.newSetBuilderVs(ingname))
                                         .kv("ingmembers", ingmembers)
                                         .kv("outnames", outnames)
                                         .kv("outgmembers", outgmembers)
@@ -256,6 +309,7 @@ public class TransHuelle {
                         }
                     }
                     // PostProcess matchCount=0
+                    // no matching insert ingname, ingmembers into merged-result
                     if (matchCount == 0) {
                         final Map<String, Object> opInsert = new MapBuilder<String, Object>()
                                 .kv("op", "insert")
@@ -272,12 +326,12 @@ public class TransHuelle {
                     final String op = (String) opElement.getOrDefault("op", "-");
                     if ("merge".equals(op)) {
                         // can merge
-                        final String op_ingname = (String) opElement.get("ingname");
+                        final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
                         final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
                         final Set<String> op_outnames = (Set<String>) opElement.get("outnames");
                         final Set<String> op_outgmembers = (Set<String>) opElement.get("outgmembers");
 
-                        op_outnames.add(op_ingname);
+                        op_outnames.addAll(op_ingname);
                         op_outgmembers.addAll(op_ingmembers);
                     } else if ("insert".equals(op)) {
                         // add in to out
@@ -291,7 +345,7 @@ public class TransHuelle {
                         );
                     } else if ("delete".equals(op)) {
                         // delete matched
-                        final String op_ingname = (String) opElement.get("ingname");
+                        final  Set<String>  op_ingname = (Set<String>) opElement.get("ingname");
                         final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
                         final Set<String> op_outnames = (Set<String>) opElement.get("outnames");
                         final Set<String> op_outgmembers = (Set<String>) opElement.get("outgmembers");
@@ -303,7 +357,10 @@ public class TransHuelle {
                 }
             }
             final long endTime = System.currentTimeMillis();
-            System.out.println(String.format("evaluate start %d ms, end %d ms, duration %d ms", startTime, endTime, (endTime - startTime)));
+            System.out.println(String.format("evaluate start %d ms, end %d ms, duration %d ms",
+                    startTime, endTime,
+                    (endTime - startTime))
+            );
             return out;
         }
     }
