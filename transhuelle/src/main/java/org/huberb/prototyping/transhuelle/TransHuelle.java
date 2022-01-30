@@ -17,17 +17,15 @@ package org.huberb.prototyping.transhuelle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
-import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.function.Predicate;
 import java.util.logging.Logger;
-import org.huberb.prototyping.transhuelle.TransHuelle.Supports.MapBuilder;
-import org.huberb.prototyping.transhuelle.TransHuelle.Supports.SetBuilder;
+import org.huberb.prototyping.transhuelle.Supports.MapBuilder;
+import org.huberb.prototyping.transhuelle.Supports.SetBuilder;
+import static org.huberb.prototyping.transhuelle.TransHuelle.Data.newSetBuilderVs;
 
 /**
  *
@@ -81,6 +79,11 @@ public class TransHuelle {
             return toString;
         }
 
+    static Set<String> newSetBuilderVs(String... vs) {
+        final Set<String> result = new SetBuilder<String>().vs(vs).build();
+        return result;
+    }
+
         public Map<String, Object> toMap() {
             final Map<String, Object> result = new MapBuilder<String, Object>()
                     .kv("name", this.name)
@@ -88,122 +91,6 @@ public class TransHuelle {
                     .kv("groupsMergedList", this.groupsMergedList)
                     .build();
             return result;
-        }
-    }
-
-    /**
-     * Simple factory generating Data samples.
-     */
-    static class DataFactory {
-
-        Data createDataSample1() {
-            final Data data = new Data("dataSample1 merge+insert");
-            final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, SetBuilder.newSetBuilderVs("S1"))
-                    .kv(Data.kGroup, SetBuilder.newSetBuilderVs("A1", "A2"))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S2")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A2", "A3")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S3")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A4")))
-                    .build());
-            data.groupsInList.addAll(arg0);
-            return data;
-        }
-
-        Data createDataSample2() {
-            final Data data = new Data("dataSample2 merge+insert+merge");
-            final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S1")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A1", "A2")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S2")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A2", "A3")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S3")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A4")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S4")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A1", "A4")))
-                    .build());
-            data.groupsInList.addAll(arg0);
-            return data;
-        }
-
-        Data createDataSample3() {
-            final Data data = new Data("dataSample3 no-merge-only-insert");
-            final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
-            for (int i = 0; i < 10; i += 2) {
-                arg0.add(new MapBuilder<String, Set<String>>()
-                        .kv(Data.kName, new HashSet<>(Arrays.asList("S" + i)))
-                        .kv(Data.kGroup, new HashSet<>(Arrays.asList("A" + i, "A" + (i + 1))))
-                        .build());
-            }
-            data.groupsInList.addAll(arg0);
-            return data;
-        }
-
-        Data createDataSample4() {
-            final Data data = new Data("dataSample4 merge-alleven-insert-allodd");
-            final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
-            for (int i = 0; i < 10; i += 1) {
-                if (i % 2 == 0) {
-                    arg0.add(new MapBuilder<String, Set<String>>()
-                            .kv(Data.kName, new HashSet<>(Arrays.asList("S" + i)))
-                            .kv(Data.kGroup, new HashSet<>(Arrays.asList("A" + i, "A" + (i + 2))))
-                            .build());
-                } else {
-                    arg0.add(new MapBuilder<String, Set<String>>()
-                            .kv(Data.kName, new HashSet<>(Arrays.asList("S" + i)))
-                            .kv(Data.kGroup, new HashSet<>(Arrays.asList("A" + i)))
-                            .build());
-                }
-            }
-            data.groupsInList.addAll(arg0);
-            return data;
-        }
-
-        Data createDataSample5() {
-            final Data data = new Data("dataSample5 merge+insert+merge");
-            final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S1")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A1", "A2")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S2")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A2", "A3")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S3")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A4")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S4")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A5")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S5")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A4", "A6")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S6")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A5", "A7")))
-                    .build());
-            arg0.add(new MapBuilder<String, Set<String>>()
-                    .kv(Data.kName, new HashSet<>(Arrays.asList("S7")))
-                    .kv(Data.kGroup, new HashSet<>(Arrays.asList("A1", "A6", "A7")))
-                    .build());
-            data.groupsInList.addAll(arg0);
-            return data;
         }
     }
 
@@ -232,6 +119,8 @@ public class TransHuelle {
                 final Set<String> ingmembers = groupsInElement.get(Data.kGroup);
                 //---
                 final List<Map<String, Object>> opList = new ArrayList<>();
+
+                // try to find ingname, ingmembers in out.groupsMergedList
                 if (out.groupsMergedList.isEmpty()) {
                     // merged list is empty insert [ ingname, ingmembers ]
                     final Map<String, Object> opInsert = new MapBuilder<String, Object>()
@@ -254,7 +143,7 @@ public class TransHuelle {
                                 // this the first match merge ingname, ingmember
                                 final Map<String, Object> opMerge = new MapBuilder<String, Object>()
                                         .kv("op", "merge")
-                                        .kv("ingname", SetBuilder.newSetBuilderVs(ingname))
+                                        .kv("ingname", newSetBuilderVs(ingname))
                                         .kv("ingmembers", ingmembers)
                                         .kv("outnames", outnames)
                                         .kv("outgmembers", outgmembers)
@@ -276,7 +165,7 @@ public class TransHuelle {
                                 // delete current match
                                 final Map<String, Object> opDelete = new MapBuilder<String, Object>()
                                         .kv("op", "delete")
-                                        .kv("ingname", SetBuilder.newSetBuilderVs(ingname))
+                                        .kv("ingname", newSetBuilderVs(ingname))
                                         .kv("ingmembers", ingmembers)
                                         .kv("outnames", outnames)
                                         .kv("outgmembers", outgmembers)
@@ -354,61 +243,4 @@ public class TransHuelle {
         }
     }
 
-    /**
-     * Supporting classes
-     */
-    static class Supports {
-
-        /**
-         * Supports building a Map
-         */
-        static class MapBuilder<K, V> {
-
-            final Map<K, V> m = new LinkedHashMap<>();
-
-            MapBuilder<K, V> kv(K k, V v) {
-                this.m.put(k, v);
-                return this;
-            }
-
-            Map<K, V> build() {
-                return this.m;
-            }
-
-        }
-
-        static class SetBuilder<V> {
-
-            static Set<String> newSetBuilderVs(String... vs) {
-                final Set<String> result = new SetBuilder<String>()
-                        .vs(vs)
-                        .build();
-                return result;
-            }
-
-            final Set<V> s = new LinkedHashSet<>();
-
-            SetBuilder<V> v(Collection<V> vc) {
-                this.s.addAll(vc);
-                return this;
-            }
-
-            SetBuilder<V> v(V v) {
-                this.s.add(v);
-                return this;
-            }
-
-            SetBuilder<V> vs(V... vs) {
-                for (int i = 0; i < vs.length; i++) {
-                    this.s.add(vs[i]);
-                }
-                return this;
-            }
-
-            Set<V> build() {
-                return this.s;
-            }
-        }
-
-    }
 }

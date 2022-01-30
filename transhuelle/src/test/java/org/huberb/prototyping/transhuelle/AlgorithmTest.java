@@ -20,11 +20,12 @@ import groovy.json.JsonGenerator.Options;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+import org.huberb.prototyping.transhuelle.AlgorithmTest.Generators.CsvGenerator;
 import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
-import org.huberb.prototyping.transhuelle.TransHuelle.DataFactory;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
@@ -113,6 +114,14 @@ public class AlgorithmTest {
         final Data din = new DataFactory().createDataSample5();
         final Data dout = new Algorithm().evaluate(din);
 
+        System.out.println(
+                String.format("csv given_createDataSample5_verify_groupsMergedList%n"
+                        + "groupsInList:%n%s%n"
+                        + "groupsMergedList:%n%s%n",
+                        new CsvGenerator().toCsv0(dout.groupsInList),
+                        new CsvGenerator().toCsv0(dout.groupsMergedList))
+        );
+
         assertEquals("dataSample5 merge+insert+merge", dout.name);
         assertEquals(7, dout.groupsInList.size(), "" + dout);
         assertEquals(1, dout.groupsMergedList.size(), "" + dout);
@@ -135,27 +144,36 @@ public class AlgorithmTest {
         }
 
         void toCsv(Data dout) {
-            final String doutCsv = new CsvGenerator().toCsv(dout.toMap());
-            System.out.println(String.format("doutCsv:%n%s%n", doutCsv));
+            final String doutGroupsInListCsv = new CsvGenerator().toCsv0(dout.groupsInList);
+            final String doutGroupsMergedListCsv = new CsvGenerator().toCsv0(dout.groupsMergedList);
+            System.out.println(String.format("doutCsv:%n"
+                    + "doutGroupsInListCsv:%n%s%n"
+                    + "doutGroupsMergedListCsv:%n%s%n", doutGroupsInListCsv, doutGroupsMergedListCsv));
         }
 
         static class CsvGenerator {
 
-            String toCsv(Map<String, Object> m) {
-                //List<String> keys = m.keySet().stream().sorted().collect(Collectors.toList());
-                List<Map.Entry<String, Object>> mapEntryList = m.entrySet().stream()
-                        .sorted(Map.Entry.comparingByKey())
-                        .collect(Collectors.toList());
-                final StringBuilder csvLines = new StringBuilder();
-                for (Map.Entry<String, Object> mapEntry : mapEntryList) {
-                    String[] lineValues = new String[]{mapEntry.getKey(), mapEntry.getValue().toString()};
-                    String csvLine = Stream.of(lineValues)
-                            .map(this::escapeSpecialCharacters)
-                            .collect(Collectors.joining(","));
-                    csvLines.append(csvLine).append("\n");
+            String toCsv0(List<Map<String, Set<String>>> l) {
+                StringBuilder csvLines = new StringBuilder();
 
+                csvLines.append(toSingleLine(new String[]{"key", "value"}));
+
+                for (Map<String, Set<String>> m : l) {
+                    Set<String> nameSet = m.get(Data.kName);
+                    Set<String> groupSet = m.get(Data.kGroup);
+                    final String[] lineValues = new String[]{nameSet.toString(), groupSet.toString()};
+                    csvLines.append(toSingleLine(lineValues));
                 }
                 return csvLines.toString();
+            }
+
+            String toSingleLine(String[] lineValues) {
+                StringBuilder sb = new StringBuilder();
+                String csvLine = Stream.of(lineValues)
+                        .map(this::escapeSpecialCharacters)
+                        .collect(Collectors.joining(","));
+                sb.append(csvLine).append("\n");
+                return sb.toString();
             }
 
             public String escapeSpecialCharacters(String data) {

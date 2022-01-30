@@ -21,9 +21,11 @@ import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
-import org.huberb.prototyping.transhuelle.TransHuelle.DataFactory;
+import org.huberb.prototyping.transhuelle.DataFactory;
 
 /**
+ * Command line entry launching {@link Algorithm#evaluate(org.huberb.prototyping.transhuelle.TransHuelle.Data)
+ * }.
  *
  * @author berni3
  */
