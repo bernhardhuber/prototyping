@@ -81,19 +81,23 @@ public class CsvGenerator {
          * @throws IOException
          */
         public List<Map<String, Set<String>>> fromCsv(String s) throws IOException {
-            List<Map<String, Set<String>>> l = new ArrayList<>();
-            try (final StringReader sr = new StringReader(s)) {
-                BufferedReader br = new BufferedReader(sr);
+            final List<Map<String, Set<String>>> l = new ArrayList<>();
+            try (final StringReader sr = new StringReader(s); final BufferedReader br = new BufferedReader(sr)) {
                 for (String line; (line = br.readLine()) != null;) {
-                    Map<String, Set<String>> m = fromSingleLine(line);
-                    l.add(m);
+                    if (line.isEmpty() || line.strip().isEmpty()) {
+                        continue;
+                    }
+                    final Map<String, Set<String>> m = fromSingleLine(line);
+                    if (!m.isEmpty()) {
+                        l.add(m);
+                    }
                 }
             }
             return l;
         }
 
         Map<String, Set<String>> fromSingleLine(String line) {
-            Map<String, Set<String>> m = new HashMap<>();
+            final Map<String, Set<String>> m = new HashMap<>();
             int indexOfComma = line.indexOf(',');
             String k = line.substring(0, indexOfComma);
             String v = line.substring(indexOfComma + 1);
@@ -103,10 +107,12 @@ public class CsvGenerator {
             //---
             v = stripEncodings(v);
 
-            //---
-            final Set<String> vSet = Stream.of(v.split(",")).map(s -> s.strip()).collect(Collectors.toSet());
-            m.put(Data.kName, new SetBuilder<String>().v(k).build());
-            m.put(Data.kGroup, vSet);
+            if (!k.isEmpty() && !v.isEmpty()) {
+                //---
+                final Set<String> vSet = Stream.of(v.split(",")).map(s -> s.strip()).collect(Collectors.toSet());
+                m.put(Data.kName, new SetBuilder<String>().v(k).build());
+                m.put(Data.kGroup, vSet);
+            }
             return m;
         }
 
