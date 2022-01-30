@@ -45,7 +45,7 @@
             <type>jar</type>
             <scope>test</scope>
         </dependency>
-        
+
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>
@@ -73,7 +73,7 @@
             <artifactId>mockito-core</artifactId>
             <version>${mockito.version}</version>
             <scope>test</scope>
-        </dependency>    
+        </dependency>
     </dependencies>
     <build>
         <plugins>
@@ -107,7 +107,7 @@
                         </configuration>
                     </execution>
                 </executions>
-            </plugin>            
+            </plugin>
         </plugins>
     </build>
 </project>
