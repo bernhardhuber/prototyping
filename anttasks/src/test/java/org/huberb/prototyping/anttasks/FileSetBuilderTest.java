@@ -113,13 +113,7 @@ public class FileSetBuilderTest {
     }
 
     private String normalizeFileSeparator(String fileName) {
-        final String fileNameNormalized;
-        if (File.separatorChar != '/') {
-            fileNameNormalized = fileName.replace(File.separatorChar, '/');
-        } else {
-            fileNameNormalized = fileName;
-        }
-
+        final String fileNameNormalized = fileName.replace(File.separatorChar, '/');
         return fileNameNormalized;
     }
 
