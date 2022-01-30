@@ -111,8 +111,8 @@ public class AlgorithmTest {
         System.out.println(String.format("csv given_createDataSample5_verify_groupsMergedList%n"
                 + "groupsInList:%n%s%n"
                 + "groupsMergedList:%n%s%n",
-                new CsvGenerator().toCsv0(dout.groupsInList),
-                new CsvGenerator().toCsv0(dout.groupsMergedList))
+                new CsvGenerator.CsvWriter().toCsv(dout.groupsInList),
+                new CsvGenerator.CsvWriter().toCsv(dout.groupsMergedList))
         );
 
         assertEquals("dataSample5 merge+insert+merge", dout.name);
@@ -122,6 +122,7 @@ public class AlgorithmTest {
         assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7")), "" + dout);
     }
 
+    // TODO move or remove me
     static class Generators {
 
         void toYaml(Data dout) {
@@ -134,14 +135,6 @@ public class AlgorithmTest {
             JsonGenerator jsonGenerator = new Options().build();
             final String doutJson = jsonGenerator.toJson(dout.toMap());
             System.out.println(String.format("doutJson:%n%s%n", doutJson));
-        }
-
-        void toCsv(Data dout) {
-            final String doutGroupsInListCsv = new CsvGenerator().toCsv0(dout.groupsInList);
-            final String doutGroupsMergedListCsv = new CsvGenerator().toCsv0(dout.groupsMergedList);
-            System.out.println(String.format("doutCsv:%n"
-                    + "doutGroupsInListCsv:%n%s%n"
-                    + "doutGroupsMergedListCsv:%n%s%n", doutGroupsInListCsv, doutGroupsMergedListCsv));
         }
     }
 

@@ -20,6 +20,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Stream;
+import org.huberb.prototyping.transhuelle.CsvGenerator.CsvReader;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -30,12 +31,12 @@ import org.junit.jupiter.params.provider.MethodSource;
  *
  * @author berni3
  */
-public class CsvGeneratorTest {
+public class CsvReaderTest {
 
     @ParameterizedTest
     @MethodSource("given_X_Y_varyingProvider")
     public void given_X_Y_varying(String line) {
-        final CsvGenerator instance = new CsvGenerator();
+        final CsvReader instance = new CsvReader();
         final String expected = "{name=[X], group=[Y]}";
 
         final String l1 = "X,Y";
@@ -65,7 +66,7 @@ public class CsvGeneratorTest {
     @ParameterizedTest
     @MethodSource("given_X_Y_Z_varyingProvider")
     public void given_X_Y_Z_varying(String line) {
-        final CsvGenerator instance = new CsvGenerator();
+        final CsvReader instance = new CsvReader();
         final String expected = "{name=[X], group=[Y, Z]}";
 
         assertEquals(expected, instance.fromSingleLine(line).toString());
@@ -83,8 +84,8 @@ public class CsvGeneratorTest {
     }
 
     @Test
-    public void testXXX() throws IOException {
-        final CsvGenerator instance = new CsvGenerator();
+    public void given_csv_parse() throws IOException {
+        final CsvReader instance = new CsvReader();
         final String csv
                 = "S1, \"[A1,A2]\"\n"
                 + "S2, \"[A2,A3]\"\n"
@@ -92,5 +93,38 @@ public class CsvGeneratorTest {
 
         final List<Map<String, Set<String>>> l = instance.fromCsv(csv);
         assertEquals("[{name=[S1], group=[A1, A2]}, {name=[S2], group=[A2, A3]}, {name=[S3], group=[A4]}]", l.toString());
+    }
+
+    @ParameterizedTest
+    @MethodSource("given_input_strip_encodingProvider")
+    public void given_input_strip_encoding(String expected, String input) {
+        final CsvReader instance = new CsvReader();
+        assertEquals(expected, instance.stripEncodings(input));
+    }
+
+    static Stream<Arguments> given_input_strip_encodingProvider() {
+        return Stream.of(
+                Arguments.of("X", "X"),
+                Arguments.of("X", " X "),
+                Arguments.of("X", "\"X\""),
+                Arguments.of("X", " \" X \" "),
+                Arguments.of("X", "[X]"),
+                Arguments.of("X", " [ X ] "),
+                Arguments.of("X", "\"[X]\""),
+                Arguments.of("X", " \" [ X ] \" "),
+                //---
+                Arguments.of("X,Y", "X,Y"),
+                Arguments.of("X,Y", " X,Y "),
+                Arguments.of("X, Y", " X, Y "),
+                Arguments.of("X,Y", "\"X,Y\""),
+                Arguments.of("X,Y", " \" X,Y \" "),
+                Arguments.of("X, Y", " \" X, Y \" "),
+                Arguments.of("X,Y", "[X,Y]"),
+                Arguments.of("X,Y", " [ X,Y ] "),
+                Arguments.of("X, Y", " [ X, Y ] "),
+                Arguments.of("X,Y", "\"[X,Y]\""),
+                Arguments.of("X,Y", " \" [ X,Y ] \" "),
+                Arguments.of("X, Y", " \" [ X, Y ] \" ")
+        );
     }
 }

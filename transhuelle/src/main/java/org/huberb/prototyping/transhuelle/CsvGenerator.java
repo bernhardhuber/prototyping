@@ -32,91 +32,115 @@ import org.huberb.prototyping.transhuelle.TransHuelle.Data;
  *
  * @author berni3
  */
-class CsvGenerator {
+public class CsvGenerator {
 
-    String toCsv0(List<Map<String, Set<String>>> l) {
-        StringBuilder csvLines = new StringBuilder();
-        csvLines.append(toSingleLine(new String[]{"key", "value"}));
-        for (Map<String, Set<String>> m : l) {
-            Set<String> nameSet = m.get(Data.kName);
-            Set<String> groupSet = m.get(Data.kGroup);
-            final String[] lineValues = new String[]{nameSet.toString(), groupSet.toString()};
-            csvLines.append(toSingleLine(lineValues));
-        }
-        return csvLines.toString();
-    }
+    public static class CsvWriter {
 
-    List<Map<String, Set<String>>> fromCsv(String s) throws IOException {
-        List<Map<String, Set<String>>> l = new ArrayList<>();
-        try (final StringReader sr = new StringReader(s)) {
-            BufferedReader br = new BufferedReader(sr);
-            for (String line; (line = br.readLine()) != null;) {
-                Map<String, Set<String>> m = fromSingleLine(line);
-                l.add(m);
+        /**
+         * Entry point to write csv.
+         *
+         * @param mapList
+         * @return
+         */
+        public String toCsv(List<Map<String, Set<String>>> mapList) {
+            StringBuilder csvLines = new StringBuilder();
+            csvLines.append(toSingleLine(new String[]{"key", "value"}));
+            for (Map<String, Set<String>> m : mapList) {
+                Set<String> nameSet = m.get(Data.kName);
+                Set<String> groupSet = m.get(Data.kGroup);
+                final String[] lineValues = new String[]{nameSet.toString(), groupSet.toString()};
+                csvLines.append(toSingleLine(lineValues));
             }
+            return csvLines.toString();
         }
-        return l;
+
+        String toSingleLine(String[] lineValues) {
+            StringBuilder sb = new StringBuilder();
+            String csvLine = Stream.of(lineValues).map(this::escapeSpecialCharacters).collect(Collectors.joining(","));
+            sb.append(csvLine).append("\n");
+            return sb.toString();
+        }
+
+        String escapeSpecialCharacters(String data) {
+            String escapedData = data.replaceAll("\\R", " ");
+            if (data.contains(",") || data.contains("\"") || data.contains("'")) {
+                data = data.replace("\"", "\"\"");
+                escapedData = "\"" + data + "\"";
+            }
+            return escapedData;
+        }
     }
 
-    Map<String, Set<String>> fromSingleLine(String line) {
-        Map<String, Set<String>> m = new HashMap<>();
-        int indexOfComma = line.indexOf(',');
-        String k = line.substring(0, indexOfComma);
-        String v = line.substring(indexOfComma + 1);
-        //---
-        k = stripEncodings(k).strip();
+    public static class CsvReader {
 
-        //---
-        v = stripEncodings(v).strip();
-
-        //---
-        final Set<String> vSet = Stream.of(v.split(",")).map(s -> s.strip()).collect(Collectors.toSet());
-        m.put(Data.kName, new SetBuilder<String>().v(k).build());
-        m.put(Data.kGroup, vSet);
-        return m;
-    }
-
-    String stripEncodings(String s) {
-        int index;
-        String result = s;
-
-        index = result.indexOf("\"");
-        if (index >= 0) {
-            result = result.substring(index + 1);
+        /**
+         * Entry point to read csv.
+         *
+         * @param s
+         * @return
+         * @throws IOException
+         */
+        public List<Map<String, Set<String>>> fromCsv(String s) throws IOException {
+            List<Map<String, Set<String>>> l = new ArrayList<>();
+            try (final StringReader sr = new StringReader(s)) {
+                BufferedReader br = new BufferedReader(sr);
+                for (String line; (line = br.readLine()) != null;) {
+                    Map<String, Set<String>> m = fromSingleLine(line);
+                    l.add(m);
+                }
+            }
+            return l;
         }
 
-        index = result.lastIndexOf("\"");
-        if (index >= 0) {
-            result = result.substring(0, index);
+        Map<String, Set<String>> fromSingleLine(String line) {
+            Map<String, Set<String>> m = new HashMap<>();
+            int indexOfComma = line.indexOf(',');
+            String k = line.substring(0, indexOfComma);
+            String v = line.substring(indexOfComma + 1);
+            //---
+            k = stripEncodings(k);
+
+            //---
+            v = stripEncodings(v);
+
+            //---
+            final Set<String> vSet = Stream.of(v.split(",")).map(s -> s.strip()).collect(Collectors.toSet());
+            m.put(Data.kName, new SetBuilder<String>().v(k).build());
+            m.put(Data.kGroup, vSet);
+            return m;
         }
 
-        index = result.indexOf("[");
-        if (index >= 0) {
-            result = result.substring(index + 1);
+        String stripEncodings(String s) {
+            String result = s;
+            int index;
+
+            // strip leading "
+            index = result.indexOf("\"");
+            if (index >= 0) {
+                result = result.substring(index + 1);
+            }
+
+            // strip trailing "
+            index = result.lastIndexOf("\"");
+            if (index >= 0) {
+                result = result.substring(0, index);
+            }
+
+            // strip leading [
+            index = result.indexOf("[");
+            if (index >= 0) {
+                result = result.substring(index + 1);
+            }
+
+            // strip trailing ]
+            index = result.lastIndexOf("]");
+            if (index >= 0) {
+                result = result.substring(0, index);
+            }
+            result = result.strip();
+
+            return result;
         }
-
-        index = result.lastIndexOf("]");
-        if (index >= 0) {
-            result = result.substring(0, index);
-        }
-
-        return result;
-    }
-
-    String toSingleLine(String[] lineValues) {
-        StringBuilder sb = new StringBuilder();
-        String csvLine = Stream.of(lineValues).map(this::escapeSpecialCharacters).collect(Collectors.joining(","));
-        sb.append(csvLine).append("\n");
-        return sb.toString();
-    }
-
-    public String escapeSpecialCharacters(String data) {
-        String escapedData = data.replaceAll("\\R", " ");
-        if (data.contains(",") || data.contains("\"") || data.contains("'")) {
-            data = data.replace("\"", "\"\"");
-            escapedData = "\"" + data + "\"";
-        }
-        return escapedData;
     }
 
 }
