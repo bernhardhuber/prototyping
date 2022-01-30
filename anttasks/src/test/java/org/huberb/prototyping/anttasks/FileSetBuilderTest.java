@@ -94,10 +94,33 @@ public class FileSetBuilderTest {
         final DirectoryScanner directoryScanner = fileSet.getDirectoryScanner(antTasksBuilder.project);
         assertEquals(dir, directoryScanner.getBasedir().getPath());
         assertEquals("[]", Arrays.asList(directoryScanner.getIncludedDirectories()).toString());
-        assertEquals("[test-dir2\\testXXX-file2-1.ext2, test-dir3\\testXXX-file2-2.ext2, "
-                + "testXXX-file2-1.ext2, testXXX-file2-2.ext2]",
-                Arrays.asList(directoryScanner.getIncludedFiles()).toString()
+        /* Fix separator char \\ under windows, and / under unix
+            Error:  Failures: 
+            Error:    FileSetBuilderTest.given_files_in_subdirs_match_extensions:97 
+            expected: <[test-dir2\testXXX-file2-1.ext2, test-dir3\testXXX-file2-2.ext2, testXXX-file2-1.ext2, testXXX-file2-2.ext2]> 
+            but was:  <[test-dir2/testXXX-file2-1.ext2, test-dir3/testXXX-file2-2.ext2, testXXX-file2-1.ext2, testXXX-file2-2.ext2]>
+         */
+        String expected = "["
+                + "test-dir2\\testXXX-file2-1.ext2, "
+                + "test-dir3\\testXXX-file2-2.ext2, "
+                + "testXXX-file2-1.ext2, "
+                + "testXXX-file2-2.ext2"
+                + "]";
+        String expectedNormalized = normalizeFileSeparator(expected);
+        assertEquals(expectedNormalized,
+                normalizeFileSeparator(Arrays.asList(directoryScanner.getIncludedFiles()).toString())
         );
+    }
+
+    private String normalizeFileSeparator(String fileName) {
+        final String fileNameNormalized;
+        if (File.separatorChar != '/') {
+            fileNameNormalized = fileName.replace(File.separatorChar, '/');
+        } else {
+            fileNameNormalized = fileName;
+        }
+
+        return fileNameNormalized;
     }
 
 }
