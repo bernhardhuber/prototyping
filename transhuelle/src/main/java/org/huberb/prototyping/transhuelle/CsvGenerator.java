@@ -29,6 +29,7 @@ import org.huberb.prototyping.transhuelle.Supports.SetBuilder;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 
 /**
+ * Encapsulate CSV writing, and reading of {@link Data}-lists.
  *
  * @author berni3
  */
@@ -44,10 +45,11 @@ public class CsvGenerator {
          */
         public String toCsv(List<Map<String, Set<String>>> mapList) {
             StringBuilder csvLines = new StringBuilder();
-            csvLines.append(toSingleLine(new String[]{"key", "value"}));
+            // add csv-header
+            csvLines.append(toSingleLine(new String[]{"groups", "members"}));
             for (Map<String, Set<String>> m : mapList) {
-                Set<String> nameSet = m.get(Data.kName);
-                Set<String> groupSet = m.get(Data.kGroup);
+                final Set<String> nameSet = m.get(Data.kName);
+                final Set<String> groupSet = m.get(Data.kGroup);
                 final String[] lineValues = new String[]{nameSet.toString(), groupSet.toString()};
                 csvLines.append(toSingleLine(lineValues));
             }
@@ -55,8 +57,10 @@ public class CsvGenerator {
         }
 
         String toSingleLine(String[] lineValues) {
-            StringBuilder sb = new StringBuilder();
-            String csvLine = Stream.of(lineValues).map(this::escapeSpecialCharacters).collect(Collectors.joining(","));
+            final StringBuilder sb = new StringBuilder();
+            final String csvLine = Stream.of(lineValues)
+                    .map(this::escapeSpecialCharacters)
+                    .collect(Collectors.joining(","));
             sb.append(csvLine).append("\n");
             return sb.toString();
         }
@@ -101,50 +105,66 @@ public class CsvGenerator {
             int indexOfComma = line.indexOf(',');
             String k = line.substring(0, indexOfComma);
             String v = line.substring(indexOfComma + 1);
-            //---
+            // strip encodings 
             k = stripEncodings(k);
-
-            //---
             v = stripEncodings(v);
 
             if (!k.isEmpty() && !v.isEmpty()) {
-                //---
-                final Set<String> vSet = Stream.of(v.split(",")).map(s -> s.strip()).collect(Collectors.toSet());
+                // map v from "A,B,C" -> set: ["A","B","C"]
+                final Set<String> vSet = Stream.of(v.split(","))
+                        .map(s -> s.strip())
+                        .collect(Collectors.toSet());
                 m.put(Data.kName, new SetBuilder<String>().v(k).build());
                 m.put(Data.kGroup, vSet);
             }
             return m;
         }
 
+        /**
+         * Strip encodings.
+         * <p>
+         * <ul>
+         * <li>Remove leading `"´ and trailing `"´
+         * <li>Remove leading `[´ and trailing `]´
+         * <li>Replace `""´ by `"´
+         * <li>Strip leading and trailing white-space
+         * </ul>
+         *
+         * @param s
+         * @return decoded value
+         */
         String stripEncodings(String s) {
             String result = s;
-            int index;
 
             // strip leading "
-            index = result.indexOf("\"");
-            if (index >= 0) {
-                result = result.substring(index + 1);
+            {
+                final int index = result.indexOf("\"");
+                if (index >= 0) {
+                    result = result.substring(index + 1);
+                }
             }
-
-            // strip trailing "
-            index = result.lastIndexOf("\"");
-            if (index >= 0) {
-                result = result.substring(0, index);
+            {
+                // strip trailing "
+                final int index = result.lastIndexOf("\"");
+                if (index >= 0) {
+                    result = result.substring(0, index);
+                }
             }
-
-            // strip leading [
-            index = result.indexOf("[");
-            if (index >= 0) {
-                result = result.substring(index + 1);
+            {
+                // strip leading [
+                final int index = result.indexOf("[");
+                if (index >= 0) {
+                    result = result.substring(index + 1);
+                }
             }
-
-            // strip trailing ]
-            index = result.lastIndexOf("]");
-            if (index >= 0) {
-                result = result.substring(0, index);
+            {
+                // strip trailing ]
+                final int index = result.lastIndexOf("]");
+                if (index >= 0) {
+                    result = result.substring(0, index);
+                }
+                result = result.strip();
             }
-            result = result.strip();
-
             return result;
         }
     }

@@ -38,15 +38,7 @@ public class CsvReaderTest {
     public void given_X_Y_varying(String line) {
         final CsvReader instance = new CsvReader();
         final String expected = "{name=[X], group=[Y]}";
-
-        final String l1 = "X,Y";
-        assertEquals(expected, instance.fromSingleLine(l1).toString());
-
-        final String l2 = "X,[Y]";
-        assertEquals(expected, instance.fromSingleLine(l2).toString());
-
-        final String l3 = "X,\"[Y]\"";
-        assertEquals(expected, instance.fromSingleLine(l3).toString());
+        assertEquals(expected, instance.fromSingleLine(line).toString());
     }
 
     static Stream<Arguments> given_X_Y_varyingProvider() {
