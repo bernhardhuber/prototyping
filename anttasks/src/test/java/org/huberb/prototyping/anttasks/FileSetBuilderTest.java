@@ -100,20 +100,20 @@ public class FileSetBuilderTest {
             expected: <[test-dir2\testXXX-file2-1.ext2, test-dir3\testXXX-file2-2.ext2, testXXX-file2-1.ext2, testXXX-file2-2.ext2]> 
             but was:  <[test-dir2/testXXX-file2-1.ext2, test-dir3/testXXX-file2-2.ext2, testXXX-file2-1.ext2, testXXX-file2-2.ext2]>
          */
-        String expected = "["
+        final String expected = "["
                 + "test-dir2\\testXXX-file2-1.ext2, "
                 + "test-dir3\\testXXX-file2-2.ext2, "
                 + "testXXX-file2-1.ext2, "
                 + "testXXX-file2-2.ext2"
                 + "]";
-        String expectedNormalized = normalizeFileSeparator(expected);
+        final String expectedNormalized = normalizeFileSeparator(expected);
         assertEquals(expectedNormalized,
                 normalizeFileSeparator(Arrays.asList(directoryScanner.getIncludedFiles()).toString())
         );
     }
 
     private String normalizeFileSeparator(String fileName) {
-        final String fileNameNormalized = fileName.replace(File.separatorChar, '/');
+        final String fileNameNormalized = fileName.replace('\\', '/');
         return fileNameNormalized;
     }
 
