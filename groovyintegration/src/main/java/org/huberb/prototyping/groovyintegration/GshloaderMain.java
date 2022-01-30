@@ -18,6 +18,7 @@ package org.huberb.prototyping.groovyintegration;
 import groovy.lang.Binding;
 import groovy.lang.GroovyShell;
 import java.io.File;
+import java.io.IOException;
 import java.util.Date;
 import java.util.concurrent.Callable;
 import java.util.logging.Logger;
@@ -39,25 +40,34 @@ public class GshloaderMain implements Callable<Integer> {
 
     private static final Logger logger = Logger.getLogger(GshloaderMain.class.getName());
 
-    @Option(names = {"-g", "--groovyscript-file"},
+    @Option(names = {"--groovyscript-file"},
             required = false,
-            description = "load groovy script file")
+            description = "evaluate groovy script file")
     private File groovyScriptFile;
+    @Option(names = {"--groovyscript-inline"},
+            required = false,
+            description = "evaluate groovy inline script")
+    private String groovyInlineScript;
 
     public static void main(String... args) {
-        int exitCode = new CommandLine(new GshloaderMain()).execute(args);
+        final int exitCode = new CommandLine(new GshloaderMain()).execute(args);
         System.exit(exitCode);
     }
 
     @Override
     public Integer call() throws Exception { // your business logic goes here...
-        logger.info(() -> String.format("Process groovy-script-file %s", groovyScriptFile));
 
-        evaluateGroovyScriptFile(this.groovyScriptFile);
+        if (groovyScriptFile != null && groovyScriptFile.exists()) {
+            evaluateGroovyScriptFile(this.groovyScriptFile);
+        } else if (groovyInlineScript != null && !groovyInlineScript.isEmpty()) {
+            evaluateGroovyInlineScript(groovyInlineScript);
+        } else {
+            evaluateGroovyDefaultScript();
+        }
         return 0;
     }
 
-    void evaluateGroovyScriptFile(File groovyScriptFile) {
+    void evaluateGroovyDefaultScript() {
         var sharedData = new Binding();
         var shell = new GroovyShell(sharedData);
         var now = new Date();
@@ -66,8 +76,26 @@ public class GshloaderMain implements Callable<Integer> {
 
         final Object result = shell.evaluate("\"At $date, $text\"");
 
-        logger.info(() -> String.format(" evaluate result `%s´", result));
+        logger.info(() -> String.format("evaluateGroovyDefaultScript result `%s'", result));
         //assert result == "At $now, I am shared data!"
+    }
+
+    void evaluateGroovyInlineScript(String theGroovyInlineScript) {
+        var sharedData = new Binding();
+        var shell = new GroovyShell(sharedData);
+
+        final Object result = shell.evaluate(theGroovyInlineScript);
+
+        logger.info(() -> String.format("evaluateGroovyInlineScript result `%s'", result));
+    }
+
+    void evaluateGroovyScriptFile(File theGroovyScriptFile) throws IOException {
+        var sharedData = new Binding();
+        var shell = new GroovyShell(sharedData);
+
+        final Object result = shell.evaluate(theGroovyScriptFile);
+
+        logger.info(() -> String.format("evaluateGroovyScriptFile result `%s'", result));
     }
 
 }
