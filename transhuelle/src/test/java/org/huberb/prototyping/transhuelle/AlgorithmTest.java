@@ -48,6 +48,9 @@ public class AlgorithmTest {
         assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3")), "" + dout);
         assertTrue(dout.groupsMergedList.get(1).get(Data.kName).containsAll(Arrays.asList("S3")), "" + dout);
         assertTrue(dout.groupsMergedList.get(1).get(Data.kGroup).containsAll(Arrays.asList("A4")), "" + dout);
+
+new Generators().toYaml(dout);
+new Generators().toJson(dout);
     }
 
     @Test

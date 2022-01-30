@@ -16,8 +16,28 @@ a single group, containing members of both groups.
 * An element is member of exactly one group.
 * Silblings of the element are merged too.
 
+# Algorithm
+
+Describing the algorithm: 
+
+We consider an input element and try to find a match in the result.
+
+If there is no match we can insert the input element into the result.
+
+If there is a match we have to merge the input into the result, and consider
+all other result matches, merging them too, and removing them from the
+result
+
+![Algorithm Basic Activity](src/main/documentation/trans-huelle-algo-1.png)
+
+Datasnapshot as the alogrithm calculates the result:
+
+![Algorithm Data Activity](src/main/documentation/trans-huelle-data-1.png)
+
 
 # Examples
+
+The following examples show the input data, and the result data.
 
 # Example 1
 
