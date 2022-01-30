@@ -38,18 +38,24 @@ public class TransHuelle {
      */
     static class Data {
 
+        /**
+         * Map key name define the name of a group
+         */
         static final String kName = "name";
+        /**
+         * Map key name defining the members of a group
+         */
         static final String kGroup = "group";
         /**
-         * name of data
+         * name of this data
          */
         final String name;
         /**
-         * input list of "name": group-name, "group": group-members
+         * Input list of "name": group-name, "group": group-members
          */
         final List<Map<String, Set<String>>> groupsInList;
         /**
-         * merged list of "name": group-names, "group": group-members
+         * Merged list of "name": group-names, "group": group-members
          */
         final List<Map<String, Set<String>>> groupsMergedList;
 
@@ -79,10 +85,10 @@ public class TransHuelle {
             return toString;
         }
 
-    static Set<String> newSetBuilderVs(String... vs) {
-        final Set<String> result = new SetBuilder<String>().vs(vs).build();
-        return result;
-    }
+        static Set<String> newSetBuilderVs(String... vs) {
+            final Set<String> result = new SetBuilder<String>().vs(vs).build();
+            return result;
+        }
 
         public Map<String, Object> toMap() {
             final Map<String, Object> result = new MapBuilder<String, Object>()
@@ -187,11 +193,11 @@ public class TransHuelle {
                     }
                 }
                 // Process opList
-                logger.info(String.format("Process opList: %s", opList));
+                logger.fine(String.format("Process opList: %s", opList));
                 processOpList(out, opList);
             }
             final long endTime = System.currentTimeMillis();
-            logger.info(String.format("evaluate start %d ms, end %d ms, duration %d ms",
+            logger.fine(String.format("evaluate start %d ms, end %d ms, duration %d ms",
                     startTime, endTime,
                     (endTime - startTime))
             );
@@ -205,7 +211,7 @@ public class TransHuelle {
          * @param opList
          */
         void processOpList(Data out, final List<Map<String, Object>> opList) {
-            logger.info(String.format("Process opList: %s", opList));
+            logger.fine(String.format("Process opList: %s", opList));
             for (final Map<String, Object> opElement : opList) {
 
                 final String op = (String) opElement.getOrDefault("op", "-");

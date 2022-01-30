@@ -22,15 +22,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import org.huberb.prototyping.transhuelle.Supports.MapBuilder;
+import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 import static org.huberb.prototyping.transhuelle.TransHuelle.Data.newSetBuilderVs;
 
 /**
- * Simple factory generating Data samples.
+ * Simple factory generating {@link Data} samples.
  */
 class DataFactory {
 
-
-    TransHuelle.Data createDataSample1() {
+    Data createDataSample1() {
         final TransHuelle.Data data = new TransHuelle.Data("dataSample1 merge+insert");
         final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
         arg0.add(new MapBuilder<String, Set<String>>()
@@ -49,7 +49,7 @@ class DataFactory {
         return data;
     }
 
-    TransHuelle.Data createDataSample2() {
+    Data createDataSample2() {
         final TransHuelle.Data data = new TransHuelle.Data("dataSample2 merge+insert+merge");
         final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
         arg0.add(new MapBuilder<String, Set<String>>()
@@ -72,7 +72,7 @@ class DataFactory {
         return data;
     }
 
-    TransHuelle.Data createDataSample3() {
+    Data createDataSample3() {
         final TransHuelle.Data data = new TransHuelle.Data("dataSample3 no-merge-only-insert");
         final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
         for (int i = 0; i < 10; i += 2) {
@@ -85,7 +85,7 @@ class DataFactory {
         return data;
     }
 
-    TransHuelle.Data createDataSample4() {
+    Data createDataSample4() {
         final TransHuelle.Data data = new TransHuelle.Data("dataSample4 merge-alleven-insert-allodd");
         final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
         for (int i = 0; i < 10; i += 1) {
@@ -105,7 +105,7 @@ class DataFactory {
         return data;
     }
 
-    TransHuelle.Data createDataSample5() {
+    Data createDataSample5() {
         final TransHuelle.Data data = new TransHuelle.Data("dataSample5 merge+insert+merge");
         final List<Map<String, Set<String>>> arg0 = new ArrayList<>();
         arg0.add(new MapBuilder<String, Set<String>>()

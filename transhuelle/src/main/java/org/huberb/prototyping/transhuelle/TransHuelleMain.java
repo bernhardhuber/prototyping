@@ -61,7 +61,7 @@ public class TransHuelleMain implements Callable<Integer> {
     private boolean dataFactory;
 
     public static void main(String[] args) throws Exception {
-        int exitCode = new CommandLine(new TransHuelleMain()).execute(args);
+        final int exitCode = new CommandLine(new TransHuelleMain()).execute(args);
         System.exit(exitCode);
     }
 
@@ -114,6 +114,11 @@ public class TransHuelleMain implements Callable<Integer> {
         outputData(dout);
     }
 
+    /**
+     * Output {@link Data} via {@link Logger}.
+     *
+     * @param data
+     */
     void outputData(Data data) {
         final CsvWriter csvWriter = new CsvWriter();
         final String csvGroupsInList = csvWriter.toCsv(data.groupsInList);
