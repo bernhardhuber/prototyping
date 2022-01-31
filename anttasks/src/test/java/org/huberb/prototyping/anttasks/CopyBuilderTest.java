@@ -40,7 +40,7 @@ public class CopyBuilderTest {
     }
 
     @Test
-    public void testCopy() throws IOException {
+    public void given_an_existing_file_copy_it_to_a_new_file() throws IOException {
         assertNotNull(sharedTempDir);
 
         final Path srcPath = sharedTempDir.resolve("copy-src-test-file1.ext1");

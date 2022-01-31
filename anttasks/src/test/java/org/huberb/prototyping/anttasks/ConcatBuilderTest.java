@@ -38,7 +38,7 @@ public class ConcatBuilderTest {
     }
 
     @Test
-    public void testConcat() {
+    public void given_some_text_then_echo_this_text() {
         assertNotNull(sharedTempDir);
 
         final Path destination = sharedTempDir.resolve("concat-test-file1.txt");

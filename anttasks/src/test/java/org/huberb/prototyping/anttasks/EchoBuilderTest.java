@@ -31,7 +31,7 @@ public class EchoBuilderTest {
     }
 
     @Test
-    public void testEcho() {
+    public void given_some_text_echo_it() {
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
         final Echo echo = new EchoBuilder(antTasksBuilder.project)
                 .message("Hello world!")

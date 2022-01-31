@@ -33,7 +33,7 @@ public class GunzipBuilderTest {
     private static Path sharedTempDir;
 
     @Test
-    public void testGunzip() throws IOException {
+    public void given_an_existing_gzip_file_then_gunzip_it() throws IOException {
         Assertions.assertNotNull(sharedTempDir);
         final File gzippedFile = new File("target/test-classes/sample-lorem-ipsum.md.gz");
         Assertions.assertTrue(gzippedFile.exists());

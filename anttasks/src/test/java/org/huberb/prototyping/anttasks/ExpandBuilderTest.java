@@ -33,7 +33,7 @@ public class ExpandBuilderTest {
     private static Path sharedTempDir;
 
     @Test
-    public void testUnzip() throws URISyntaxException {
+    public void given_an_existing_zip_file_then_expand_it() throws URISyntaxException {
         Assertions.assertNotNull(sharedTempDir);
 
         final File zipFilepath = new File("target/test-classes/sample.zip");
