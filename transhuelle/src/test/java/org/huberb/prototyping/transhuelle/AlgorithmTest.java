@@ -41,75 +41,80 @@ public class AlgorithmTest {
     public void given_createDataSample1_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample1();
         final Data dout = new Algorithm().evaluate(din);
+        final String m = "" + dout;
 
-        assertEquals(3, dout.groupsInList.size(), "" + dout);
-        assertEquals(2, dout.groupsMergedList.size(), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S1", "S2")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(1).get(Data.kName).containsAll(Arrays.asList("S3")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(1).get(Data.kGroup).containsAll(Arrays.asList("A4")), "" + dout);
+        assertEquals(3, dout.groupsInList.size(), m);
+        assertEquals(2, dout.groupsMergedList.size(), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S1", "S2")), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3")), m);
+        assertTrue(dout.groupsMergedList.get(1).get(Data.kName).containsAll(Arrays.asList("S3")), m);
+        assertTrue(dout.groupsMergedList.get(1).get(Data.kGroup).containsAll(Arrays.asList("A4")), m);
 
-new Generators().toYaml(dout);
-new Generators().toJson(dout);
+        new Generators().toYaml(dout);
+        new Generators().toJson(dout);
     }
 
     @Test
     public void given_createDataSample2_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample2();
         final Data dout = new Algorithm().evaluate(din);
+        final String m = "" + dout;
 
-        assertEquals(4, dout.groupsInList.size(), "" + dout);
-        assertEquals(1, dout.groupsMergedList.size(), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S1", "S2")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3", "A4")), "" + dout);
+        assertEquals(4, dout.groupsInList.size(), m);
+        assertEquals(1, dout.groupsMergedList.size(), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S1", "S2")), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3", "A4")), m);
     }
 
     @Test
     public void given_createDataSample3_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample3();
         final Data dout = new Algorithm().evaluate(din);
+        final String m = "" + dout;
 
         assertEquals("dataSample3 no-merge-only-insert", dout.name);
-        assertEquals(5, dout.groupsInList.size(), "" + dout);
-        assertEquals(5, dout.groupsMergedList.size(), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S0")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A0", "A1")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(1).get(Data.kName).containsAll(Arrays.asList("S2")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(1).get(Data.kGroup).containsAll(Arrays.asList("A2", "A3")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(2).get(Data.kName).containsAll(Arrays.asList("S4")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(2).get(Data.kGroup).containsAll(Arrays.asList("A4", "A5")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(3).get(Data.kName).containsAll(Arrays.asList("S6")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(3).get(Data.kGroup).containsAll(Arrays.asList("A6", "A7")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(4).get(Data.kName).containsAll(Arrays.asList("S8")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(4).get(Data.kGroup).containsAll(Arrays.asList("A8", "A9")), "" + dout);
+        assertEquals(5, dout.groupsInList.size(), m);
+        assertEquals(5, dout.groupsMergedList.size(), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S0")), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A0", "A1")), m);
+        assertTrue(dout.groupsMergedList.get(1).get(Data.kName).containsAll(Arrays.asList("S2")), m);
+        assertTrue(dout.groupsMergedList.get(1).get(Data.kGroup).containsAll(Arrays.asList("A2", "A3")), m);
+        assertTrue(dout.groupsMergedList.get(2).get(Data.kName).containsAll(Arrays.asList("S4")), m);
+        assertTrue(dout.groupsMergedList.get(2).get(Data.kGroup).containsAll(Arrays.asList("A4", "A5")), m);
+        assertTrue(dout.groupsMergedList.get(3).get(Data.kName).containsAll(Arrays.asList("S6")), m);
+        assertTrue(dout.groupsMergedList.get(3).get(Data.kGroup).containsAll(Arrays.asList("A6", "A7")), m);
+        assertTrue(dout.groupsMergedList.get(4).get(Data.kName).containsAll(Arrays.asList("S8")), m);
+        assertTrue(dout.groupsMergedList.get(4).get(Data.kGroup).containsAll(Arrays.asList("A8", "A9")), m);
     }
 
     @Test
     public void given_createDataSample4_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample4();
         final Data dout = new Algorithm().evaluate(din);
+        final String m = "" + dout;
 
         assertEquals("dataSample4 merge-alleven-insert-allodd", dout.name);
-        assertEquals(10, dout.groupsInList.size(), "" + dout);
-        assertEquals(6, dout.groupsMergedList.size(), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S0", "S2", "S4", "S6", "S8")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A0", "A2", "A4", "A6", "A8")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(1).get(Data.kName).containsAll(Arrays.asList("S1")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(1).get(Data.kGroup).containsAll(Arrays.asList("A1")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(2).get(Data.kName).containsAll(Arrays.asList("S3")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(2).get(Data.kGroup).containsAll(Arrays.asList("A3")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(3).get(Data.kName).containsAll(Arrays.asList("S5")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(3).get(Data.kGroup).containsAll(Arrays.asList("A5")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(4).get(Data.kName).containsAll(Arrays.asList("S7")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(4).get(Data.kGroup).containsAll(Arrays.asList("A7")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(5).get(Data.kName).containsAll(Arrays.asList("S9")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(5).get(Data.kGroup).containsAll(Arrays.asList("A9")), "" + dout);
+        assertEquals(10, dout.groupsInList.size(), m);
+        assertEquals(6, dout.groupsMergedList.size(), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S0", "S2", "S4", "S6", "S8")), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A0", "A2", "A4", "A6", "A8")), m);
+        assertTrue(dout.groupsMergedList.get(1).get(Data.kName).containsAll(Arrays.asList("S1")), m);
+        assertTrue(dout.groupsMergedList.get(1).get(Data.kGroup).containsAll(Arrays.asList("A1")), m);
+        assertTrue(dout.groupsMergedList.get(2).get(Data.kName).containsAll(Arrays.asList("S3")), m);
+        assertTrue(dout.groupsMergedList.get(2).get(Data.kGroup).containsAll(Arrays.asList("A3")), m);
+        assertTrue(dout.groupsMergedList.get(3).get(Data.kName).containsAll(Arrays.asList("S5")), m);
+        assertTrue(dout.groupsMergedList.get(3).get(Data.kGroup).containsAll(Arrays.asList("A5")), m);
+        assertTrue(dout.groupsMergedList.get(4).get(Data.kName).containsAll(Arrays.asList("S7")), m);
+        assertTrue(dout.groupsMergedList.get(4).get(Data.kGroup).containsAll(Arrays.asList("A7")), m);
+        assertTrue(dout.groupsMergedList.get(5).get(Data.kName).containsAll(Arrays.asList("S9")), m);
+        assertTrue(dout.groupsMergedList.get(5).get(Data.kGroup).containsAll(Arrays.asList("A9")), m);
     }
 
     @Test
     public void given_createDataSample5_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample5();
         final Data dout = new Algorithm().evaluate(din);
+        final String m = "" + dout;
 
         System.out.println(String.format("csv given_createDataSample5_verify_groupsMergedList%n"
                 + "groupsInList:%n%s%n"
@@ -119,10 +124,10 @@ new Generators().toJson(dout);
         );
 
         assertEquals("dataSample5 merge+insert+merge", dout.name);
-        assertEquals(7, dout.groupsInList.size(), "" + dout);
-        assertEquals(1, dout.groupsMergedList.size(), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S1", "S2", "S3", "S4", "S5", "S6", "S7")), "" + dout);
-        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7")), "" + dout);
+        assertEquals(7, dout.groupsInList.size(), m);
+        assertEquals(1, dout.groupsMergedList.size(), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S1", "S2", "S3", "S4", "S5", "S6", "S7")), m);
+        assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7")), m);
     }
 
     // TODO move or remove me
