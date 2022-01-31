@@ -20,6 +20,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Zip;
 
 /**
+ * An ant {@link Zip} builder.
  *
  * @author berni3
  */

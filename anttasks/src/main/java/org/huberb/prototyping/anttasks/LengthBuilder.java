@@ -20,11 +20,12 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Length;
 
 /**
+ * An ant {@link Length} builder.
  *
  * @author berni3
  */
 public class LengthBuilder {
-    
+
     private final Length length;
 
     public LengthBuilder(Project project) {
@@ -40,5 +41,5 @@ public class LengthBuilder {
     public Length build() {
         return length;
     }
-    
+
 }

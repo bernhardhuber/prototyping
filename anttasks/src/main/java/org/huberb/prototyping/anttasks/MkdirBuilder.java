@@ -20,11 +20,12 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Mkdir;
 
 /**
+ * An ant {@link Mkdir} builder.
  *
  * @author berni3
  */
 public class MkdirBuilder {
-    
+
     private final Mkdir mkdir;
 
     public MkdirBuilder(Project project) {
@@ -40,5 +41,5 @@ public class MkdirBuilder {
     public Mkdir build() {
         return mkdir;
     }
-    
+
 }

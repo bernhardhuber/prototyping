@@ -21,6 +21,7 @@ import org.apache.tools.ant.taskdefs.Sync;
 import org.apache.tools.ant.types.FileSet;
 
 /**
+ * An ant {@link Sync} builder.
  *
  * @author berni3
  */

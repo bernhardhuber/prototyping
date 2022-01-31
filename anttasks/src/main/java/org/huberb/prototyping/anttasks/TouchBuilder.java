@@ -20,6 +20,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Touch;
 
 /**
+ * An ant {@link Touch} builder.
  *
  * @author berni3
  */

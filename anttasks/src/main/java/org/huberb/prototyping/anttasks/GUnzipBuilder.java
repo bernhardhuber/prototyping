@@ -20,11 +20,12 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.GUnzip;
 
 /**
+ * An ant {@link GUnzip} builder.
  *
  * @author berni3
  */
 public class GUnzipBuilder {
-    
+
     private final GUnzip gunzip;
 
     public GUnzipBuilder(Project project) {
@@ -44,5 +45,5 @@ public class GUnzipBuilder {
     public GUnzip build() {
         return gunzip;
     }
-    
+
 }

@@ -20,11 +20,12 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.GZip;
 
 /**
+ * An ant {@link GZip} builder.
  *
  * @author berni3
  */
 public class GZipBuilder {
-    
+
     private final GZip gzip;
 
     public GZipBuilder(Project project) {
@@ -44,5 +45,5 @@ public class GZipBuilder {
     public GZip build() {
         return gzip;
     }
-    
+
 }

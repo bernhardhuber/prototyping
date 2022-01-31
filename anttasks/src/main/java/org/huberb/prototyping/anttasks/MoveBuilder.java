@@ -20,11 +20,12 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Move;
 
 /**
+ * An ant {@link Move} builder.
  *
  * @author berni3
  */
 public class MoveBuilder {
-    
+
     private final Move move;
 
     public MoveBuilder(Project project) {
@@ -50,5 +51,5 @@ public class MoveBuilder {
     public Move build() {
         return move;
     }
-    
+
 }

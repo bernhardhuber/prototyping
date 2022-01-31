@@ -19,6 +19,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Echo;
 
 /**
+ * An ant {@link Echo} builder.
  *
  * @author berni3
  */

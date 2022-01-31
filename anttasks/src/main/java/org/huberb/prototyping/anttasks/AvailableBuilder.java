@@ -20,16 +20,17 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Available;
 
 /**
+ * An ant {@link Available} builder.
  *
  * @author berni3
  */
 public class AvailableBuilder {
-    
+
     private final Available available;
 
     public AvailableBuilder(Project project) {
         this.available = (Available) project.createTask("available");
-this.available.init();
+        this.available.init();
         available.setProperty("available");
     }
 
@@ -41,5 +42,5 @@ this.available.init();
     public Available build() {
         return available;
     }
-    
+
 }

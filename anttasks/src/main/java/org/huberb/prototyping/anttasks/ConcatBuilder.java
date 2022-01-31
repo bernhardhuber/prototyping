@@ -19,8 +19,11 @@ import java.io.File;
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Concat;
 
-//---
-
+/**
+ * An ant {@link Concat} builder.
+ *
+ * @author berni3
+ */
 public class ConcatBuilder {
 
     private final Concat concat;
@@ -43,5 +46,5 @@ public class ConcatBuilder {
     public Concat build() {
         return concat;
     }
-    
+
 }

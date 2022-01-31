@@ -20,6 +20,7 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Expand;
 
 /**
+ * An ant {@link Expand} builder.
  *
  * @author berni3
  */

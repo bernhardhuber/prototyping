@@ -20,6 +20,7 @@ import java.util.List;
 import org.apache.tools.ant.types.FileSet;
 
 /**
+ * An ant {@link FileSet} builder.
  *
  * @author berni3
  */

@@ -21,6 +21,7 @@ import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
 
 /**
+ * An ant {@link Copy} builder.
  *
  * @author berni3
  */
