@@ -44,7 +44,7 @@ public class CsvGenerator {
          * @return
          */
         public String toCsv(List<Map<String, Set<String>>> mapList) {
-            StringBuilder csvLines = new StringBuilder();
+            final StringBuilder csvLines = new StringBuilder();
             // add csv-header
             csvLines.append(toSingleLine(new String[]{"groups", "members"}));
             for (Map<String, Set<String>> m : mapList) {

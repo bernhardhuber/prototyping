@@ -66,7 +66,9 @@ public class TransHuelle {
             this(name, new ArrayList<>(), new ArrayList<>());
         }
 
-        public Data(String name, List<Map<String, Set<String>>> groupsInList, List<Map<String, Set<String>>> groupsMergedList) {
+        public Data(String name,
+                List<Map<String, Set<String>>> groupsInList,
+                List<Map<String, Set<String>>> groupsMergedList) {
             this.name = name;
             this.groupsInList = groupsInList;
             this.groupsMergedList = groupsMergedList;
@@ -86,7 +88,9 @@ public class TransHuelle {
         }
 
         static Set<String> newSetBuilderVs(String... vs) {
-            final Set<String> result = new SetBuilder<String>().vs(vs).build();
+            final Set<String> result = new SetBuilder<String>()
+                    .vs(vs)
+                    .build();
             return result;
         }
 
