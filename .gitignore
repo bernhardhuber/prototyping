@@ -26,3 +26,5 @@ hs_err_pid*
 **/.lanterna/
 /project4_java_laterna/
 **/nbproject/
+/blaze-mavenproject/blaze
+/blaze-mavenproject/blaze.bat
