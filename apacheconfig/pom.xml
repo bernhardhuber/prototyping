@@ -4,7 +4,7 @@
     <parent>
         <groupId>org.huberb.prototyping</groupId>
         <artifactId>prototyping</artifactId>
-        <version>1.0-SNAPSHOT</version>
+        <version>1.0.0-SNAPSHOT</version>
     </parent>
     <artifactId>apacheconfig</artifactId>
     <packaging>jar</packaging>
@@ -31,7 +31,7 @@
         <dependency>
             <groupId>org.huberb.prototyping</groupId>
             <artifactId>lanterna</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>1.0.0-SNAPSHOT</version>
         </dependency>
         <!--dependency>
             <groupId>com.googlecode.lanterna</groupId>
