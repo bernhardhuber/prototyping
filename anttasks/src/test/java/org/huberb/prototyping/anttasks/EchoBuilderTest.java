@@ -32,9 +32,11 @@ public class EchoBuilderTest {
 
     @Test
     public void given_some_text_echo_it() {
+        final StringResource sr = new StringResource();
         final AntTasksBuilder antTasksBuilder = new AntTasksBuilder();
         final Echo echo = new EchoBuilder(antTasksBuilder.project)
                 .message("Hello world!")
+                .output(sr)
                 .build();
         echo.execute();
         Assertions.assertAll(
@@ -43,10 +45,6 @@ public class EchoBuilderTest {
         );
 
         //---
-        final StringResource sr = new StringResource();
-        echo.setOutput(sr);
-        echo.execute();
-
         assertEquals("Hello world!", sr.getValue());
     }
 }

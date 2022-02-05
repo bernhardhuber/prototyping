@@ -17,6 +17,8 @@ package org.huberb.prototyping.anttasks;
 
 import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Echo;
+import org.apache.tools.ant.taskdefs.Echo.EchoLevel;
+import org.apache.tools.ant.types.resources.StringResource;
 
 /**
  * An ant {@link Echo} builder.
@@ -24,20 +26,47 @@ import org.apache.tools.ant.taskdefs.Echo;
  * @author berni3
  */
 public class EchoBuilder {
-    
+
     private final Echo echo;
 
     public EchoBuilder(Project project) {
         this.echo = (Echo) project.createTask("echo");
+        this.echo.init();
     }
 
-    public EchoBuilder message(String message) {
-        echo.setMessage(message);
+    public EchoBuilder append(boolean append) {
+        echo.setAppend(append);
+        return this;
+    }
+
+    public EchoBuilder append(String msg) {
+        echo.addText(msg);
+        return this;
+    }
+
+    public EchoBuilder echoLevel(EchoLevel echoLevel) {
+        echo.setLevel(echoLevel);
+        return this;
+    }
+
+    public EchoBuilder echoLevel(String echoLevelAsString) {
+        final EchoLevel echoLevel = new EchoLevel();
+        echoLevel.setValue(echoLevelAsString);
+        return this.echoLevel(echoLevel);
+    }
+
+    public EchoBuilder message(String msg) {
+        echo.setMessage(msg);
+        return this;
+    }
+
+    public EchoBuilder output(StringResource output) {
+        echo.setOutput(output);
         return this;
     }
 
     public Echo build() {
         return echo;
     }
-    
+
 }
