@@ -299,11 +299,11 @@ public class TransHuelle {
                     final Set<String> outnames = groupsMergedElement.get(Data.kName);
                     final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
 
-                    final boolean match = ingmembers.stream().anyMatch((theIngmember) -> outgmembers.contains(theIngmember));
+                    final boolean match = ingmembers.stream().anyMatch((String theIngmember) -> outgmembers.contains(theIngmember));
                     if (match) {
                         // Thers is already a group containing ingmember
                         if (matchCount == 0) {
-                            OpRecordMerge opRecordMerge = new OpRecordMerge(
+                            final OpRecordMerge opRecordMerge = new OpRecordMerge(
                                     newSetBuilderVs(ingname),
                                     ingmembers,
                                     outnames,
@@ -313,7 +313,7 @@ public class TransHuelle {
                             // This is another match
                             final OpRecordMerge opMergeMatchCount0 = (OpRecordMerge) opList.getOpRecord(0);
                             // merge current match to first merge
-                            OpRecordMerge opRecordMerge = new OpRecordMerge(
+                            final OpRecordMerge opRecordMerge = new OpRecordMerge(
                                     outnames,
                                     outgmembers,
                                     opMergeMatchCount0.merge_outgnames,
@@ -321,7 +321,7 @@ public class TransHuelle {
                             opList.addOpRecord(opRecordMerge);
 
                             // delete current match
-                            OpRecordDelete opRecordDelete = new OpRecordDelete(
+                            final OpRecordDelete opRecordDelete = new OpRecordDelete(
                                     outnames,
                                     outgmembers);
                             opList.addOpRecord(opRecordDelete);
@@ -332,7 +332,7 @@ public class TransHuelle {
                 // PostProcess matchCount=0
                 // no matching insert ingname, ingmembers into merged-result
                 if (matchCount == 0) {
-                    OpRecordInsert opRecordInsert = new OpRecordInsert(
+                    final OpRecordInsert opRecordInsert = new OpRecordInsert(
                             ingname,
                             ingmembers);
                     opList.addOpRecord(opRecordInsert);
