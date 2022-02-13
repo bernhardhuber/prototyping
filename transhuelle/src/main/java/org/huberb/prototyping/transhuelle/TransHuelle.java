@@ -115,6 +115,10 @@ public class TransHuelle {
 
         private static final Logger logger = Logger.getLogger(Algorithm.class.getName());
 
+        private static final String DELETE_OP = "delete";
+        private static final String MERGE_OP = "merge";
+        private static final String INSERT_OP = "insert";
+
         /**
          *
          * @param in
@@ -138,7 +142,7 @@ public class TransHuelle {
                 if (out.groupsMergedList.isEmpty()) {
                     // merged list is empty insert [ ingname, ingmembers ]
                     final Map<String, Object> opInsert = new MapBuilder<String, Object>()
-                            .kv("op", "insert")
+                            .kv("op", INSERT_OP)
                             .kv("ingname", ingname)
                             .kv("ingmembers", ingmembers)
                             .build();
@@ -156,7 +160,7 @@ public class TransHuelle {
                             if (matchCount == 0) {
                                 // this the first match merge ingname, ingmember
                                 final Map<String, Object> opMerge = new MapBuilder<String, Object>()
-                                        .kv("op", "merge")
+                                        .kv("op", MERGE_OP)
                                         .kv("ingname", newSetBuilderVs(ingname))
                                         .kv("ingmembers", ingmembers)
                                         .kv("outnames", outnames)
@@ -168,7 +172,7 @@ public class TransHuelle {
                                 final Map<String, Object> opMergeMatchCount0 = opList.get(0);
                                 // merge current match to first merge
                                 final Map<String, Object> opMerge = new MapBuilder<String, Object>()
-                                        .kv("op", "merge")
+                                        .kv("op", MERGE_OP)
                                         .kv("ingname", outnames)
                                         .kv("ingmembers", outgmembers)
                                         .kv("outnames", opMergeMatchCount0.get("outnames"))
@@ -178,7 +182,7 @@ public class TransHuelle {
 
                                 // delete current match
                                 final Map<String, Object> opDelete = new MapBuilder<String, Object>()
-                                        .kv("op", "delete")
+                                        .kv("op", DELETE_OP)
                                         .kv("ingname", newSetBuilderVs(ingname))
                                         .kv("ingmembers", ingmembers)
                                         .kv("outnames", outnames)
@@ -193,7 +197,7 @@ public class TransHuelle {
                     // no matching insert ingname, ingmembers into merged-result
                     if (matchCount == 0) {
                         final Map<String, Object> opInsert = new MapBuilder<String, Object>()
-                                .kv("op", "insert")
+                                .kv("op", INSERT_OP)
                                 .kv("ingname", ingname)
                                 .kv("ingmembers", ingmembers)
                                 .build();
@@ -223,7 +227,7 @@ public class TransHuelle {
             for (final Map<String, Object> opElement : opList) {
 
                 final String op = (String) opElement.getOrDefault("op", "-");
-                if ("merge".equals(op)) {
+                if (MERGE_OP.equals(op)) {
                     // can merge
                     final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
                     final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
@@ -232,7 +236,7 @@ public class TransHuelle {
 
                     op_outnames.addAll(op_ingname);
                     op_outgmembers.addAll(op_ingmembers);
-                } else if ("insert".equals(op)) {
+                } else if (INSERT_OP.equals(op)) {
                     // add in to out
                     final String op_ingname = (String) opElement.get("ingname");
                     final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
@@ -242,7 +246,7 @@ public class TransHuelle {
                             .kv(Data.kGroup, new HashSet<>(op_ingmembers))
                             .build()
                     );
-                } else if ("delete".equals(op)) {
+                } else if (DELETE_OP.equals(op)) {
                     // delete matched
                     final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
                     final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
@@ -284,7 +288,7 @@ public class TransHuelle {
                 // try to find ingname, ingmembers in out.groupsMergedList
                 if (out.groupsMergedList.isEmpty()) {
                     // merged list is empty insert [ ingname, ingmembers ]
-                    OpRecordInsert opRecordInsert = new OpRecordInsert(
+                    final OpRecordInsert opRecordInsert = new OpRecordInsert(
                             ingname,
                             ingmembers
                     );
@@ -355,22 +359,22 @@ public class TransHuelle {
                 delete
             }
 
-            final List<OpRecord<?>> l;
+            final List<OpRecord<?>> opRecordList;
 
             public OpRecordProcessor() {
-                this.l = new ArrayList<>();
+                this.opRecordList = new ArrayList<>();
             }
 
             void addOpRecord(OpRecord opRecord) {
-                this.l.add(opRecord);
+                this.opRecordList.add(opRecord);
             }
 
             OpRecord getOpRecord(int i) {
-                return l.get(i);
+                return opRecordList.get(i);
             }
 
             void process(Data out) {
-                for (OpRecord opRecord : l) {
+                for (OpRecord opRecord : opRecordList) {
                     opRecord.consume(out);
                 }
             }
@@ -430,7 +434,6 @@ public class TransHuelle {
                     final Set<String> op_outnames = this.merge_outgnames;
                     final Set<String> op_outgmembers = this.merge_outgmembers;
 
-
                     op_outnames.addAll(op_ingname);
                     op_outgmembers.addAll(op_ingmembers);
 
@@ -453,15 +456,13 @@ public class TransHuelle {
 
                 @Override
                 protected void consume(Data out) {
-                    //final Set<String> op_ingname = (Set<String>) opElement.get("ingname");
-                    //final Set<String> op_ingmembers = (Set<String>) opElement.get("ingmembers");
                     final Set<String> op_outnames = this.delete_outnames;
                     final Set<String> op_outgmembers = this.delete_outgmembers;
                     final Predicate<Map<String, Set<String>>> p = (m
                             -> m.get(Data.kName) == op_outnames
                             && m.get(Data.kGroup) == op_outgmembers);
                     out.groupsMergedList.removeIf(p);
-     
+
                 }
             }
         }

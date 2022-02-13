@@ -15,15 +15,12 @@
  */
 package org.huberb.prototyping.transhuelle;
 
-import groovy.json.JsonGenerator;
-import groovy.json.JsonGenerator.Options;
 import java.util.Arrays;
 import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  *
@@ -129,21 +126,4 @@ public class AlgorithmTest {
         assertTrue(dout.groupsMergedList.get(0).get(Data.kName).containsAll(Arrays.asList("S1", "S2", "S3", "S4", "S5", "S6", "S7")), m);
         assertTrue(dout.groupsMergedList.get(0).get(Data.kGroup).containsAll(Arrays.asList("A1", "A2", "A3", "A4", "A5", "A6", "A7")), m);
     }
-
-    // TODO move or remove me
-    static class Generators {
-
-        void toYaml(Data dout) {
-            final Yaml yaml = new Yaml();
-            final String doutYaml = yaml.dump(dout.toMap());
-            System.out.println(String.format("doutYaml:%n%s%n", doutYaml));
-        }
-
-        void toJson(Data dout) {
-            JsonGenerator jsonGenerator = new Options().build();
-            final String doutJson = jsonGenerator.toJson(dout.toMap());
-            System.out.println(String.format("doutJson:%n%s%n", doutJson));
-        }
-    }
-
 }
