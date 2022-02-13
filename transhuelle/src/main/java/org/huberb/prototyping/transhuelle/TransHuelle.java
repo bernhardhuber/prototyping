@@ -108,6 +108,9 @@ public class TransHuelle {
         }
     }
 
+    /**
+     * Common interface for an algorithm
+     */
     static interface IAlgorithm {
 
         /**
@@ -158,6 +161,8 @@ public class TransHuelle {
                 // find a match for [ingname, ingmembers] in groupsMergedList
                 int matchCount = 0;
                 for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
+                    // Consider merged result like 
+                    // eg. outnames = [ S1, S2 ], outgmembers = [ A1, A2, A3, A4 ]
                     final Set<String> outnames = groupsMergedElement.get(Data.kName);
                     final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
 
@@ -223,7 +228,7 @@ public class TransHuelle {
         }
 
         /**
-         * Process opList
+         * Process opList.
          *
          * @param out
          * @param opList
@@ -296,6 +301,8 @@ public class TransHuelle {
                 // find a match for [ingname, ingmembers] in groupsMergedList
                 int matchCount = 0;
                 for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
+                    // Consider merged result like 
+                    // eg. outnames = [ S1, S2 ], outgmembers = [ A1, A2, A3, A4 ]
                     final Set<String> outnames = groupsMergedElement.get(Data.kName);
                     final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
 
