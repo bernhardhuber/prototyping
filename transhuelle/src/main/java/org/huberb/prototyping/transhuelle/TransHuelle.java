@@ -126,9 +126,9 @@ public class TransHuelle {
     /**
      * Implementation of algorithm merging groups.
      */
-    static class Algorithm implements IAlgorithm {
+    static class Algorithm1 implements IAlgorithm {
 
-        private static final Logger logger = Logger.getLogger(Algorithm.class.getName());
+        private static final Logger logger = Logger.getLogger(Algorithm1.class.getName());
 
         private static final String DELETE_OP = "delete";
         private static final String MERGE_OP = "merge";

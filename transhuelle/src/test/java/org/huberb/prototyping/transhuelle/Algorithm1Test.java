@@ -16,7 +16,7 @@
 package org.huberb.prototyping.transhuelle;
 
 import java.util.Arrays;
-import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm;
+import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm1;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -26,18 +26,18 @@ import org.junit.jupiter.api.Test;
  *
  * @author berni3
  */
-public class AlgorithmTest {
+public class Algorithm1Test {
 
-    public AlgorithmTest() {
+    public Algorithm1Test() {
     }
 
     /**
-     * Test of evaluate, of class Algorithm.
+     * Test of evaluate, of class Algorithm1.
      */
     @Test
     public void given_createDataSample1_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample1();
-        final Data dout = new Algorithm().evaluate(din);
+        final Data dout = new Algorithm1().evaluate(din);
         final String m = "" + dout;
 
         assertEquals(3, dout.groupsInList.size(), m);
@@ -54,7 +54,7 @@ public class AlgorithmTest {
     @Test
     public void given_createDataSample2_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample2();
-        final Data dout = new Algorithm().evaluate(din);
+        final Data dout = new Algorithm1().evaluate(din);
         final String m = "" + dout;
 
         assertEquals(4, dout.groupsInList.size(), m);
@@ -66,7 +66,7 @@ public class AlgorithmTest {
     @Test
     public void given_createDataSample3_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample3();
-        final Data dout = new Algorithm().evaluate(din);
+        final Data dout = new Algorithm1().evaluate(din);
         final String m = "" + dout;
 
         assertEquals("dataSample3 no-merge-only-insert", dout.name);
@@ -87,7 +87,7 @@ public class AlgorithmTest {
     @Test
     public void given_createDataSample4_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample4();
-        final Data dout = new Algorithm().evaluate(din);
+        final Data dout = new Algorithm1().evaluate(din);
         final String m = "" + dout;
 
         assertEquals("dataSample4 merge-alleven-insert-allodd", dout.name);
@@ -110,7 +110,7 @@ public class AlgorithmTest {
     @Test
     public void given_createDataSample5_verify_groupsMergedList() {
         final Data din = new DataFactory().createDataSample5();
-        final Data dout = new Algorithm().evaluate(din);
+        final Data dout = new Algorithm1().evaluate(din);
         final String m = "" + dout;
 
         System.out.println(String.format("csv given_createDataSample5_verify_groupsMergedList%n"

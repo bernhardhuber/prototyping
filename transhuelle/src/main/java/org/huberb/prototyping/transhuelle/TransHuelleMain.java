@@ -28,7 +28,7 @@ import java.util.concurrent.Callable;
 import java.util.logging.Logger;
 import org.huberb.prototyping.transhuelle.CsvGenerator.CsvReader;
 import org.huberb.prototyping.transhuelle.CsvGenerator.CsvWriter;
-import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm;
+import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm1;
 import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm2;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 import org.huberb.prototyping.transhuelle.TransHuelle.IAlgorithm;
@@ -37,7 +37,7 @@ import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
 /**
- * Command line entry launching {@link Algorithm#evaluate(org.huberb.prototyping.transhuelle.TransHuelle.Data)
+ * Command line entry launching {@link Algorithm1#evaluate(org.huberb.prototyping.transhuelle.TransHuelle.Data)
  * }.
  *
  * @author berni3
@@ -66,7 +66,7 @@ public class TransHuelleMain implements Callable<Integer> {
         algorithm {
             @Override
             IAlgorithm createAnAlgorithm() {
-                final IAlgorithm algorithm = new Algorithm();
+                final IAlgorithm algorithm = new Algorithm1();
                 return algorithm;
             }
         }, algorithm2 {
