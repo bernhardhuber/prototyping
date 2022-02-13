@@ -57,7 +57,7 @@ public class DataTest {
     }
 
     @Test
-    public void xxx() {
+    public void give_data_then_verify_toString_and_toMap() {
         final Data instance = new Data("X");
         final List<Map<String, Set<String>>> groupsInList = new ArrayList<>();
         groupsInList.add(new MapBuilder<String, Set<String>>()
