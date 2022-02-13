@@ -17,7 +17,9 @@ package org.huberb.prototyping.transhuelle;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -26,6 +28,8 @@ import org.huberb.prototyping.transhuelle.Supports.MapBuilder;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 import static org.huberb.prototyping.transhuelle.TransHuelle.Data.newSetBuilderVs;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotSame;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -45,12 +49,21 @@ public class DataTest {
         assertEquals(0, instance.groupsMergedList.size());
     }
 
-    public static Stream<Data> given_an_empty_data() {
+    static Stream<Data> given_an_empty_data() {
         final Stream<Data> result = Stream.of(
                 new Data("X"),
+                new Data("Y"),
                 new Data("X",
                         new ArrayList<>(),
                         new ArrayList<>()
+                ),
+                new Data("X",
+                        Collections.emptyList(),
+                        Collections.emptyList()
+                ),
+                new Data("X",
+                        new LinkedList<>(),
+                        new LinkedList<>()
                 )
         );
         return result;
@@ -107,5 +120,23 @@ public class DataTest {
     String cleanWs(String s) {
         final String cleanWs = s.replaceAll("[ \r\n\t]", "");
         return cleanWs;
+    }
+
+    @Test
+    public void given_some_Data_then_none_are_equals_or_same() {
+        final Data data1 = new Data("X");
+        final Data data2 = new Data("X");
+        assertNotSame(data1, data2);
+        assertNotEquals(data1, data2);
+
+        final Data data3 = new Data("X",
+                new ArrayList<>(),
+                new ArrayList<>()
+        );
+        assertNotSame(data1, data3);
+        assertNotEquals(data1, data3);
+
+        assertNotSame(data2, data3);
+        assertNotEquals(data2, data3);
     }
 }
