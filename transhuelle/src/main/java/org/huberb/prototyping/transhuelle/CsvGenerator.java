@@ -35,10 +35,13 @@ import org.huberb.prototyping.transhuelle.TransHuelle.Data;
  */
 public class CsvGenerator {
 
+    /**
+     * Write some data in CSV format.
+     */
     public static class CsvWriter {
 
         /**
-         * Entry point to write csv.
+         * Entry point to write CSV format.
          *
          * @param mapList
          * @return
@@ -47,6 +50,7 @@ public class CsvGenerator {
             final StringBuilder csvLines = new StringBuilder();
             // add csv-header
             csvLines.append(toSingleLine(new String[]{"groups", "members"}));
+            // add csv-data
             for (Map<String, Set<String>> m : mapList) {
                 final Set<String> nameSet = m.get(Data.kName);
                 final Set<String> groupSet = m.get(Data.kGroup);
@@ -65,6 +69,12 @@ public class CsvGenerator {
             return sb.toString();
         }
 
+        /**
+         * Convert data to CSV.
+         *
+         * @param data
+         * @return Escaping ", surround data with " if needed.
+         */
         String escapeSpecialCharacters(String data) {
             String escapedData = data.replaceAll("\\R", " ");
             if (data.contains(",") || data.contains("\"") || data.contains("'")) {
@@ -105,7 +115,7 @@ public class CsvGenerator {
             int indexOfComma = line.indexOf(',');
             String k = line.substring(0, indexOfComma);
             String v = line.substring(indexOfComma + 1);
-            // strip encodings 
+            // strip encodings
             k = stripEncodings(k);
             v = stripEncodings(v);
 
@@ -163,8 +173,11 @@ public class CsvGenerator {
                 if (index >= 0) {
                     result = result.substring(0, index);
                 }
-                result = result.strip();
             }
+            // Replace `""´ by `"´
+            result = result.replace("\"\"", "\"");
+            // Strip leading and trailing white-space
+            result = result.strip();
             return result;
         }
     }

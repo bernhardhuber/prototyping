@@ -104,6 +104,9 @@ public class CsvReaderTest {
                 Arguments.of("X", " [ X ] "),
                 Arguments.of("X", "\"[X]\""),
                 Arguments.of("X", " \" [ X ] \" "),
+                Arguments.of("X Y", "\"X Y\""),
+                Arguments.of("X-Y", "\"X-Y\""),
+                Arguments.of("X\"Y", "\"X\"\"Y\""),
                 //---
                 Arguments.of("X,Y", "X,Y"),
                 Arguments.of("X,Y", " X,Y "),
