@@ -38,7 +38,7 @@ import static org.huberb.prototyping.transhuelle.TransHuelle.Data.newSetBuilderV
 public class TransHuelle {
 
     /**
-     * Wrapper for input, and out aka merged-data
+     * Wrapper for in-, and out-data (aka merged-data).
      */
     static class Data {
 
@@ -108,10 +108,25 @@ public class TransHuelle {
         }
     }
 
+    static interface IAlgorithm {
+
+        /**
+         * Process in data, and return processed data.
+         * <p>
+         * The in data is not changed.
+         * <p>
+         * The returned data has merged in-group-names, and in-groups.
+         *
+         * @param in
+         * @return
+         */
+        Data evaluate(final Data in);
+    }
+
     /**
-     * Implementation of algorithm merging groups
+     * Implementation of algorithm merging groups.
      */
-    static class Algorithm {
+    static class Algorithm implements IAlgorithm {
 
         private static final Logger logger = Logger.getLogger(Algorithm.class.getName());
 
@@ -124,7 +139,8 @@ public class TransHuelle {
          * @param in
          * @return
          */
-        Data evaluate(final Data in) {
+        @Override
+        public Data evaluate(final Data in) {
             final long startTime = System.currentTimeMillis();
             final Data out = new Data(in.name);
             out.groupsInList.addAll(in.groupsInList);
@@ -139,70 +155,60 @@ public class TransHuelle {
                 final List<Map<String, Object>> opList = new ArrayList<>();
 
                 // try to find ingname, ingmembers in out.groupsMergedList
-                if (out.groupsMergedList.isEmpty()) {
-                    // merged list is empty insert [ ingname, ingmembers ]
+                // find a match for [ingname, ingmembers] in groupsMergedList
+                int matchCount = 0;
+                for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
+                    final Set<String> outnames = groupsMergedElement.get(Data.kName);
+                    final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
+
+                    final boolean match = ingmembers.stream().anyMatch((theIngmember) -> outgmembers.contains(theIngmember));
+                    if (match) {
+                        // Thers is already a group containing ingmember
+                        if (matchCount == 0) {
+                            // this the first match merge ingname, ingmember
+                            final Map<String, Object> opMerge = new MapBuilder<String, Object>()
+                                    .kv("op", MERGE_OP)
+                                    .kv("ingname", newSetBuilderVs(ingname))
+                                    .kv("ingmembers", ingmembers)
+                                    .kv("outnames", outnames)
+                                    .kv("outgmembers", outgmembers)
+                                    .build();
+                            opList.add(opMerge);
+                        } else {
+                            // This is another match
+                            final Map<String, Object> opMergeMatchCount0 = opList.get(0);
+                            // merge current match to first merge
+                            final Map<String, Object> opMerge = new MapBuilder<String, Object>()
+                                    .kv("op", MERGE_OP)
+                                    .kv("ingname", outnames)
+                                    .kv("ingmembers", outgmembers)
+                                    .kv("outnames", opMergeMatchCount0.get("outnames"))
+                                    .kv("outgmembers", opMergeMatchCount0.get("outgmembers"))
+                                    .build();
+                            opList.add(opMerge);
+
+                            // delete current match
+                            final Map<String, Object> opDelete = new MapBuilder<String, Object>()
+                                    .kv("op", DELETE_OP)
+                                    .kv("ingname", newSetBuilderVs(ingname))
+                                    .kv("ingmembers", ingmembers)
+                                    .kv("outnames", outnames)
+                                    .kv("outgmembers", outgmembers)
+                                    .build();
+                            opList.add(opDelete);
+                        }
+                        matchCount += 1;
+                    }
+                }
+                // PostProcess matchCount=0
+                // no matching insert ingname, ingmembers into merged-result
+                if (matchCount == 0) {
                     final Map<String, Object> opInsert = new MapBuilder<String, Object>()
                             .kv("op", INSERT_OP)
                             .kv("ingname", ingname)
                             .kv("ingmembers", ingmembers)
                             .build();
                     opList.add(opInsert);
-                } else {
-                    // find a match for [ingname, ingmembers] in groupsMergedList
-                    int matchCount = 0;
-                    for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
-                        final Set<String> outnames = groupsMergedElement.get(Data.kName);
-                        final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
-
-                        final boolean match = ingmembers.stream().anyMatch((theIngmember) -> outgmembers.contains(theIngmember));
-                        if (match) {
-                            // Thers is already a group containing ingmember
-                            if (matchCount == 0) {
-                                // this the first match merge ingname, ingmember
-                                final Map<String, Object> opMerge = new MapBuilder<String, Object>()
-                                        .kv("op", MERGE_OP)
-                                        .kv("ingname", newSetBuilderVs(ingname))
-                                        .kv("ingmembers", ingmembers)
-                                        .kv("outnames", outnames)
-                                        .kv("outgmembers", outgmembers)
-                                        .build();
-                                opList.add(opMerge);
-                            } else {
-                                // This is another match
-                                final Map<String, Object> opMergeMatchCount0 = opList.get(0);
-                                // merge current match to first merge
-                                final Map<String, Object> opMerge = new MapBuilder<String, Object>()
-                                        .kv("op", MERGE_OP)
-                                        .kv("ingname", outnames)
-                                        .kv("ingmembers", outgmembers)
-                                        .kv("outnames", opMergeMatchCount0.get("outnames"))
-                                        .kv("outgmembers", opMergeMatchCount0.get("outgmembers"))
-                                        .build();
-                                opList.add(opMerge);
-
-                                // delete current match
-                                final Map<String, Object> opDelete = new MapBuilder<String, Object>()
-                                        .kv("op", DELETE_OP)
-                                        .kv("ingname", newSetBuilderVs(ingname))
-                                        .kv("ingmembers", ingmembers)
-                                        .kv("outnames", outnames)
-                                        .kv("outgmembers", outgmembers)
-                                        .build();
-                                opList.add(opDelete);
-                            }
-                            matchCount += 1;
-                        }
-                    }
-                    // PostProcess matchCount=0
-                    // no matching insert ingname, ingmembers into merged-result
-                    if (matchCount == 0) {
-                        final Map<String, Object> opInsert = new MapBuilder<String, Object>()
-                                .kv("op", INSERT_OP)
-                                .kv("ingname", ingname)
-                                .kv("ingmembers", ingmembers)
-                                .build();
-                        opList.add(opInsert);
-                    }
                 }
                 // Process opList
                 logger.fine(String.format("Process opList: %s", opList));
@@ -261,17 +267,18 @@ public class TransHuelle {
         }
     }
 
-    // implementation using explicit class OpRecordProcessor instance of Map
-    static class Algorithm2 {
+    /**
+     * Implementation of algorithm merging groups.
+     * <p>
+     * This implementation uses explicit class OpRecordProcessor instead of Map.
+     *
+     */
+    static class Algorithm2 implements IAlgorithm {
 
-        private static final Logger logger = Logger.getLogger(Algorithm.class.getName());
+        private static final Logger logger = Logger.getLogger(Algorithm2.class.getName());
 
-        /**
-         *
-         * @param in
-         * @return
-         */
-        Data evaluate(final Data in) {
+        @Override
+        public Data evaluate(final Data in) {
             final long startTime = System.currentTimeMillis();
             final Data out = new Data(in.name);
             out.groupsInList.addAll(in.groupsInList);
@@ -286,58 +293,49 @@ public class TransHuelle {
                 final OpRecordProcessor opList = new OpRecordProcessor();
 
                 // try to find ingname, ingmembers in out.groupsMergedList
-                if (out.groupsMergedList.isEmpty()) {
-                    // merged list is empty insert [ ingname, ingmembers ]
-                    final OpRecordInsert opRecordInsert = new OpRecordInsert(
-                            ingname,
-                            ingmembers
-                    );
-                    opList.addOpRecord(opRecordInsert);
-                } else {
-                    // find a match for [ingname, ingmembers] in groupsMergedList
-                    int matchCount = 0;
-                    for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
-                        final Set<String> outnames = groupsMergedElement.get(Data.kName);
-                        final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
+                // find a match for [ingname, ingmembers] in groupsMergedList
+                int matchCount = 0;
+                for (final Map<String, Set<String>> groupsMergedElement : out.groupsMergedList) {
+                    final Set<String> outnames = groupsMergedElement.get(Data.kName);
+                    final Set<String> outgmembers = groupsMergedElement.get(Data.kGroup);
 
-                        final boolean match = ingmembers.stream().anyMatch((theIngmember) -> outgmembers.contains(theIngmember));
-                        if (match) {
-                            // Thers is already a group containing ingmember
-                            if (matchCount == 0) {
-                                OpRecordMerge opRecordMerge = new OpRecordMerge(
-                                        newSetBuilderVs(ingname),
-                                        ingmembers,
-                                        outnames,
-                                        outgmembers);
-                                opList.addOpRecord(opRecordMerge);
-                            } else {
-                                // This is another match
-                                final OpRecordMerge opMergeMatchCount0 = (OpRecordMerge) opList.getOpRecord(0);
-                                // merge current match to first merge
-                                OpRecordMerge opRecordMerge = new OpRecordMerge(
-                                        outnames,
-                                        outgmembers,
-                                        opMergeMatchCount0.merge_outgnames,
-                                        opMergeMatchCount0.merge_outgmembers);
-                                opList.addOpRecord(opRecordMerge);
+                    final boolean match = ingmembers.stream().anyMatch((theIngmember) -> outgmembers.contains(theIngmember));
+                    if (match) {
+                        // Thers is already a group containing ingmember
+                        if (matchCount == 0) {
+                            OpRecordMerge opRecordMerge = new OpRecordMerge(
+                                    newSetBuilderVs(ingname),
+                                    ingmembers,
+                                    outnames,
+                                    outgmembers);
+                            opList.addOpRecord(opRecordMerge);
+                        } else {
+                            // This is another match
+                            final OpRecordMerge opMergeMatchCount0 = (OpRecordMerge) opList.getOpRecord(0);
+                            // merge current match to first merge
+                            OpRecordMerge opRecordMerge = new OpRecordMerge(
+                                    outnames,
+                                    outgmembers,
+                                    opMergeMatchCount0.merge_outgnames,
+                                    opMergeMatchCount0.merge_outgmembers);
+                            opList.addOpRecord(opRecordMerge);
 
-                                // delete current match
-                                OpRecordDelete opRecordDelete = new OpRecordDelete(
-                                        outnames,
-                                        outgmembers);
-                                opList.addOpRecord(opRecordDelete);
-                            }
-                            matchCount += 1;
+                            // delete current match
+                            OpRecordDelete opRecordDelete = new OpRecordDelete(
+                                    outnames,
+                                    outgmembers);
+                            opList.addOpRecord(opRecordDelete);
                         }
+                        matchCount += 1;
                     }
-                    // PostProcess matchCount=0
-                    // no matching insert ingname, ingmembers into merged-result
-                    if (matchCount == 0) {
-                        OpRecordInsert opRecordInsert = new OpRecordInsert(
-                                ingname,
-                                ingmembers);
-                        opList.addOpRecord(opRecordInsert);
-                    }
+                }
+                // PostProcess matchCount=0
+                // no matching insert ingname, ingmembers into merged-result
+                if (matchCount == 0) {
+                    OpRecordInsert opRecordInsert = new OpRecordInsert(
+                            ingname,
+                            ingmembers);
+                    opList.addOpRecord(opRecordInsert);
                 }
                 // Process opList
                 logger.fine(String.format("Process opList: %s", opList));
@@ -351,6 +349,9 @@ public class TransHuelle {
             return out;
         }
 
+        /**
+         * Encapsulate processing an {@link  OpRecord}.
+         */
         static class OpRecordProcessor {
 
             enum Op {
@@ -373,6 +374,15 @@ public class TransHuelle {
                 return opRecordList.get(i);
             }
 
+            /**
+             * Process the list of {@link OpRecord}s
+             *
+             * @param out
+             * @see OpRecord
+             * @see OpRecordInsert
+             * @see OpRecordMerge
+             * @see OpRecordDelete
+             */
             void process(Data out) {
                 for (OpRecord opRecord : opRecordList) {
                     opRecord.consume(out);
@@ -381,6 +391,11 @@ public class TransHuelle {
 
             static abstract class OpRecord<V> {
 
+                /**
+                 * Define the entry for consuming.
+                 *
+                 * @param out
+                 */
                 protected abstract void consume(Data out);
             }
 

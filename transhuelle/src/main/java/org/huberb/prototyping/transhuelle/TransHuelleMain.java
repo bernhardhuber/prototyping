@@ -29,7 +29,9 @@ import java.util.logging.Logger;
 import org.huberb.prototyping.transhuelle.CsvGenerator.CsvReader;
 import org.huberb.prototyping.transhuelle.CsvGenerator.CsvWriter;
 import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm;
+import org.huberb.prototyping.transhuelle.TransHuelle.Algorithm2;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
+import org.huberb.prototyping.transhuelle.TransHuelle.IAlgorithm;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
@@ -59,6 +61,31 @@ public class TransHuelleMain implements Callable<Integer> {
             description = "process preset data, and process it"
     )
     private boolean dataFactory;
+
+    enum AlgorithmMode {
+        algorithm {
+            @Override
+            IAlgorithm createAnAlgorithm() {
+                final IAlgorithm algorithm = new Algorithm();
+                return algorithm;
+            }
+        }, algorithm2 {
+            @Override
+            IAlgorithm createAnAlgorithm() {
+                final IAlgorithm algorithm = new Algorithm2();
+                return algorithm;
+            }
+        };
+
+        abstract IAlgorithm createAnAlgorithm();
+    }
+
+    @Option(names = {"--algorithm"},
+            required = false,
+            description = "choose algorithm",
+            defaultValue = "algorithm2"
+    )
+    private AlgorithmMode algorithmMode;
 
     public static void main(String[] args) throws Exception {
         final int exitCode = new CommandLine(new TransHuelleMain()).execute(args);
@@ -91,9 +118,10 @@ public class TransHuelleMain implements Callable<Integer> {
                 new DataFactory().createDataSample4(),
                 new DataFactory().createDataSample5()
         );
+        final IAlgorithm iAlgorithm = this.algorithmMode.createAnAlgorithm();
         for (int i = 0; i < dinList.size(); i++) {
             final Data din = dinList.get(i);
-            final Data dout = new Algorithm().evaluate(din);
+            final Data dout = iAlgorithm.evaluate(din);
             outputData(dout);
         }
     }
@@ -109,8 +137,8 @@ public class TransHuelleMain implements Callable<Integer> {
                 inMap,
                 Collections.emptyList()
         );
-        final Algorithm algorithm = new Algorithm();
-        final Data dout = algorithm.evaluate(din);
+        final IAlgorithm iAlgorithm = this.algorithmMode.createAnAlgorithm();
+        final Data dout = iAlgorithm.evaluate(din);
         outputData(dout);
     }
 
