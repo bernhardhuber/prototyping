@@ -32,19 +32,22 @@ import org.junit.jupiter.api.Test;
 public class SetBuilderTest {
 
     @Test
-    public void xxx() {
-        SetBuilder<String> instance = new SetBuilder<>();
+    public void given_a_Set_then_verify_its_members() {
+        final SetBuilder<String> instance = new SetBuilder<>();
         instance.v("S1")
                 .vs("S2", "S3")
                 .v(Arrays.asList("S4", "S5"));
-        Set<String> s = instance.build();
+        final Set<String> s = instance.build();
         assertEquals(5, s.size());
+
+        //---
         for (String elem : Arrays.asList("S1", "S2", "S3", "S4", "S5")) {
             assertTrue(s.contains(elem),
                     String.format("expecting %s in set %s", elem, s)
             );
         }
 
+        //---
         final List<String> l = s.stream()
                 .sorted(Comparator.naturalOrder())
                 .collect(Collectors.toList());
