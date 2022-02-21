@@ -40,16 +40,16 @@ public class TransHuelle {
     /**
      * Wrapper for in-, and out-data (aka merged-data).
      */
-    static class Data {
+    public static class Data {
 
         /**
          * Map key name define the name of a group
          */
-        static final String kName = "name";
+        public static final String kName = "name";
         /**
          * Map key name defining the members of a group
          */
-        static final String kGroup = "group";
+        public static final String kGroup = "group";
         /**
          * name of this data
          */
@@ -78,6 +78,19 @@ public class TransHuelle {
             this.groupsMergedList = groupsMergedList;
         }
 
+        public String getName() {
+            return name;
+        }
+
+        public List<Map<String, Set<String>>> getGroupsInList() {
+            return groupsInList;
+        }
+
+        public List<Map<String, Set<String>>> getGroupsMergedList() {
+            return groupsMergedList;
+        }
+
+
         @Override
         public String toString() {
             final String toString = String.format("Data {%n"
@@ -91,7 +104,7 @@ public class TransHuelle {
             return toString;
         }
 
-        static Set<String> newSetBuilderVs(String... vs) {
+        public static Set<String> newSetBuilderVs(String... vs) {
             final Set<String> result = new SetBuilder<String>()
                     .vs(vs)
                     .build();
@@ -111,7 +124,7 @@ public class TransHuelle {
     /**
      * Common interface for an algorithm
      */
-    static interface IAlgorithm {
+    public static interface IAlgorithm {
 
         /**
          * Process in data, and return processed data.
@@ -129,7 +142,7 @@ public class TransHuelle {
     /**
      * Implementation of algorithm merging groups.
      */
-    static class Algorithm1 implements IAlgorithm {
+    public static class Algorithm1 implements IAlgorithm {
 
         private static final Logger logger = Logger.getLogger(Algorithm1.class.getName());
 
@@ -278,7 +291,7 @@ public class TransHuelle {
      * This implementation uses explicit class OpRecordProcessor instead of Map.
      *
      */
-    static class Algorithm2 implements IAlgorithm {
+    public static class Algorithm2 implements IAlgorithm {
 
         private static final Logger logger = Logger.getLogger(Algorithm2.class.getName());
 

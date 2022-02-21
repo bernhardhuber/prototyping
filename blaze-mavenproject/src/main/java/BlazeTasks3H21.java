@@ -66,9 +66,12 @@ public class BlazeTasks3H21 {
     }
 
     /**
-     * Use groovy-sql to access H2 database.
+     * Use {@link groovy.sql.Sql} to access H2 database.
+     *
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
      */
-    public void createH2TestTable() throws SQLException, ClassNotFoundException {
+    public void createH2TestTableNewInstance() throws SQLException, ClassNotFoundException {
 
         final String sqls = "\n"
                 + "        DROP TABLE IF EXISTS TEST;\n"
@@ -109,26 +112,105 @@ public class BlazeTasks3H21 {
          */
         final Map<String, Object> jdbcConnection = jdbcConnection();
         final Sql sql = Sql.newInstance(jdbcConnection);
-        sql.execute("DROP TABLE IF EXISTS TEST");
-        sql.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
-        sql.execute("INSERT INTO TEST VALUES(1, 'Hello')");
-        sql.execute("INSERT INTO TEST VALUES(2, 'World')");
 
-        //sql.eachRow( "SELECT * FROM TEST ORDER BY ID" ) { row -> System.out.println( "TEST1: row ${row}" ); }
-        sql.eachRow("SELECT * FROM TEST ORDER BY ID", new Closure(null) {
-            void doCall(ResultSet row) {
-                System.out.println("TEST1: row " + row);
-            }
-        });
-        sql.execute("UPDATE TEST SET NAME='Hi' WHERE ID=1");
-        sql.execute("DELETE FROM TEST WHERE ID=2");
-        //sql.eachRow( "SELECT COUNT(*) FROM TEST" ) { row ->  println "TEST2: row ${row}" }
-        sql.eachRow("SELECT COUNT(*) FROM TEST", new Closure(null) {
-            void doCall(ResultSet row) {
-                System.out.println("TEST2: row " + row);
+        sql.withTransaction(new Closure(null) {
+            void doCall() throws SQLException {
+                sql.execute("DROP TABLE IF EXISTS TEST");
+                sql.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+                sql.execute("INSERT INTO TEST VALUES(1, 'Hello')");
+                sql.execute("INSERT INTO TEST VALUES(2, 'World')");
+
+                //sql.eachRow( "SELECT * FROM TEST ORDER BY ID" ) { row -> System.out.println( "TEST1: row ${row}" ); }
+                sql.eachRow("SELECT * FROM TEST ORDER BY ID", new Closure(null) {
+                    void doCall(ResultSet row) {
+                        System.out.println("TEST1: row " + row);
+                    }
+                });
+                sql.execute("UPDATE TEST SET NAME='Hi' WHERE ID=1");
+                sql.execute("DELETE FROM TEST WHERE ID=2");
+                //sql.eachRow( "SELECT COUNT(*) FROM TEST" ) { row ->  println "TEST2: row ${row}" }
+                sql.eachRow("SELECT COUNT(*) FROM TEST", new Closure(null) {
+                    void doCall(ResultSet row) {
+                        System.out.println("TEST2: row " + row);
+                    }
+                });
             }
         });
 
     }
 
+    /**
+     * Use {@link groovy.sql.Sql} to access H2 database.
+     *
+     * @throws java.sql.SQLException
+     * @throws java.lang.ClassNotFoundException
+     */
+    public void createH2TestTableWithInstance() throws SQLException, ClassNotFoundException {
+
+        final String sqls = "\n"
+                + "        DROP TABLE IF EXISTS TEST;\n"
+                + "        CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255));\n"
+                + "\n"
+                + "        INSERT INTO TEST VALUES(1, 'Hello');\n"
+                + "        INSERT INTO TEST VALUES(2, 'World');\n"
+                + "\n"
+                + "        SELECT * FROM TEST ORDER BY ID;\n"
+                + "\n"
+                + "        UPDATE TEST SET NAME='Hi' WHERE ID=1;\n"
+                + "        DELETE FROM TEST WHERE ID=2;\n"
+                + "\n"
+                + "        SELECT COUNT(*) FROM TEST;\n"
+                + "";
+
+        Contexts.logger().info("Process following sql statement " + sqls);
+
+        /* 
+            original groovy code:
+
+            Sql.withInstance( jdbcConnection ) { sql ->
+                sql.execute "DROP TABLE IF EXISTS TEST"
+                sql.execute "CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))"
+                sql.execute "INSERT INTO TEST VALUES(1, 'Hello')"
+                sql.execute "INSERT INTO TEST VALUES(2, 'World')"
+        
+                sql.eachRow( "SELECT * FROM TEST ORDER BY ID" ) { row -> 
+                    System.out.println( "TEST1: row ${row}" );
+                }
+        
+                sql.execute "UPDATE TEST SET NAME='Hi' WHERE ID=1"
+                sql.execute "DELETE FROM TEST WHERE ID=2"
+                sql.eachRow( "SELECT COUNT(*) FROM TEST" ) { row -> 
+                    println "TEST2: row ${row}"
+                }
+            }
+         */
+        final Map<String, Object> jdbcConnection = jdbcConnection();
+        Sql.withInstance(jdbcConnection, new Closure(null) {
+            void doCall(Sql sql) throws SQLException {
+                sql.withTransaction(new Closure(null) {
+                    void doCall() throws SQLException {
+                        sql.execute("DROP TABLE IF EXISTS TEST");
+                        sql.execute("CREATE TABLE TEST(ID INT PRIMARY KEY, NAME VARCHAR(255))");
+                        sql.execute("INSERT INTO TEST VALUES(1, 'Hello')");
+                        sql.execute("INSERT INTO TEST VALUES(2, 'World')");
+
+                        //sql.eachRow( "SELECT * FROM TEST ORDER BY ID" ) { row -> System.out.println( "TEST1: row ${row}" ); }
+                        sql.eachRow("SELECT * FROM TEST ORDER BY ID", new Closure(null) {
+                            void doCall(ResultSet row) {
+                                System.out.println("TEST1: row " + row);
+                            }
+                        });
+                        sql.execute("UPDATE TEST SET NAME='Hi' WHERE ID=1");
+                        sql.execute("DELETE FROM TEST WHERE ID=2");
+                        //sql.eachRow( "SELECT COUNT(*) FROM TEST" ) { row ->  println "TEST2: row ${row}" }
+                        sql.eachRow("SELECT COUNT(*) FROM TEST", new Closure(null) {
+                            void doCall(ResultSet row) {
+                                System.out.println("TEST2: row " + row);
+                            }
+                        });
+                    }
+                });
+            }
+        });
+    }
 }

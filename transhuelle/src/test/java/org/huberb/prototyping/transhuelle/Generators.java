@@ -20,18 +20,26 @@ import groovy.json.JsonGenerator.Options;
 import org.huberb.prototyping.transhuelle.TransHuelle.Data;
 import org.yaml.snakeyaml.Yaml;
 
-class Generators {
+public class Generators {
 
-    void toYaml(Data dout) {
-        final Yaml yaml = new Yaml();
-        final String doutYaml = yaml.dump(dout.toMap());
-        System.out.println(String.format("doutYaml:%n%s%n", doutYaml));
+    public void toYaml(Data d) {
+        toYaml(d.toMap());
     }
 
-    void toJson(Data dout) {
+    public void toYaml(Object object) {
+        final Yaml yaml = new Yaml();
+        final String doutYaml = yaml.dump(object);
+        System.out.println(String.format("yaml:%n%s%n", doutYaml));
+    }
+
+    public void toJson(Data d) {
+        toYaml(d.toMap());
+    }
+
+    public void toJson(Object object) {
         JsonGenerator jsonGenerator = new Options().build();
-        final String doutJson = jsonGenerator.toJson(dout.toMap());
-        System.out.println(String.format("doutJson:%n%s%n", doutJson));
+        final String doutJson = jsonGenerator.toJson(object);
+        System.out.println(String.format("json:%n%s%n", doutJson));
     }
 
 }
