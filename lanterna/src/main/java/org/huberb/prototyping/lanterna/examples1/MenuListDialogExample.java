@@ -18,7 +18,7 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.util.Arrays;
 import java.util.List;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialog;
@@ -27,7 +27,7 @@ import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialog;
  *
  * @author berni3
  */
-public class MenuListDialogExample extends LanternaDialogTemplate {
+public class MenuListDialogExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(MenuListDialogExample.class, args);

@@ -27,7 +27,8 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItem
  * @author pi
  * @param <T>
  */
-public class RadioListDialogBuilder<T extends IItemLabel> extends AbstractDialogBuilder<RadioListDialogBuilder<T>, RadioListDialog<T>> {
+public class RadioListDialogBuilder<T extends IItemLabel>
+        extends AbstractDialogBuilder<RadioListDialogBuilder<T>, RadioListDialog<T>> {
 
     private final List<T> content;
     private TerminalSize listBoxSize;
@@ -100,6 +101,7 @@ public class RadioListDialogBuilder<T extends IItemLabel> extends AbstractDialog
         this.content.addAll(Arrays.asList(items));
         return this;
     }
+
     public final RadioListDialogBuilder<T> addListItems(List<T> items) {
         this.content.addAll(items);
         return this;

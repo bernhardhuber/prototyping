@@ -26,7 +26,8 @@ import java.util.List;
  * @author pi
  * @param <T>
  */
-public class MenuListDialogBuilder<T> extends AbstractDialogBuilder<MenuListDialogBuilder<T>, MenuListDialog<T>> {
+public class MenuListDialogBuilder<T>
+        extends AbstractDialogBuilder<MenuListDialogBuilder<T>, MenuListDialog<T>> {
 
     private final List<T> content;
     private TerminalSize listBoxSize;

@@ -22,7 +22,8 @@ import com.googlecode.lanterna.gui2.dialogs.AbstractDialogBuilder;
  *
  * @author pi
  */
-public class TextBoxDialogBuilder extends AbstractDialogBuilder<TextBoxDialogBuilder, TextBoxDialog> {
+public class TextBoxDialogBuilder
+        extends AbstractDialogBuilder<TextBoxDialogBuilder, TextBoxDialog> {
 
     private String content;
     private TerminalSize listBoxSize;

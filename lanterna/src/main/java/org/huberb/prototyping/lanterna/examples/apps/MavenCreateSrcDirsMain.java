@@ -24,7 +24,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
 import org.huberb.prototyping.lanterna.AppContext;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialogBuilder;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
@@ -34,7 +34,7 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemL
  *
  * @author berni3
  */
-public class MavenCreateSrcDirsMain extends LanternaDialogTemplate {
+public class MavenCreateSrcDirsMain extends AbstractLanternaApplicationTemplate {
 
     private AppContext appContext = new AppContext("mavencreatesrcdirsmain");
 

@@ -33,33 +33,33 @@ public class LanternaLauncher implements Callable<Integer> {
             argsRemaining = new String[argsRemainingLenght];
             System.arraycopy(args, 1, argsRemaining, 0, argsRemainingLenght);
         }
-        int rc = launchWithClassName(className, argsRemaining);
+        final int rc = launchWithClassName(className, argsRemaining);
         System.exit(rc);
     }
 
     public static int launchWithClassName(String className, String[] args) throws Exception {
 
-        final Class<? extends LanternaDialogTemplate> clazz
-                = (Class<? extends LanternaDialogTemplate>) LanternaLauncher.class.getClassLoader().loadClass(className);
-        int rc = launchWithClass(clazz, args);
+        final Class<? extends AbstractLanternaApplicationTemplate> clazz
+                = (Class<? extends AbstractLanternaApplicationTemplate>) LanternaLauncher.class.getClassLoader().loadClass(className);
+        final int rc = launchWithClass(clazz, args);
         return rc;
     }
 
-    public static int launchWithClass(Class<? extends LanternaDialogTemplate> clazz, String[] args) throws Exception {
-        final LanternaLauncher lanternaLauncher = new LanternaLauncher();
-        lanternaLauncher.clazz = clazz;
+    public static int launchWithClass(Class<? extends AbstractLanternaApplicationTemplate> clazz, String[] args) throws Exception {
+        final LanternaLauncher lanternaLauncher = new LanternaLauncher(clazz);
         int rc = lanternaLauncher.call();
         return rc;
     }
 
-    Class<? extends LanternaDialogTemplate> clazz;
+    final Class<? extends AbstractLanternaApplicationTemplate> clazz;
 
-    LanternaLauncher() {
+    public LanternaLauncher(Class<? extends AbstractLanternaApplicationTemplate> clazz) {
+        this.clazz = clazz;
     }
 
     @Override
     public Integer call() throws Exception {
-        final LanternaDialogTemplate laternaDialogTemplate = clazz.getDeclaredConstructor().newInstance();
+        final AbstractLanternaApplicationTemplate laternaDialogTemplate = clazz.getDeclaredConstructor().newInstance();
         laternaDialogTemplate.launch();
         return 0;
     }

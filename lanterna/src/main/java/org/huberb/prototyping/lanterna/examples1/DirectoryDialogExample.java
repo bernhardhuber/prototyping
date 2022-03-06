@@ -19,14 +19,14 @@ import com.googlecode.lanterna.TerminalSize;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.DirectoryDialog;
 import java.io.File;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
  * @author berni3
  */
-public class DirectoryDialogExample extends LanternaDialogTemplate {
+public class DirectoryDialogExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(DirectoryDialogExample.class, args);

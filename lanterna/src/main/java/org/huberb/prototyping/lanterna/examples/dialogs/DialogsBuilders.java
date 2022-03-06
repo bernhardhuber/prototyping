@@ -24,13 +24,36 @@ import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialogBuilder;
 import java.io.File;
 import java.util.List;
+import java.util.Optional;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 
 /**
+ * A builder for dialogues.
  *
  * @author berni3
  */
 public class DialogsBuilders {
+
+    private String title;
+
+    public DialogsBuilders title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public MessageDialogBuilder2 msgbox(String description) {
+        return msgbox(this.title, description);
+
+    }
+
+    public MessageDialogBuilder2 msgbox(String description, List<MessageDialogButton> buttonLists) {
+        final MessageDialogBuilder2 b = new MessageDialogBuilder2()
+                .setTitle(this.title)
+                .setDescription(description)
+                .addButtons(buttonLists);
+        return b;
+
+    }
 
     public MessageDialogBuilder2 msgbox(String title, String description) {
         final MessageDialogBuilder2 b = new MessageDialogBuilder2()
@@ -38,6 +61,10 @@ public class DialogsBuilders {
                 .setDescription(description)
                 .addButton(MessageDialogButton.OK);
         return b;
+    }
+
+    public MessageDialogBuilder2 yesno(String description) {
+        return yesno(this.title, description);
     }
 
     public MessageDialogBuilder2 yesno(String title, String description) {
@@ -49,7 +76,16 @@ public class DialogsBuilders {
         return b;
     }
 
+    public TextInputDialogBuilder inputbox(String description, String init, int h, int w) {
+        return inputbox(this.title, description, init, h, w);
+    }
+
     public TextInputDialogBuilder inputbox(String title, String description, String init, int h, int w) {
+        final String initNormalized = Optional.ofNullable(init)
+                .map((s) -> s.trim())
+                .orElse("");
+        final int wNormalized = Math.min(w, 1);
+        final int hNormalized = Math.min(h, 1);
         final TextInputDialogBuilder b = new TextInputDialogBuilder()
                 .setTitle(title)
                 .setDescription(description)
@@ -78,6 +114,10 @@ public class DialogsBuilders {
         return b;
     }
 
+    public ListSelectDialogBuilder<ItemLabel> menu(String description, int h, int w, List<ItemLabel> l) {
+        return menu(this.title, description, h, w, l);
+    }
+
     public ListSelectDialogBuilder<ItemLabel> menu(String title, String description, int h, int w, List<ItemLabel> l) {
         ListSelectDialogBuilder<ItemLabel> b = new ListSelectDialogBuilder<ItemLabel>()
                 .setTitle(title)
@@ -85,6 +125,23 @@ public class DialogsBuilders {
                 .addListItems(l.toArray(ItemLabel[]::new))
                 .setListBoxSize(new TerminalSize(w, h));
         return b;
+    }
+
+    public MenuListDialogBuilder<ItemLabel> menu2(String description, int h, int w, List<ItemLabel> l) {
+        return menu2(this.title, description, h, w, l);
+    }
+
+    public MenuListDialogBuilder<ItemLabel> menu2(String title, String description, int h, int w, List<ItemLabel> l) {
+        MenuListDialogBuilder<ItemLabel> b = new MenuListDialogBuilder<ItemLabel>()
+                .setTitle(title)
+                .setDescription(description)
+                .addListItems(l.toArray(ItemLabel[]::new))
+                .setListBoxSize(new TerminalSize(w, h));
+        return b;
+    }
+
+    public CheckListDialogBuilder<ItemLabel> checklist(String description, int h, int w, List<ItemLabel> l) {
+        return checklist(this.title, description, h, w, l);
     }
 
     public CheckListDialogBuilder<ItemLabel> checklist(String title, String description, int h, int w, List<ItemLabel> l) {
@@ -96,6 +153,10 @@ public class DialogsBuilders {
         return b;
     }
 
+    public RadioListDialogBuilder<ItemLabel> radiolist(String description, int h, int w, List<ItemLabel> l) {
+        return radiolist(this.title, description, h, w, l);
+    }
+
     public RadioListDialogBuilder<ItemLabel> radiolist(String title, String description, int h, int w, List<ItemLabel> l) {
         final RadioListDialogBuilder<ItemLabel> b = new RadioListDialogBuilder<ItemLabel>()
                 .setTitle(title)
@@ -105,6 +166,10 @@ public class DialogsBuilders {
         return b;
     }
 
+    public DirectoryDialogBuilder dselect(String description, int h, int w, File selectedDir) {
+        return dselect(this.title, description, h, w, selectedDir);
+    }
+
     public DirectoryDialogBuilder dselect(String title, String description, int h, int w, File selectedDir) {
         final DirectoryDialogBuilder b = new DirectoryDialogBuilder()
                 .setTitle(title)
@@ -112,6 +177,10 @@ public class DialogsBuilders {
                 .setSelectedDirectory(selectedDir)
                 .setSuggestedSize(new TerminalSize(w, h));
         return b;
+    }
+
+    public FileDialogBuilder fselect(String description, int h, int w, File selectedFile) {
+        return fselect(this.title, description, h, w, selectedFile);
     }
 
     public FileDialogBuilder fselect(String title, String description, int h, int w, File selectedFile) {

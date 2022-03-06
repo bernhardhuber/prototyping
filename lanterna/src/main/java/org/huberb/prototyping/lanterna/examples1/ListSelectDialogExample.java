@@ -21,14 +21,14 @@ import com.googlecode.lanterna.gui2.dialogs.ListSelectDialog;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
  * @author berni3
  */
-public class ListSelectDialogExample extends LanternaDialogTemplate {
+public class ListSelectDialogExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(ListSelectDialogExample.class, args);

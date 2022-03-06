@@ -30,7 +30,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Optional;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.examples.apps.JBakeInitProjectDirMain.Context.Widgets;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
@@ -39,7 +39,7 @@ import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
  *
  * @author berni3
  */
-public class JBakeInitProjectDirMain extends LanternaDialogTemplate {
+public class JBakeInitProjectDirMain extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         final JBakeInitProjectDirMain jbakeInitProjectDirMain = new JBakeInitProjectDirMain();

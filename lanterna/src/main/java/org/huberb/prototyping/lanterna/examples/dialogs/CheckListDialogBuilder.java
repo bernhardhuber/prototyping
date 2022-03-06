@@ -27,7 +27,8 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItem
  * @author pi
  * @param <T>
  */
-public class CheckListDialogBuilder<T extends IItemLabel> extends AbstractDialogBuilder<CheckListDialogBuilder<T>, CheckListDialog<T>> {
+public class CheckListDialogBuilder<T extends IItemLabel>
+        extends AbstractDialogBuilder<CheckListDialogBuilder<T>, CheckListDialog<T>> {
 
     private final List<T> content;
     private TerminalSize listBoxSize;

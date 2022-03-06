@@ -28,11 +28,12 @@ public class PkFkRecordTreeTest {
     @Test
     public void testCreatePkFkTreeFor() {
         PkFkRecordTree instance = new PkFkRecordTree();
-        String startTablename = "T_ANTRAEGE";
+        String startTablename = "T_AN";
         TreeNodeWithChildren<String> result = instance.createPkFkTreeFor(startTablename);
         System.out.printf("%ntestCreatePkFkTreeFor visitNodes%n");
         instance.visit(result, (i, e) -> System.out.printf("testCreatePkFkTreeFor %d %s%n", i, e.data));
     }
+
     @Test
     public void testCreatePkFkTreeAll() {
         PkFkRecordTree instance = new PkFkRecordTree();

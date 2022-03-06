@@ -50,7 +50,7 @@ public class PkFkDb {
 
     static class PkFkRecordTree {
 
-        final List<PkFkRecord> pkFkRecordList = PkFkRecord.createTEEINGAENGE_ANTRAEGE_1();
+        final List<PkFkRecord> pkFkRecordList = PkFkRecord.createT_EE_AN_1();
 
         TreeNodeWithChildren<String> createPkFkTreeFor(String startTablename) {
             final TreeNodeWithChildren<String> rootNode = new TreeNodeWithChildren<>("empty");
@@ -68,7 +68,9 @@ public class PkFkDb {
 
             final Set<String> processed = new HashSet<>();
 
-            final Set<String> pkTablenameSet = this.pkFkRecordList.stream().map((e) -> e.pkTablename).collect(Collectors.toSet());
+            final Set<String> pkTablenameSet = this.pkFkRecordList.stream()
+                    .map((e) -> e.pkTablename)
+                    .collect(Collectors.toSet());
             pkTablenameSet.forEach((e) -> {
                 String startTablename = e;
                 if (!processed.contains(e)) {
@@ -147,13 +149,13 @@ public class PkFkDb {
         }
 
         List<Pair<String, Set<String>>> calcDepth1() {
-            List<Pair<String, Set<String>>> groupsInList = new ArrayList<>();
+            final List<Pair<String, Set<String>>> groupsInList = new ArrayList<>();
             for (PkFkRecord pkFkRecord : this.pkFkRecordList) {
-                String pkTablename = pkFkRecord.pkTablename;
-                String fkTablename = pkFkRecord.fkTablename;
-                String name = "g-" + pkTablename;
-                Set<String> members = new SetBuilder<String>().v(fkTablename).build();
-                Pair<String, Set<String>> p = new Pair(pkTablename, members);
+                final String pkTablename = pkFkRecord.pkTablename;
+                final String fkTablename = pkFkRecord.fkTablename;
+                final String name = "g-" + pkTablename;
+                final Set<String> members = new SetBuilder<String>().v(fkTablename).build();
+                final Pair<String, Set<String>> p = new Pair(pkTablename, members);
                 groupsInList.add(p);
             }
 
@@ -168,7 +170,7 @@ public class PkFkDb {
                     final Set<String> fkSet = p.getRight();
                     final SetBuilder<String> setBuilder = new SetBuilder<String>();
                     for (String fkTablename : fkSet) {
-                        List<PkFkRecord> foundByPkTablenameList = findPkTablename.apply(fkTablename);
+                        final List<PkFkRecord> foundByPkTablenameList = findPkTablename.apply(fkTablename);
                         for (PkFkRecord foundByPkTablename : foundByPkTablenameList) {
                             final String newFkTablename = foundByPkTablename.fkTablename;
                             setBuilder.v(newFkTablename);
@@ -185,23 +187,23 @@ public class PkFkDb {
         }
 
         Data calcDepth2() {
-            List<Map<String, Set<String>>> groupsInList = new ArrayList<>();
+            final List<Map<String, Set<String>>> groupsInList = new ArrayList<>();
             for (PkFkRecord pkFkRecord : this.pkFkRecordList) {
-                String pkTablename = pkFkRecord.pkTablename;
-                String fkTablename = pkFkRecord.fkTablename;
-                String name = "g-" + pkTablename;
-                Set<String> members = Data.newSetBuilderVs(fkTablename);
-                Map<String, Set<String>> m = new HashMap<>();
+                final String pkTablename = pkFkRecord.pkTablename;
+                final String fkTablename = pkFkRecord.fkTablename;
+                final String name = "g-" + pkTablename;
+                final Set<String> members = Data.newSetBuilderVs(fkTablename);
+                final Map<String, Set<String>> m = new HashMap<>();
                 m.put(Data.kName, Data.newSetBuilderVs(name));
                 m.put(Data.kGroup, members);
                 groupsInList.add(m);
             }
 
-            List<Map<String, Set<String>>> groupsMergedList = new ArrayList<>();
-            Data in = new Data("pkfk", groupsInList, groupsMergedList);
+            final List<Map<String, Set<String>>> groupsMergedList = new ArrayList<>();
+            final Data in = new Data("pkfk", groupsInList, groupsMergedList);
 
-            Algorithm2 algorithm2 = new Algorithm2();
-            Data out = algorithm2.evaluate(in);
+            final Algorithm2 algorithm2 = new Algorithm2();
+            final Data out = algorithm2.evaluate(in);
             return out;
         }
 
@@ -221,47 +223,40 @@ public class PkFkDb {
             this.fkId = fkId;
         }
 
-        static List<PkFkRecord> createTEEINGAENGE_ANTRAEGE_1() {
+        static List<PkFkRecord> createT_EE_AN_1() {
             final List<PkFkRecord> pkFkRecordList = new ListBuilder<PkFkRecord>()
-                    .add(new PkFkRecord("T_ANTRAEGE",   "ID", "T_FAELLE",               "ANTRAG_ID"))
-                    .add(new PkFkRecord("T_ANTRAEGE",   "ID", "T_EEINGAENGE_ANTRAEGE",  "ANTRAG_ID"))
-                    .add(new PkFkRecord("T_FAELLE",     "ID", "T_RECHNUNGEN",           "FALL_ID"))
-                    .add(new PkFkRecord("T_KONTO",      "ID", "T_FAELLE",               "KEKONTO_ID"))
-                    .add(new PkFkRecord("T_RECHNUNGEN", "ID", "T_LEISTUNGSZEILEN",      "RECHNUNG_ID"))
-                    .add(new PkFkRecord("T_PARTNER",    "ID", "T_RECHNUNGEN",           "LEISTUNGSERBRINGER_ID"))
-                    .add(new PkFkRecord("T_KUNDE",      "ID", "T_RECHNUNGEN",           "LEISTUNGSEMPFAENGER_ID"))
-                    //.add(new PkFkRecord("T_LEISTUNGSZEILEN", "ID", "", ""))
-                    .add(new PkFkRecord("T_EEINGAENGE", "ID", "T_EEINGAENGE_ANTRAEGE",  "EEINGANG_ID"))
+                    .add(new PkFkRecord("T_AN", "ID", "T_FA", "AN_ID"))
+                    .add(new PkFkRecord("T_AN", "ID", "T_EE_AN", "AN_ID"))
+                    .add(new PkFkRecord("T_FA", "ID", "T_RE", "FA_ID"))
+                    .add(new PkFkRecord("T_KO", "ID", "T_FA", "KO_ID"))
+                    .add(new PkFkRecord("T_RE", "ID", "T_LZ", "RECHNUNG_ID"))
+                    .add(new PkFkRecord("T_PA", "ID", "T_RE", "LERB_ID"))
+                    .add(new PkFkRecord("T_KU", "ID", "T_RE", "LEMPF_ID"))
+                    //.add(new PkFkRecord("T_LZ", "ID", "", ""))
+                    .add(new PkFkRecord("T_EE", "ID", "T_EE_AN", "EE_ID"))
                     .build();
             return pkFkRecordList;
         }
     }
 
-    static class PkFkData {
+    static class PkFkData extends PkFkRecord {
 
-        final String pkTablename;
-        final String pkId;
         final List<String> pkIdList;
-        final List<FkData> fkDataList;
 
-        public PkFkData(String tablename, String pkId) {
-            this.pkTablename = tablename;
-            this.pkId = pkId;
+        public PkFkData(PkFkRecord pkFkRecord) {
+            this(pkFkRecord.pkTablename, pkFkRecord.pkId, pkFkRecord.fkTablename, pkFkRecord.fkId);
+        }
+
+        public PkFkData(String pkTablename, String pkId, String fkTablename, String fkId) {
+            super(pkTablename, pkId, fkTablename, fkId);
             this.pkIdList = new ArrayList<>();
-            this.fkDataList = new ArrayList<>();
         }
 
-        static class FkData {
-
-            String fkTableName;
-            String fkId;
-            List<String> fkIdValues;
-        }
     }
 
     static class XXX {
 
-        final List<PkFkRecord> pkFkRecordList = PkFkRecord.createTEEINGAENGE_ANTRAEGE_1();
+        final List<PkFkRecord> pkFkRecordList = PkFkRecord.createT_EE_AN_1();
 
         void xxx() {
             List<PkFkData> pkFkDataList = new ArrayList<>();;

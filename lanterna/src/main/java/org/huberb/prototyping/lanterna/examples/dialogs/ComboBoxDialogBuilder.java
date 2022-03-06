@@ -27,7 +27,8 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItem
  * @author pi
  * @param <T>
  */
-public class ComboBoxDialogBuilder<T extends IItemLabel> extends AbstractDialogBuilder<ComboBoxDialogBuilder<T>, ComboBoxDialog<T>> {
+public class ComboBoxDialogBuilder<T extends IItemLabel>
+        extends AbstractDialogBuilder<ComboBoxDialogBuilder<T>, ComboBoxDialog<T>> {
 
     private final List<T> content;
     private TerminalSize comboBoxSize;

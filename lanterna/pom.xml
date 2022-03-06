@@ -22,6 +22,53 @@
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>3.2.0</version>
+                <configuration>
+                    
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>list</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>list</goal>
+                        </goals>
+                        <configuration>
+                            <outputFile>${project.build.directory}/bundled.txt</outputFile>
+                            <includeScope>runtime</includeScope>
+                            <outputScope>false</outputScope>
+                            <excludeTransitive>false</excludeTransitive>
+                        </configuration>
+                    </execution>
+                    <execution>
+                        <id>copy</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>copy</goal>
+                        </goals>                        
+                        <configuration>
+                            <artifactItems>
+                                <artifactItem>
+                                    <groupId>com.fizzed</groupId>
+                                    <artifactId>blaze-lite</artifactId>
+                                    <version>${blaze-lite.version}</version>
+                                    <type>jar</type>
+                                    <overWrite>false</overWrite>
+                                    <destFileName>blaze.jar</destFileName>
+                                </artifactItem>
+                            </artifactItems>
+                            <outputDirectory>${basedir}</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>true</overWriteSnapshots>                            
+                            
+                            <includeScope>runtime</includeScope>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>            
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.4</version>
                 <executions>
@@ -98,6 +145,7 @@
         </plugins>
     </build>
     <properties>
+        <blaze-lite.version>1.0.2</blaze-lite.version>
         <junit.version>5.8.1</junit.version>
         <mockito.version>3.10.0</mockito.version>
         <maven.compiler.source>11</maven.compiler.source>
@@ -112,6 +160,11 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>com.fizzed</groupId>
+                <artifactId>blaze-lite</artifactId>
+                <version>${blaze-lite.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
@@ -122,6 +175,12 @@
             <artifactId>lanterna</artifactId>
             <version>3.1.1</version>
         </dependency>
+  <dependency>
+            <groupId>com.fizzed</groupId>
+            <artifactId>blaze-lite</artifactId>
+            <scope>provided</scope>
+        </dependency>
+                
         <dependency>
             <groupId>org.yaml</groupId>
             <artifactId>snakeyaml</artifactId>

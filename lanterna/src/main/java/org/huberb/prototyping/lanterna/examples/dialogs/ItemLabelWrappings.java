@@ -37,6 +37,10 @@ public class ItemLabelWrappings {
 
         private static final long serialVersionUID = 20220116L;
 
+        public static ItemLabel empty() {
+            return new ItemLabel("", "");
+        }
+
         private final boolean selected;
         private final String label;
         private final String item;
@@ -69,6 +73,15 @@ public class ItemLabelWrappings {
         @Override
         public String toString() {
             return this.label;
+        }
+
+        public String toStringFormatted() {
+            String toStringFormatted = String.format("ItemLabel{"
+                    + "selected=%s, "
+                    + "label=%s, "
+                    + "item=%s"
+                    + "}", this.selected, this.label, this.label);
+            return toStringFormatted;
         }
 
         @Override

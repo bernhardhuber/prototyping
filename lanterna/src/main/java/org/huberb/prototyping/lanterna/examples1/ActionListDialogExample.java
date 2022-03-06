@@ -20,14 +20,14 @@ import com.googlecode.lanterna.gui2.dialogs.ActionListDialog;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
  * @author berni3
  */
-public class ActionListDialogExample extends LanternaDialogTemplate {
+public class ActionListDialogExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(ActionListDialogExample.class, args);

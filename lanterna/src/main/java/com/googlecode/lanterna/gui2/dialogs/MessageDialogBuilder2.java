@@ -46,7 +46,11 @@ public class MessageDialogBuilder2 extends AbstractDialogBuilder<MessageDialogBu
 
     @Override
     protected MessageDialog2 buildDialog() {
-        MessageDialog2 messageDialog = new MessageDialog2(title, description, buttons.toArray(new MessageDialogButton[0]));
+        MessageDialog2 messageDialog = new MessageDialog2(
+                title,
+                description,
+                buttons.toArray(MessageDialogButton[]::new)
+        );
         messageDialog.setHints(extraWindowHints);
         return messageDialog;
     }
@@ -79,6 +83,17 @@ public class MessageDialogBuilder2 extends AbstractDialogBuilder<MessageDialogBu
         if (button != null) {
             buttons.add(button);
         }
+        return this;
+    }
+
+    /**
+     * Add a buttons to the dialog
+     *
+     * @param buttonList a list of Button to add to the dialog
+     * @return Itself
+     */
+    public MessageDialogBuilder2 addButtons(List<MessageDialogButton> buttonList) {
+        buttonList.forEach((b) -> addButton(b));
         return this;
     }
 

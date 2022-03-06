@@ -19,7 +19,7 @@ import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.examples.dialogs.ComboBoxDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
@@ -28,7 +28,7 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemL
  *
  * @author berni3
  */
-public class ComboBoxDialogExample extends LanternaDialogTemplate {
+public class ComboBoxDialogExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(ComboBoxDialogExample.class, args);

@@ -18,14 +18,14 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
 import java.math.BigInteger;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
  * @author berni3
  */
-public class TextInputDialogExample extends LanternaDialogTemplate {
+public class TextInputDialogExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(TextInputDialogExample.class, args);

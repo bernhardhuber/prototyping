@@ -18,14 +18,14 @@ package org.huberb.prototyping.lanterna.examples1;
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialog;
 import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 
 /**
  *
  * @author berni3
  */
-public class MessageDialogButtonExample extends LanternaDialogTemplate {
+public class MessageDialogButtonExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(MessageDialogButtonExample.class, args);

@@ -23,6 +23,5 @@ public class MessageDialog2 extends MessageDialog {
 
     MessageDialog2(String title, String text, MessageDialogButton... buttons) {
         super(title, text, buttons);
-    } //super(title);
-
+    }
 }

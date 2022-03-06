@@ -24,31 +24,49 @@ import com.googlecode.lanterna.gui2.dialogs.MessageDialogButton;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
 import java.io.File;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Map.Entry;
+import java.util.Optional;
+import java.util.concurrent.Callable;
 import java.util.function.Supplier;
+import java.util.stream.Collectors;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.AppContext;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.DialogsBuilders;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemLabel;
+import org.huberb.prototyping.lanterna.examples.dialogs.MenuListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.RadioListDialog;
 
 /**
  *
  * @author berni3
  */
-public class DialogsBuildersMain extends LanternaDialogTemplate {
+public class DialogsBuildersMain extends AbstractLanternaApplicationTemplate implements Callable<Integer> {
 
-    private AppContext appContext = new AppContext("dialogsbuildersmain");
+    private final AppContext appContext;
 
     public static void main(String[] args) throws Exception {
         final DialogsBuildersMain dialogsBuilderMain = new DialogsBuildersMain();
-        dialogsBuilderMain.launch();
+        int rc = dialogsBuilderMain.call();
+        System.exit(rc);
     }
 
     public DialogsBuildersMain() {
-        super("dialogsbuildersmain");
+        this("DialogsBuildersMain");
+    }
+
+    public DialogsBuildersMain(String name) {
+        super(name);
+        appContext = new AppContext(name);
+    }
+
+    //---
+    @Override
+    public Integer call() throws Exception {
+        launch();
+        return 0;
     }
 
     @Override
@@ -59,130 +77,143 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
 
     //---
     void showDialog(MultiWindowTextGUI textGUI) {
-        showMsgbox(textGUI);
-        showYesno(textGUI);
-        showInputbox(textGUI);
-        showPasswordbox(textGUI);
-        showMenu(textGUI);
-        showChecklist(textGUI);
-        showRadiolist(textGUI);
-        showDselect(textGUI);
-        showFselect(textGUI);
+        this.appContext.storeResult("showMsgbox.result", showMsgbox(textGUI));
+
+        this.appContext.storeResult("showYesno.result", showYesno(textGUI));
+        this.appContext.storeResult("showInputbox.result", showInputbox(textGUI).orElse(""));
+        this.appContext.storeResult("showPasswordbox.result", showPasswordbox(textGUI).orElse(""));
+        this.appContext.storeResult("showMenu.result", showMenu(textGUI).orElse(ItemLabel.empty()));
+        this.appContext.storeResult("showMenu2.result", showMenu2(textGUI).orElse(ItemLabel.empty()));
+        this.appContext.storeResult("showCheckList.result", showChecklist(textGUI).orElse(Collections.emptyList()));
+        this.appContext.storeResult("showRadioList.result", showRadiolist(textGUI).orElse(ItemLabel.empty()));
+        this.appContext.storeResult("showFselect.result", showFselect(textGUI).orElse(null));
+        this.appContext.storeResult("showDselect.result", showDselect(textGUI).orElse(null));
         showMsgbox(textGUI);
     }
 
-    Supplier<String> descriptionText = () -> String.format("description%n%s", formatApplicationContext());
+    final Supplier<String> descriptionText = () -> String.format("description%n%s", formatApplicationContext());
 
     //---
-    void showMsgbox(MultiWindowTextGUI textGUI) {
-        {
-            final DialogsBuilders db = new DialogsBuilders();
-            final MessageDialog2 md = db.msgbox(
-                    "showMsgbox",
-                    descriptionText.get())
-                    .build();
-            final MessageDialogButton result = md.showDialog(textGUI);
-            this.appContext.storeResult("showMsgbox.result", result);
-        }
+    MessageDialogButton showMsgbox(MultiWindowTextGUI textGUI) {
+        final DialogsBuilders db = new DialogsBuilders();
+        final MessageDialog2 md = db.msgbox(
+                "showMsgbox",
+                descriptionText.get())
+                .build();
+        final MessageDialogButton result = md.showDialog(textGUI);
+        //this.appContext.storeResult("showMsgbox.result", result);
+        return result;
     }
 
-    void showYesno(MultiWindowTextGUI textGUI) {
-        {
-            final DialogsBuilders db = new DialogsBuilders();
-            final MessageDialog2 md = db.yesno(
-                    "showYesno",
-                    descriptionText.get())
-                    .build();
-            final MessageDialogButton result = md.showDialog(textGUI);
-            this.appContext.storeResult("showYesno.result", result);
-        }
+    MessageDialogButton showYesno(MultiWindowTextGUI textGUI) {
+        final DialogsBuilders db = new DialogsBuilders();
+        final MessageDialog2 md = db.yesno(
+                "showYesno",
+                descriptionText.get())
+                .build();
+        final MessageDialogButton result = md.showDialog(textGUI);
+        //this.appContext.storeResult("showYesno.result", result);
+        return result;
     }
 
-    void showInputbox(MultiWindowTextGUI textGUI) {
-        {
-            final DialogsBuilders db = new DialogsBuilders();
-            final TextInputDialog md = db.inputbox(
-                    "showInputbox",
-                    descriptionText.get(),
-                    "init",
-                    1, 40)
-                    .build();
-            final String result = md.showDialog(textGUI);
-            this.appContext.storeResult("showInputbox.result", result);
-        }
+    Optional<String> showInputbox(MultiWindowTextGUI textGUI) {
+        final DialogsBuilders db = new DialogsBuilders();
+        final TextInputDialog md = db.inputbox(
+                "showInputbox",
+                descriptionText.get(),
+                "init",
+                1, 40)
+                .build();
+        final String result = md.showDialog(textGUI);
+        //this.appContext.storeResult("showInputbox.result", result);
+        return Optional.ofNullable(result);
     }
 
-    void showPasswordbox(MultiWindowTextGUI textGUI) {
-        {
-            final DialogsBuilders db = new DialogsBuilders();
-            final TextInputDialog md = db.passwordbox(
-                    "showPasswordbox",
-                    descriptionText.get(),
-                    "init",
-                    1, 40)
-                    .build();
-            final String result = md.showDialog(textGUI);
-            this.appContext.storeResult("showPasswordbox.result", result);
-        }
+    Optional<String> showPasswordbox(MultiWindowTextGUI textGUI) {
+        final DialogsBuilders db = new DialogsBuilders();
+        final TextInputDialog md = db.passwordbox(
+                "showPasswordbox",
+                descriptionText.get(),
+                "init",
+                1, 40)
+                .build();
+        final String result = md.showDialog(textGUI);
+        //this.appContext.storeResult("showPasswordbox.result", result);
+        return Optional.ofNullable(result);
     }
 
-    void showMenu(MultiWindowTextGUI textGUI) {
+    Optional<ItemLabel> showMenu(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
-                new ItemLabel("label1Menu", "item1Menu"),
-                new ItemLabel("label2Menu", "item2Menu", true),
-                new ItemLabel("label3Menu", "item3Menu")
+                new ItemLabel("label Menu1 1", "itemMenu1"),
+                new ItemLabel("label Menu1 2", "itemMenu2"),
+                new ItemLabel("label Menu1 3", "itemMenu3")
         );
-        {
-            final DialogsBuilders db = new DialogsBuilders();
-            final ListSelectDialog<ItemLabel> cld = db.menu(
-                    "showMenu",
-                    descriptionText.get(),
-                    15, 40,
-                    itemLabelList)
-                    .build();
-            final ItemLabel result = cld.showDialog(textGUI);
-            this.appContext.storeResult("showMenu.result", result);
-        }
+        final DialogsBuilders db = new DialogsBuilders();
+        final ListSelectDialog<ItemLabel> listSelectDialogItemLabel = db.menu(
+                "showMenu",
+                descriptionText.get(),
+                15, 40,
+                itemLabelList)
+                .build();
+        final ItemLabel result = listSelectDialogItemLabel.showDialog(textGUI);
+        //this.appContext.storeResult("showMenu.result", result);
+        return Optional.ofNullable(result);
     }
 
-    void showChecklist(MultiWindowTextGUI textGUI) {
+    Optional<ItemLabel> showMenu2(MultiWindowTextGUI textGUI) {
+        final List<ItemLabel> itemLabelList = Arrays.asList(
+                new ItemLabel("label - Menu1", "itemMenu1"),
+                new ItemLabel("label - Menu2", "itemMenu2"),
+                new ItemLabel("label - Menu3", "itemMenu3")
+        );
+        final DialogsBuilders db = new DialogsBuilders();
+        final MenuListDialog<ItemLabel> listSelectDialogItemLabel = db.menu2(
+                "showMenu",
+                descriptionText.get(),
+                15, 40,
+                itemLabelList)
+                .build();
+        final ItemLabel result = listSelectDialogItemLabel.showDialog(textGUI);
+        //this.appContext.storeResult("showMenu.result", result);
+        return Optional.ofNullable(result);
+    }
+
+    Optional<List<ItemLabel>> showChecklist(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
                 new ItemLabel("label1Checkbox", "item1Checkbox"),
                 new ItemLabel("label2Checkbox", "item2Checkbox", true),
                 new ItemLabel("label3Checkbox", "item3Checkbox")
         );
-        {
-            final DialogsBuilders db = new DialogsBuilders();
-            final CheckListDialog<ItemLabel> cld = db.checklist(
-                    "showCheckList",
-                    descriptionText.get(),
-                    15, 40,
-                    itemLabelList)
-                    .build();
-            final List<ItemLabel> result = cld.showDialog(textGUI);
-            this.appContext.storeResult("showCheckList.result", result);
-        }
+        final DialogsBuilders db = new DialogsBuilders();
+        final CheckListDialog<ItemLabel> cld = db.checklist(
+                "showCheckList",
+                descriptionText.get(),
+                15, 40,
+                itemLabelList)
+                .build();
+        final List<ItemLabel> result = cld.showDialog(textGUI);
+        //this.appContext.storeResult("showCheckList.result", result);
+        return Optional.ofNullable(result);
     }
 
-    void showRadiolist(MultiWindowTextGUI textGUI) {
+    Optional<ItemLabel> showRadiolist(MultiWindowTextGUI textGUI) {
         final List<ItemLabel> itemLabelList = Arrays.asList(
                 new ItemLabel("label1Radiobox", "item1Radiobox", false),
                 new ItemLabel("label2Radiobox", "item2Radiobox", true),
                 new ItemLabel("label3Radiobox", "item3Radiobox")
         );
-        {
-            final DialogsBuilders db = new DialogsBuilders();
-            final RadioListDialog<ItemLabel> rld = db.radiolist(
-                    "showRadioList",
-                    descriptionText.get(), 15, 40,
-                    itemLabelList)
-                    .build();
-            final ItemLabel result = rld.showDialog(textGUI);
-            this.appContext.storeResult("showRadioList.result", result);
-        }
+        final DialogsBuilders db = new DialogsBuilders();
+        final RadioListDialog<ItemLabel> rld = db.radiolist(
+                "showRadioList",
+                descriptionText.get(), 15, 40,
+                itemLabelList)
+                .build();
+        final ItemLabel result = rld.showDialog(textGUI);
+        //this.appContext.storeResult("showRadioList.result", result);
+        return Optional.ofNullable(result);
     }
 
-    void showFselect(MultiWindowTextGUI textGUI) {
+    Optional<File> showFselect(MultiWindowTextGUI textGUI) {
         final DialogsBuilders db = new DialogsBuilders();
         File selectedFile = null;
         FileDialog fd = db.fselect(
@@ -192,10 +223,11 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                 selectedFile)
                 .build();
         File result = fd.showDialog(textGUI);
-        this.appContext.storeResult("showFselect.result", result);
+        //this.appContext.storeResult("showFselect.result", result);
+        return Optional.ofNullable(result);
     }
 
-    void showDselect(MultiWindowTextGUI textGUI) {
+    Optional<File> showDselect(MultiWindowTextGUI textGUI) {
         final DialogsBuilders db = new DialogsBuilders();
         File selectedFile = null;
         DirectoryDialog fd = db.dselect(
@@ -205,20 +237,19 @@ public class DialogsBuildersMain extends LanternaDialogTemplate {
                 selectedFile)
                 .build();
         File result = fd.showDialog(textGUI);
-        this.appContext.storeResult("showDselect.result", result);
+        //this.appContext.storeResult("showDselect.result", result);
+        return Optional.ofNullable(result);
     }
 
     private String formatApplicationContext() {
-        final StringBuilder sb = new StringBuilder();
-        sb.append(String.format("AppName: %s%n", this.appContext.getAppName()));
-        this.appContext.getM().entrySet().stream()
-                .sorted((Entry<String, Object> arg0, Entry<String, Object> arg1) -> arg0.getKey().compareTo(arg1.getKey()))
-                .forEach((Entry<String, Object> arg0)
-                        -> sb
-                        .append(String.format("%s: %s%n", arg0.getKey(), arg0.getValue()))
-                );
-
-        return sb.toString();
+        // format list of map to String
+        final String mFormatted = this.appContext.getM().entrySet().stream()
+                .sorted(Comparator.comparing((e) -> e.getKey()))
+                .map((e) -> String.format("%s: %s%n", e.getKey(), e.getValue()))
+                .collect(Collectors.joining());
+        // format appContext: name + m
+        final String result = String.format("AppName: %s%n%s%n", this.appContext.getAppName(), mFormatted);
+        return result;
     }
 
 }

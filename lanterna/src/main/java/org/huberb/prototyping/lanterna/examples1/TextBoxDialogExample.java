@@ -17,7 +17,7 @@ package org.huberb.prototyping.lanterna.examples1;
 
 import com.googlecode.lanterna.gui2.MultiWindowTextGUI;
 import com.googlecode.lanterna.gui2.dialogs.TextInputDialog;
-import org.huberb.prototyping.lanterna.LanternaDialogTemplate;
+import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
 import org.huberb.prototyping.lanterna.LanternaLauncher;
 import org.huberb.prototyping.lanterna.examples.dialogs.TextBoxDialog;
 
@@ -25,7 +25,7 @@ import org.huberb.prototyping.lanterna.examples.dialogs.TextBoxDialog;
  *
  * @author berni3
  */
-public class TextBoxDialogExample extends LanternaDialogTemplate {
+public class TextBoxDialogExample extends AbstractLanternaApplicationTemplate {
 
     public static void main(String[] args) throws Exception {
         LanternaLauncher.launchWithClass(TextBoxDialogExample.class, args);
