@@ -20,28 +20,51 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.GUnzip;
 
 /**
- * An ant {@link GUnzip} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.GUnzip} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class GUnzipBuilder {
 
     private final GUnzip gunzip;
 
+    /**
+     * <p>Constructor for GUnzipBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public GUnzipBuilder(Project project) {
         this.gunzip = (GUnzip) project.createTask("gunzip");
     }
 
+    /**
+     * <p>src.</p>
+     *
+     * @param source a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.GUnzipBuilder} object
+     */
     public GUnzipBuilder src(String source) {
         gunzip.setSrc(new File(source));
         return this;
     }
 
+    /**
+     * <p>dest.</p>
+     *
+     * @param destination a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.GUnzipBuilder} object
+     */
     public GUnzipBuilder dest(String destination) {
         gunzip.setDest(new File(destination));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.GUnzip} object
+     */
     public GUnzip build() {
         return gunzip;
     }

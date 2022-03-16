@@ -21,40 +21,75 @@ import org.apache.tools.ant.taskdefs.Copy;
 import org.apache.tools.ant.types.FileSet;
 
 /**
- * An ant {@link Copy} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Copy} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class CopyBuilder {
 
     private final Copy copy;
 
+    /**
+     * <p>Constructor for CopyBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public CopyBuilder(Project project) {
         this.copy = (Copy) project.createTask("copy");
         this.copy.init();
         copy.setOverwrite(false);
     }
 
+    /**
+     * <p>file.</p>
+     *
+     * @param f a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
+     */
     public CopyBuilder file(String f) {
         this.copy.setFile(new File(f));
         return this;
     }
 
+    /**
+     * <p>tofile.</p>
+     *
+     * @param f a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
+     */
     public CopyBuilder tofile(String f) {
         this.copy.setTofile(new File(f));
         return this;
     }
 
+    /**
+     * <p>addfileset.</p>
+     *
+     * @param fileSet a {@link org.apache.tools.ant.types.FileSet} object
+     * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
+     */
     public CopyBuilder addfileset(FileSet fileSet) {
         this.copy.addFileset(fileSet);
         return this;
     }
 
+    /**
+     * <p>todir.</p>
+     *
+     * @param d a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
+     */
     public CopyBuilder todir(String d) {
         this.copy.setTodir(new File(d));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Copy} object
+     */
     public Copy build() {
         return this.copy;
     }

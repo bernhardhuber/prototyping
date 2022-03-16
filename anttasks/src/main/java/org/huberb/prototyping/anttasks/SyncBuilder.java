@@ -21,30 +21,53 @@ import org.apache.tools.ant.taskdefs.Sync;
 import org.apache.tools.ant.types.FileSet;
 
 /**
- * An ant {@link Sync} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Sync} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class SyncBuilder {
 
     private final Sync sync;
 
+    /**
+     * <p>Constructor for SyncBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public SyncBuilder(Project project) {
         this.sync = (Sync) project.createTask("sync");
         this.sync.init();
         sync.setOverwrite(false);
     }
 
+    /**
+     * <p>todir.</p>
+     *
+     * @param f a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.SyncBuilder} object
+     */
     public SyncBuilder todir(String f) {
         this.sync.setTodir(new File(f));
         return this;
     }
 
+    /**
+     * <p>addfileset.</p>
+     *
+     * @param fileSet a {@link org.apache.tools.ant.types.FileSet} object
+     * @return a {@link org.huberb.prototyping.anttasks.SyncBuilder} object
+     */
     public SyncBuilder addfileset(FileSet fileSet) {
         this.sync.addFileset(fileSet);
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Sync} object
+     */
     public Sync build() {
         return this.sync;
     }

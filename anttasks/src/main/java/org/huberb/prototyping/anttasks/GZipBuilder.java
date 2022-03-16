@@ -20,28 +20,51 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.GZip;
 
 /**
- * An ant {@link GZip} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.GZip} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class GZipBuilder {
 
     private final GZip gzip;
 
+    /**
+     * <p>Constructor for GZipBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public GZipBuilder(Project project) {
         this.gzip = (GZip) project.createTask("gzip");
     }
 
+    /**
+     * <p>src.</p>
+     *
+     * @param source a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.GZipBuilder} object
+     */
     public GZipBuilder src(String source) {
         gzip.setSrc(new File(source));
         return this;
     }
 
+    /**
+     * <p>destfile.</p>
+     *
+     * @param dest a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.GZipBuilder} object
+     */
     public GZipBuilder destfile(String dest) {
         gzip.setDestfile(new File(dest));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.GZip} object
+     */
     public GZip build() {
         return gzip;
     }

@@ -20,24 +20,41 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Mkdir;
 
 /**
- * An ant {@link Mkdir} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Mkdir} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class MkdirBuilder {
 
     private final Mkdir mkdir;
 
+    /**
+     * <p>Constructor for MkdirBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public MkdirBuilder(Project project) {
         this.mkdir = (Mkdir) project.createTask("mkdir");
     }
 
+    /**
+     * <p>dir.</p>
+     *
+     * @param dir a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.MkdirBuilder} object
+     */
     public MkdirBuilder dir(String dir) {
         final File dirFile = new File(dir);
         mkdir.setDir(dirFile);
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Mkdir} object
+     */
     public Mkdir build() {
         return mkdir;
     }

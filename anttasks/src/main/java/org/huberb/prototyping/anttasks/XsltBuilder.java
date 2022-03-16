@@ -20,48 +20,95 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.XSLTProcess;
 
 /**
- * An ant {@link XSLTProcess} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.XSLTProcess} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class XsltBuilder {
 
     private final XSLTProcess xsltProcess;
 
+    /**
+     * <p>Constructor for XsltBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public XsltBuilder(Project project) {
         this.xsltProcess = (XSLTProcess) project.createTask("xslt");
     }
 
+    /**
+     * <p>destdir.</p>
+     *
+     * @param destdir a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
+     */
     public XsltBuilder destdir(String destdir) {
         xsltProcess.setDestdir(new File(destdir));
         return this;
     }
 
+    /**
+     * <p>basedir.</p>
+     *
+     * @param basedir a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
+     */
     public XsltBuilder basedir(String basedir) {
         xsltProcess.setBasedir(new File(basedir));
         return this;
     }
 
+    /**
+     * <p>style.</p>
+     *
+     * @param xslfile a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
+     */
     public XsltBuilder style(String xslfile) {
         xsltProcess.setStyle(xslfile);
         return this;
     }
 
+    /**
+     * <p>extension.</p>
+     *
+     * @param xslfile a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
+     */
     public XsltBuilder extension(String xslfile) {
         xsltProcess.setExtension(xslfile);
         return this;
     }
 
+    /**
+     * <p>in.</p>
+     *
+     * @param in a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
+     */
     public XsltBuilder in(String in) {
         xsltProcess.setIn(new File(in));
         return this;
     }
 
+    /**
+     * <p>out.</p>
+     *
+     * @param out a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
+     */
     public XsltBuilder out(String out) {
         xsltProcess.setOut(new File(out));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.XSLTProcess} object
+     */
     public XSLTProcess build() {
         return xsltProcess;
     }

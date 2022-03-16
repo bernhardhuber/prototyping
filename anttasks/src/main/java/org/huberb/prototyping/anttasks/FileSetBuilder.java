@@ -20,33 +20,61 @@ import java.util.List;
 import org.apache.tools.ant.types.FileSet;
 
 /**
- * An ant {@link FileSet} builder.
+ * An ant {@link org.apache.tools.ant.types.FileSet} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class FileSetBuilder {
 
     private final FileSet fileSet;
 
+    /**
+     * <p>Constructor for FileSetBuilder.</p>
+     */
     public FileSetBuilder() {
         this.fileSet = new FileSet();
     }
 
+    /**
+     * <p>dir.</p>
+     *
+     * @param dir a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.FileSetBuilder} object
+     */
     public FileSetBuilder dir(String dir) {
         fileSet.setDir(new File(dir));
         return this;
     }
 
     //----
+    /**
+     * <p>includes.</p>
+     *
+     * @param includes a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.FileSetBuilder} object
+     */
     public FileSetBuilder includes(String includes) {
         fileSet.setIncludes(includes);
         return this;
     }
 
+    /**
+     * <p>includes.</p>
+     *
+     * @param includesAsList a {@link java.util.List} object
+     * @return a {@link org.huberb.prototyping.anttasks.FileSetBuilder} object
+     */
     public FileSetBuilder includes(List<String> includesAsList) {
         return includes(includesAsList.toArray(String[]::new));
     }
 
+    /**
+     * <p>includes.</p>
+     *
+     * @param includes a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.FileSetBuilder} object
+     */
     public FileSetBuilder includes(String... includes) {
         if (includes != null && includes.length > 0) {
             fileSet.appendIncludes(includes);
@@ -55,15 +83,33 @@ public class FileSetBuilder {
     }
 
     //----
+    /**
+     * <p>excludes.</p>
+     *
+     * @param excludes a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.FileSetBuilder} object
+     */
     public FileSetBuilder excludes(String excludes) {
         fileSet.setExcludes(excludes);
         return this;
     }
 
+    /**
+     * <p>excludes.</p>
+     *
+     * @param excludesAsList a {@link java.util.List} object
+     * @return a {@link org.huberb.prototyping.anttasks.FileSetBuilder} object
+     */
     public FileSetBuilder excludes(List<String> excludesAsList) {
         return excludes(excludesAsList.toArray(String[]::new));
     }
 
+    /**
+     * <p>excludes.</p>
+     *
+     * @param excludes a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.FileSetBuilder} object
+     */
     public FileSetBuilder excludes(String... excludes) {
         if (excludes != null && excludes.length > 0) {
             fileSet.appendExcludes(excludes);
@@ -71,6 +117,11 @@ public class FileSetBuilder {
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.types.FileSet} object
+     */
     public FileSet build() {
         return fileSet;
     }

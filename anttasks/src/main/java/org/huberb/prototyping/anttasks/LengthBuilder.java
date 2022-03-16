@@ -20,24 +20,41 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Length;
 
 /**
- * An ant {@link Length} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Length} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class LengthBuilder {
 
     private final Length length;
 
+    /**
+     * <p>Constructor for LengthBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public LengthBuilder(Project project) {
         this.length = (Length) project.createTask("length");
         this.length.setProperty("length");
     }
 
+    /**
+     * <p>file.</p>
+     *
+     * @param file a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.LengthBuilder} object
+     */
     public LengthBuilder file(String file) {
         length.setFile(new File(file));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Length} object
+     */
     public Length build() {
         return length;
     }

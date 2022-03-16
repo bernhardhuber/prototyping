@@ -20,28 +20,51 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Expand;
 
 /**
- * An ant {@link Expand} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Expand} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class ExpandBuilder {
     
     private final Expand expand;
 
+    /**
+     * <p>Constructor for ExpandBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public ExpandBuilder(Project project) {
         this.expand = (Expand) project.createTask("unzip");
     }
 
+    /**
+     * <p>src.</p>
+     *
+     * @param zipFilepath a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.ExpandBuilder} object
+     */
     public ExpandBuilder src(String zipFilepath) {
         expand.setSrc(new File(zipFilepath));
         return this;
     }
 
+    /**
+     * <p>dest.</p>
+     *
+     * @param destinationDir a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.ExpandBuilder} object
+     */
     public ExpandBuilder dest(String destinationDir) {
         expand.setDest(new File(destinationDir));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Expand} object
+     */
     public Expand build() {
         return expand;
     }

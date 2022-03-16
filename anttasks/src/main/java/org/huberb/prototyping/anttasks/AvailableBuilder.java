@@ -20,25 +20,42 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Available;
 
 /**
- * An ant {@link Available} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Available} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class AvailableBuilder {
 
     private final Available available;
 
+    /**
+     * <p>Constructor for AvailableBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public AvailableBuilder(Project project) {
         this.available = (Available) project.createTask("available");
         this.available.init();
         available.setProperty("available");
     }
 
+    /**
+     * <p>file.</p>
+     *
+     * @param source a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.AvailableBuilder} object
+     */
     public AvailableBuilder file(String source) {
         available.setFile(new File(source));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Available} object
+     */
     public Available build() {
         return available;
     }

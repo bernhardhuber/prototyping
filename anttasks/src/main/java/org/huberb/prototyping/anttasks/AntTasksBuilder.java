@@ -23,11 +23,15 @@ import org.apache.tools.ant.Project;
  * Build ant task action.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class AntTasksBuilder {
 
     final Project project;
 
+    /**
+     * <p>Constructor for AntTasksBuilder.</p>
+     */
     public AntTasksBuilder() {
         // setup project
         this.project = new Project();
@@ -42,6 +46,12 @@ public class AntTasksBuilder {
         project.getBaseDir();
     }
 
+    /**
+     * <p>name.</p>
+     *
+     * @param name a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.AntTasksBuilder} object
+     */
     public AntTasksBuilder name(String name) {
         this.project.setName(name);
         return this;

@@ -20,23 +20,40 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Touch;
 
 /**
- * An ant {@link Touch} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Touch} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class TouchBuilder {
 
     private final Touch touch;
 
+    /**
+     * <p>Constructor for TouchBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public TouchBuilder(Project project) {
         this.touch = (Touch) project.createTask("touch");
     }
 
+    /**
+     * <p>file.</p>
+     *
+     * @param source a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.TouchBuilder} object
+     */
     public TouchBuilder file(String source) {
         touch.setFile(new File(source));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Touch} object
+     */
     public Touch build() {
         return touch;
     }

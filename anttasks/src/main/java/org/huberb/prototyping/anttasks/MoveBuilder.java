@@ -20,34 +20,63 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Move;
 
 /**
- * An ant {@link Move} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Move} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class MoveBuilder {
 
     private final Move move;
 
+    /**
+     * <p>Constructor for MoveBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public MoveBuilder(Project project) {
         this.move = (Move) project.createTask("move");
         move.setOverwrite(false);
     }
 
+    /**
+     * <p>file.</p>
+     *
+     * @param file a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.MoveBuilder} object
+     */
     public MoveBuilder file(String file) {
         this.move.setFile(new File(file));
         return this;
     }
 
+    /**
+     * <p>tofile.</p>
+     *
+     * @param tofile a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.MoveBuilder} object
+     */
     public MoveBuilder tofile(String tofile) {
         this.move.setTofile(new File(tofile));
         return this;
     }
 
+    /**
+     * <p>todir.</p>
+     *
+     * @param todir a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.MoveBuilder} object
+     */
     public MoveBuilder todir(String todir) {
         this.move.setTodir(new File(todir));
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Move} object
+     */
     public Move build() {
         return move;
     }

@@ -20,29 +20,52 @@ import org.apache.tools.ant.Project;
 import org.apache.tools.ant.taskdefs.Concat;
 
 /**
- * An ant {@link Concat} builder.
+ * An ant {@link org.apache.tools.ant.taskdefs.Concat} builder.
  *
  * @author berni3
+ * @version $Id: $Id
  */
 public class ConcatBuilder {
 
     private final Concat concat;
 
+    /**
+     * <p>Constructor for ConcatBuilder.</p>
+     *
+     * @param project a {@link org.apache.tools.ant.Project} object
+     */
     public ConcatBuilder(Project project) {
         this.concat = (Concat) project.createTask("concat");
     }
 
+    /**
+     * <p>addText.</p>
+     *
+     * @param text a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.ConcatBuilder} object
+     */
     public ConcatBuilder addText(String text) {
         concat.addText(text);
         return this;
     }
 
+    /**
+     * <p>destination.</p>
+     *
+     * @param destination a {@link java.lang.String} object
+     * @return a {@link org.huberb.prototyping.anttasks.ConcatBuilder} object
+     */
     public ConcatBuilder destination(String destination) {
         final File destinationFile = new File(destination);
         concat.setDestfile(destinationFile);
         return this;
     }
 
+    /**
+     * <p>build.</p>
+     *
+     * @return a {@link org.apache.tools.ant.taskdefs.Concat} object
+     */
     public Concat build() {
         return concat;
     }
