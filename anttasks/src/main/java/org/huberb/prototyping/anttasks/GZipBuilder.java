@@ -30,7 +30,7 @@ public class GZipBuilder {
     private final GZip gzip;
 
     /**
-     * <p>Constructor for GZipBuilder.</p>
+     * Constructor for GZipBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -39,7 +39,7 @@ public class GZipBuilder {
     }
 
     /**
-     * <p>src.</p>
+     Define the source of the gzip task.
      *
      * @param source a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.GZipBuilder} object
@@ -50,7 +50,7 @@ public class GZipBuilder {
     }
 
     /**
-     * <p>destfile.</p>
+     * Define the destination oft the gzip task.
      *
      * @param dest a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.GZipBuilder} object
@@ -61,7 +61,7 @@ public class GZipBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the gzip ant task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.GZip} object
      */

@@ -30,7 +30,7 @@ public class ConcatBuilder {
     private final Concat concat;
 
     /**
-     * <p>Constructor for ConcatBuilder.</p>
+     * Constructor for ConcatBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -39,7 +39,7 @@ public class ConcatBuilder {
     }
 
     /**
-     * <p>addText.</p>
+     * Add a text for concatenation.
      *
      * @param text a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ConcatBuilder} object
@@ -50,7 +50,7 @@ public class ConcatBuilder {
     }
 
     /**
-     * <p>destination.</p>
+     * Sets the destination file of the concatenation.
      *
      * @param destination a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ConcatBuilder} object
@@ -62,7 +62,7 @@ public class ConcatBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the concat ant task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Concat} object
      */

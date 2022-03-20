@@ -31,7 +31,7 @@ public class CopyBuilder {
     private final Copy copy;
 
     /**
-     * <p>Constructor for CopyBuilder.</p>
+     * Constructor for CopyBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -42,7 +42,7 @@ public class CopyBuilder {
     }
 
     /**
-     * <p>file.</p>
+     * Set the source file for the copy task.
      *
      * @param f a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
@@ -53,7 +53,7 @@ public class CopyBuilder {
     }
 
     /**
-     * <p>tofile.</p>
+     * Sets the target file of the copy task.
      *
      * @param f a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
@@ -64,7 +64,7 @@ public class CopyBuilder {
     }
 
     /**
-     * <p>addfileset.</p>
+     * Add a file set for the copy task.
      *
      * @param fileSet a {@link org.apache.tools.ant.types.FileSet} object
      * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
@@ -75,7 +75,7 @@ public class CopyBuilder {
     }
 
     /**
-     * <p>todir.</p>
+     * Sets the destination directory of the copy task.
      *
      * @param d a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.CopyBuilder} object
@@ -86,7 +86,7 @@ public class CopyBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the copy ant task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Copy} object
      */

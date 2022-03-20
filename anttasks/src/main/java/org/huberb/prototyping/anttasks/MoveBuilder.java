@@ -30,7 +30,7 @@ public class MoveBuilder {
     private final Move move;
 
     /**
-     * <p>Constructor for MoveBuilder.</p>
+     * Constructor for MoveBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -40,7 +40,7 @@ public class MoveBuilder {
     }
 
     /**
-     * <p>file.</p>
+     * Define the source file of the move task.
      *
      * @param file a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.MoveBuilder} object
@@ -51,7 +51,7 @@ public class MoveBuilder {
     }
 
     /**
-     * <p>tofile.</p>
+     * Define the destination file of the move task.
      *
      * @param tofile a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.MoveBuilder} object
@@ -62,7 +62,7 @@ public class MoveBuilder {
     }
 
     /**
-     * <p>todir.</p>
+     * Define the destination directory of the move task.
      *
      * @param todir a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.MoveBuilder} object
@@ -73,7 +73,7 @@ public class MoveBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the ant move task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Move} object
      */

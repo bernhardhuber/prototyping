@@ -31,7 +31,7 @@ public class EchoBuilder {
     private final Echo echo;
 
     /**
-     * <p>Constructor for EchoBuilder.</p>
+     * Constructor for EchoBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -41,7 +41,7 @@ public class EchoBuilder {
     }
 
     /**
-     * <p>append.</p>
+     * Operate built echo task in append mode.
      *
      * @param append a boolean
      * @return a {@link org.huberb.prototyping.anttasks.EchoBuilder} object
@@ -52,7 +52,7 @@ public class EchoBuilder {
     }
 
     /**
-     * <p>append.</p>
+     * Append an echo text.
      *
      * @param msg a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.EchoBuilder} object
@@ -63,10 +63,12 @@ public class EchoBuilder {
     }
 
     /**
-     * <p>echoLevel.</p>
+     * Define the echoLevel.
      *
-     * @param echoLevel a {@link org.apache.tools.ant.taskdefs.Echo.EchoLevel} object
+     * @param echoLevel a {@link org.apache.tools.ant.taskdefs.Echo.EchoLevel}
+     * object
      * @return a {@link org.huberb.prototyping.anttasks.EchoBuilder} object
+     * @see EchoLevel
      */
     public EchoBuilder echoLevel(EchoLevel echoLevel) {
         echo.setLevel(echoLevel);
@@ -74,10 +76,13 @@ public class EchoBuilder {
     }
 
     /**
-     * <p>echoLevel.</p>
+     * Define the echoLevel from string value.
+     * <p>
+     * Valid values are: "error", "warn", "warning", "info", "verbose", "debug"
      *
      * @param echoLevelAsString a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.EchoBuilder} object
+     *
      */
     public EchoBuilder echoLevel(String echoLevelAsString) {
         final EchoLevel echoLevel = new EchoLevel();
@@ -86,7 +91,7 @@ public class EchoBuilder {
     }
 
     /**
-     * <p>message.</p>
+     * Define the echo message.
      *
      * @param msg a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.EchoBuilder} object
@@ -97,9 +102,10 @@ public class EchoBuilder {
     }
 
     /**
-     * <p>output.</p>
+     * Define the output of the echo task.
      *
-     * @param output a {@link org.apache.tools.ant.types.resources.StringResource} object
+     * @param output a
+     * {@link org.apache.tools.ant.types.resources.StringResource} object
      * @return a {@link org.huberb.prototyping.anttasks.EchoBuilder} object
      */
     public EchoBuilder output(StringResource output) {
@@ -108,7 +114,7 @@ public class EchoBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build echo task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Echo} object
      */

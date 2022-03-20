@@ -30,7 +30,7 @@ public class GUnzipBuilder {
     private final GUnzip gunzip;
 
     /**
-     * <p>Constructor for GUnzipBuilder.</p>
+     * Constructor for GUnzipBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -39,7 +39,7 @@ public class GUnzipBuilder {
     }
 
     /**
-     * <p>src.</p>
+     * Define the source of gunzip task.
      *
      * @param source a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.GUnzipBuilder} object
@@ -50,7 +50,7 @@ public class GUnzipBuilder {
     }
 
     /**
-     * <p>dest.</p>
+     * Define the destination of gunzip task.
      *
      * @param destination a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.GUnzipBuilder} object
@@ -61,7 +61,7 @@ public class GUnzipBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the gunzip task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.GUnzip} object
      */

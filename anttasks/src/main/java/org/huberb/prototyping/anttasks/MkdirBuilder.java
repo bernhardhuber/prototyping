@@ -30,7 +30,7 @@ public class MkdirBuilder {
     private final Mkdir mkdir;
 
     /**
-     * <p>Constructor for MkdirBuilder.</p>
+     * Constructor for MkdirBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -39,7 +39,7 @@ public class MkdirBuilder {
     }
 
     /**
-     * <p>dir.</p>
+     * Define the directory to be created.
      *
      * @param dir a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.MkdirBuilder} object
@@ -51,7 +51,7 @@ public class MkdirBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the mkdir ant task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Mkdir} object
      */

@@ -30,7 +30,7 @@ public class XsltBuilder {
     private final XSLTProcess xsltProcess;
 
     /**
-     * <p>Constructor for XsltBuilder.</p>
+     * Constructor for XsltBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -39,7 +39,7 @@ public class XsltBuilder {
     }
 
     /**
-     * <p>destdir.</p>
+     * Define the destination directory for xslt task.
      *
      * @param destdir a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
@@ -50,7 +50,7 @@ public class XsltBuilder {
     }
 
     /**
-     * <p>basedir.</p>
+     * Define the base directory of the xslt task.
      *
      * @param basedir a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
@@ -61,7 +61,7 @@ public class XsltBuilder {
     }
 
     /**
-     * <p>style.</p>
+     * Define the style file of the xslt task.</p>
      *
      * @param xslfile a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
@@ -72,7 +72,7 @@ public class XsltBuilder {
     }
 
     /**
-     * <p>extension.</p>
+     * Define the extension of transformed file.
      *
      * @param xslfile a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
@@ -83,7 +83,7 @@ public class XsltBuilder {
     }
 
     /**
-     * <p>in.</p>
+     * Define the input file of the xslt task.</p>
      *
      * @param in a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
@@ -94,7 +94,7 @@ public class XsltBuilder {
     }
 
     /**
-     * <p>out.</p>
+     * Define the ouput file of the xslt task.
      *
      * @param out a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.XsltBuilder} object
@@ -105,7 +105,7 @@ public class XsltBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the xslt ant task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.XSLTProcess} object
      */

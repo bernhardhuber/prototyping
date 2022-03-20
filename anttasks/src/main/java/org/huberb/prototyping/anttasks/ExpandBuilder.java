@@ -26,11 +26,11 @@ import org.apache.tools.ant.taskdefs.Expand;
  * @version $Id: $Id
  */
 public class ExpandBuilder {
-    
+
     private final Expand expand;
 
     /**
-     * <p>Constructor for ExpandBuilder.</p>
+     * Constructor for ExpandBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -39,7 +39,7 @@ public class ExpandBuilder {
     }
 
     /**
-     * <p>src.</p>
+     * Define the source for expansion task.
      *
      * @param zipFilepath a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ExpandBuilder} object
@@ -50,7 +50,7 @@ public class ExpandBuilder {
     }
 
     /**
-     * <p>dest.</p>
+     * Define the destination of expansion task.
      *
      * @param destinationDir a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ExpandBuilder} object
@@ -61,12 +61,12 @@ public class ExpandBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the ant expansion task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Expand} object
      */
     public Expand build() {
         return expand;
     }
-    
+
 }

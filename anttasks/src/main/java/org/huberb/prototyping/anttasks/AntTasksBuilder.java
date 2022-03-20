@@ -30,7 +30,7 @@ public class AntTasksBuilder {
     final Project project;
 
     /**
-     * <p>Constructor for AntTasksBuilder.</p>
+     * Constructor for AntTasksBuilder.
      */
     public AntTasksBuilder() {
         // setup project
@@ -47,7 +47,7 @@ public class AntTasksBuilder {
     }
 
     /**
-     * <p>name.</p>
+     * Set the name of internal-created project.
      *
      * @param name a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.AntTasksBuilder} object

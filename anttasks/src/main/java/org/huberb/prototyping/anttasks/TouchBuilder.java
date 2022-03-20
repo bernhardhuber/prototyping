@@ -30,7 +30,7 @@ public class TouchBuilder {
     private final Touch touch;
 
     /**
-     * <p>Constructor for TouchBuilder.</p>
+     * Constructor for TouchBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -39,7 +39,7 @@ public class TouchBuilder {
     }
 
     /**
-     * <p>file.</p>
+     * Define the file for the touch task.
      *
      * @param source a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.TouchBuilder} object
@@ -50,7 +50,7 @@ public class TouchBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the ant touch task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Touch} object
      */

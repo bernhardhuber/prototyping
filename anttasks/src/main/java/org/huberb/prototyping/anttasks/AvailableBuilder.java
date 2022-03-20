@@ -30,7 +30,7 @@ public class AvailableBuilder {
     private final Available available;
 
     /**
-     * <p>Constructor for AvailableBuilder.</p>
+     * Constructor for AvailableBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -41,18 +41,18 @@ public class AvailableBuilder {
     }
 
     /**
-     * <p>file.</p>
+     * Sets the file for which the availability is checked.
      *
-     * @param source a {@link java.lang.String} object
+     * @param file a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.AvailableBuilder} object
      */
-    public AvailableBuilder file(String source) {
-        available.setFile(new File(source));
+    public AvailableBuilder file(String file) {
+        available.setFile(new File(file));
         return this;
     }
 
     /**
-     * <p>build.</p>
+     * Build the ant available task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Available} object
      */

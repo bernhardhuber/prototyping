@@ -30,7 +30,7 @@ public class LengthBuilder {
     private final Length length;
 
     /**
-     * <p>Constructor for LengthBuilder.</p>
+     * Constructor for LengthBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -40,9 +40,9 @@ public class LengthBuilder {
     }
 
     /**
-     * <p>file.</p>
+     * Sets the file for which the length is calculated.
      *
-     * @param file a {@link java.lang.String} object
+     * @param file calculate the length of this file
      * @return a {@link org.huberb.prototyping.anttasks.LengthBuilder} object
      */
     public LengthBuilder file(String file) {
@@ -51,7 +51,7 @@ public class LengthBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the length ant task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Length} object
      */

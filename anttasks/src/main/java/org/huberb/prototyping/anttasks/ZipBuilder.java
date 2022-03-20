@@ -30,17 +30,17 @@ public class ZipBuilder {
     private final Zip zip;
 
     /**
-     * <p>Constructor for ZipBuilder.</p>
+     * Constructor for ZipBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
     public ZipBuilder(Project project) {
         this.zip = (Zip) project.createTask("zip");
-this.zip.init();
+        this.zip.init();
     }
 
     /**
-     * <p>destFile.</p>
+     * Define the destination file of the zip task.</p>
      *
      * @param destFile a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ZipBuilder} object
@@ -51,7 +51,7 @@ this.zip.init();
     }
 
     /**
-     * <p>basedir.</p>
+     * Define the base directory of the zip task.
      *
      * @param basedir a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ZipBuilder} object
@@ -62,7 +62,7 @@ this.zip.init();
     }
 
     /**
-     * <p>includes.</p>
+     * Defines the includes fileset of the zip task.
      *
      * @param includes a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ZipBuilder} object
@@ -73,7 +73,7 @@ this.zip.init();
     }
 
     /**
-     * <p>excludes.</p>
+     * Defines tee excludes fileset of the zip task.
      *
      * @param excludes a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.ZipBuilder} object
@@ -84,7 +84,7 @@ this.zip.init();
     }
 
     /**
-     * <p>build.</p>
+     * Build the zip ant task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Zip} object
      */

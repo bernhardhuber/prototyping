@@ -31,7 +31,7 @@ public class SyncBuilder {
     private final Sync sync;
 
     /**
-     * <p>Constructor for SyncBuilder.</p>
+     * Constructor for SyncBuilder.
      *
      * @param project a {@link org.apache.tools.ant.Project} object
      */
@@ -42,7 +42,7 @@ public class SyncBuilder {
     }
 
     /**
-     * <p>todir.</p>
+     * Define the destination directory of the sync task.
      *
      * @param f a {@link java.lang.String} object
      * @return a {@link org.huberb.prototyping.anttasks.SyncBuilder} object
@@ -53,7 +53,7 @@ public class SyncBuilder {
     }
 
     /**
-     * <p>addfileset.</p>
+     * Add a fileset for the sync task.
      *
      * @param fileSet a {@link org.apache.tools.ant.types.FileSet} object
      * @return a {@link org.huberb.prototyping.anttasks.SyncBuilder} object
@@ -64,7 +64,7 @@ public class SyncBuilder {
     }
 
     /**
-     * <p>build.</p>
+     * Build the ant sync task.
      *
      * @return a {@link org.apache.tools.ant.taskdefs.Sync} object
      */

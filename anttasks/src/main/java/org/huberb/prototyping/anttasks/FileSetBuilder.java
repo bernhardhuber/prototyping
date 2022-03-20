@@ -30,7 +30,7 @@ public class FileSetBuilder {
     private final FileSet fileSet;
 
     /**
-     * <p>Constructor for FileSetBuilder.</p>
+     * Constructor for FileSetBuilder.
      */
     public FileSetBuilder() {
         this.fileSet = new FileSet();
