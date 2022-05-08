@@ -37,13 +37,21 @@ public class Factories {
 
     public static class EventFactory implements IFactory<DynaBean, ReflectiveOperationException> {
 
+        public static enum PropNames {
+            title,
+            dtstart,
+            dtend,
+            duration,
+            description
+        };
+
         public DynaClass createEventDynaClass() {
             final DynaProperty[] props = new DynaProperty[]{
-                new DynaProperty("title", String.class),
-                new DynaProperty("dtstart", String.class),
-                new DynaProperty("dtend", String.class),
-                new DynaProperty("duration", String.class),
-                new DynaProperty("description", String.class)
+                new DynaProperty(PropNames.title.name(), String.class),
+                new DynaProperty(PropNames.dtstart.name(), String.class),
+                new DynaProperty(PropNames.dtend.name(), String.class),
+                new DynaProperty(PropNames.duration.name(), String.class),
+                new DynaProperty(PropNames.description.name(), String.class)
             };
             final DynaClass dynaClass = new BasicDynaClass("Event", null, props);
             return dynaClass;
@@ -59,18 +67,28 @@ public class Factories {
 
     public static class CardFactory implements IFactory<DynaBean, ReflectiveOperationException> {
 
+        public static enum PropNames {
+            fn,
+            n,
+            familyname, givenname,
+            honorificprefixes, honorificsuffixes,
+            nickname,
+            email, tel,
+            note
+        };
+
         public DynaClass createCardDynaClass() {
             final DynaProperty[] props = new DynaProperty[]{
-                new DynaProperty("fn", String.class),
-                new DynaProperty("n", String.class),
-                new DynaProperty("familyname", String.class),
-                new DynaProperty("givenname", String.class),
-                new DynaProperty("honorificprefixes", String.class),
-                new DynaProperty("honorificsuffixes", String.class),
-                new DynaProperty("nickname", String.class),
-                new DynaProperty("email", String.class),
-                new DynaProperty("tel", String.class),
-                new DynaProperty("note", String.class)
+                new DynaProperty(PropNames.fn.name(), String.class),
+                new DynaProperty(PropNames.n.name(), String.class),
+                new DynaProperty(PropNames.familyname.name(), String.class),
+                new DynaProperty(PropNames.givenname.name(), String.class),
+                new DynaProperty(PropNames.honorificprefixes.name(), String.class),
+                new DynaProperty(PropNames.honorificsuffixes.name(), String.class),
+                new DynaProperty(PropNames.nickname.name(), String.class),
+                new DynaProperty(PropNames.email.name(), String.class),
+                new DynaProperty(PropNames.tel.name(), String.class),
+                new DynaProperty(PropNames.note.name(), String.class)
             };
             final DynaClass dynaClass = new BasicDynaClass("Card", null, props);
             return dynaClass;
@@ -87,15 +105,23 @@ public class Factories {
 
     public static class AddressFactory implements IFactory<DynaBean, ReflectiveOperationException> {
 
+        public static enum PropNames {
+            street, street1, street2,
+            city,
+            plz,
+            state,
+            country
+        };
+
         public DynaClass createAddressDynaClass() {
             final DynaProperty[] props = new DynaProperty[]{
-                new DynaProperty("street", String.class),
-                new DynaProperty("street1", String.class),
-                new DynaProperty("street2", String.class),
-                new DynaProperty("city", String.class),
-                new DynaProperty("plz", String.class),
-                new DynaProperty("state", String.class),
-                new DynaProperty("country", String.class)
+                new DynaProperty(PropNames.street.name(), String.class),
+                new DynaProperty(PropNames.street1.name(), String.class),
+                new DynaProperty(PropNames.street2.name(), String.class),
+                new DynaProperty(PropNames.city.name(), String.class),
+                new DynaProperty(PropNames.plz.name(), String.class),
+                new DynaProperty(PropNames.state.name(), String.class),
+                new DynaProperty(PropNames.country.name(), String.class)
             };
             final DynaClass dynaClass = new BasicDynaClass("Address", null, props);
             return dynaClass;
@@ -134,37 +160,4 @@ public class Factories {
         }
     }
 
-    public static class DynaClassBuilder implements IFactory<DynaBean, ReflectiveOperationException> {
-
-        List<DynaProperty> l = new ArrayList<>();
-        String name = "Bean";
-
-        public DynaClassBuilder name(String name) {
-            this.name = name;
-            return this;
-        }
-
-        public DynaClassBuilder prop(String name, Class<?> clazz) {
-            l.add(new DynaProperty(name, clazz));
-            return this;
-        }
-
-        public DynaClassBuilder prop(String name, Class<?> clazz, Class<?> contentType) {
-            l.add(new DynaProperty(name, clazz, contentType));
-            return this;
-        }
-
-        public DynaClass build() {
-            DynaProperty[] a = l.toArray(DynaProperty[]::new);
-            final BasicDynaClass dynaClass = new BasicDynaClass(name, null, a);
-            return dynaClass;
-        }
-
-        @Override
-        public DynaBean createInstance() throws ReflectiveOperationException {
-            final DynaClass dynaClass = build();
-            final DynaBean dynaBean = dynaClass.newInstance();
-            return dynaBean;
-        }
-    }
 }

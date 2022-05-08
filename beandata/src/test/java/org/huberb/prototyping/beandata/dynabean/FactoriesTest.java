@@ -26,6 +26,8 @@ import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 import org.apache.commons.beanutils.BeanUtils;
+import org.apache.commons.beanutils.BeanUtilsBean;
+import org.apache.commons.beanutils.BeanUtilsBean2;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaProperty;
 import org.huberb.prototyping.beandata.dynabean.Delegates.Reference;
@@ -58,14 +60,16 @@ public class FactoriesTest {
                 () -> assertEquals(null, dbTitle.getContentType())
         );
 
-        System.out.printf("PropertyUtils.describe(%s) : %s%n", db, org.apache.commons.beanutils.PropertyUtils.describe(db));
-        System.out.printf("BeanUtils.describe(%s) : %s%n", db, org.apache.commons.beanutils.BeanUtils.describe(db));
+        System.out.printf("hello%n"
+                + "PropertyUtils.describe(%s) : %s%n", db, org.apache.commons.beanutils.PropertyUtils.describe(db));
+        System.out.printf("hello%n"
+                + "BeanUtils.describe(%s) : %s%n", db, org.apache.commons.beanutils.BeanUtils.describe(db));
 
     }
 
     @Test
     public void given_DynaBean_Event_then_title_is_setable() throws ReflectiveOperationException {
-        DynaBean db = new Factories.EventFactory().createInstance();
+        final DynaBean db = new Factories.EventFactory().createInstance();
 
         for (DynaProperty dp : Arrays.asList(db.getDynaClass().getDynaProperties())) {
             if (!dp.isIndexed()
@@ -102,7 +106,7 @@ public class FactoriesTest {
     }
 
     @Test
-    public void hello2() throws ReflectiveOperationException {
+    public void testSetDefaults1_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
         final DynaBean dbEvent = new Factories.EventFactory().createInstance();
         final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
         final DynaBean dbCard = new Factories.CardFactory().createInstance();
@@ -158,7 +162,7 @@ public class FactoriesTest {
     }
 
     @Test
-    public void hello3() throws ReflectiveOperationException {
+    public void testBeanUtils_populate_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
         final DynaBean dbEvent = new Factories.EventFactory().createInstance();
         final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
         final DynaBean dbCard = new Factories.CardFactory().createInstance();
@@ -212,7 +216,56 @@ public class FactoriesTest {
     }
 
     @Test
-    public void hello4() throws ReflectiveOperationException {
+    public void testBeanUtils_populate2_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
+        final DynaBean dbEvent = new Factories.EventFactory().createInstance();
+        final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
+        final DynaBean dbCard = new Factories.CardFactory().createInstance();
+
+        final DynaBean dbPerson = new Factories.PersonFactory().createInstance();
+        BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.name.name(), "name0");
+        BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.card.name(), new Reference<>(dbCard));
+        BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.address.name(), new Reference<>(dbAddress));
+
+        final Map<String, Object> m = new LinkedHashMap<>();
+        m.put("name", "nameValue");
+        //---
+        m.put("card.value.fn", "fnValue");
+        m.put("card.value.n", "nValue");
+        m.put("card.value.familyname", "familynameValue");
+        m.put("card.value.givenname", "givennameValue");
+        m.put("card.value.honorificprefixes", "honorificprefixesValue");
+        m.put("card.value.honorificsuffixes", "honorificsuffixesValue");
+        m.put("card.value.nickname", "nicknameValue");
+        m.put("card.value.email", "emailValue");
+        m.put("card.value.tel", "telValue");
+        m.put("card.value.note", "noteValue");
+        //---
+        m.put("address.value.street", "streetValue");
+        m.put("address.value.street1", "street1Value");
+        m.put("address.value.street2", "street2Value");
+        m.put("address.value.city", "cityValue");
+        m.put("address.value.plz", "plzValue");
+        m.put("address.value.state", "stateValue");
+        m.put("address.value.country", "countryValue");
+
+        new BeanUtilsBean().populate(dbPerson, m);
+        new BeanUtilsBean2().populate(dbPerson, m);
+
+        final List<String> propNames = new PropertyVistor().dynaPropertyVistor(dbPerson);
+        System.out.printf("testBeanUtils_populate2_dbEvent_dbAddress_dbCard_dbPerson%n"
+                + "%s dynaPropertyVistor%n%s%n", dbPerson, propNames.stream().collect(Collectors.joining("\n")));
+
+        for (final Map.Entry<String, Object> e : m.entrySet()) {
+            final String name = e.getKey();
+            final Object expectedValue = e.getValue();
+            final Object value = new BeanUtilsBean().getProperty(dbPerson, name);
+
+            assertEquals(expectedValue, value, "" + name + ", " + expectedValue + ", " + value);
+        }
+    }
+
+    @Test
+    public void testdynaPropertyVistor1_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
         final DynaBean dbEvent = new Factories.EventFactory().createInstance();
         final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
         final DynaBean dbCard = new Factories.CardFactory().createInstance();
@@ -220,8 +273,8 @@ public class FactoriesTest {
         final DynaBean dbPerson = new Factories.PersonFactory().createInstance();
 
         BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.name.name(), "name");
-        BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.card.name(), new Reference<DynaBean>(dbCard));
-        BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.address.name(), new Reference<DynaBean>(dbAddress));
+        BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.card.name(), new Reference<>(dbCard));
+        BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.address.name(), new Reference<>(dbAddress));
 
         BeanUtils.setProperty(dbPerson, "name", "name1");
         BeanUtils.setProperty(dbPerson, "card.value.fn", "fn1");
@@ -241,43 +294,40 @@ public class FactoriesTest {
                     });
             return m;
         };
-        System.out.printf("%s properties%s%n", dbEvent, f.apply(dbEvent));
-        System.out.printf("%s properties%s%n", dbPerson, f.apply(dbPerson));
-
-        Map<String, Object> m = f.apply(dbPerson);
-        m.put("name", "name2");
-        m.put("card.value.fn", "fn2");
-        m.put("card.value.nickname", "nickname2");
-        m.put("address.value.city", "city2");
-        m.put("address.value.country", "country2");
-
-        new org.apache.commons.beanutils.BeanUtilsBean().populate(dbPerson, m);
-        new org.apache.commons.beanutils.BeanUtilsBean2().populate(dbPerson, m);
-        System.out.printf("%s function properties %s%n", dbPerson, f.apply(dbPerson));
+        System.out.printf("testdynaPropertyVistor1_dbEvent_dbAddress_dbCard_dbPerson%n"
+                + "%s properties%s%n", dbEvent, f.apply(dbEvent));
+        System.out.printf("testdynaPropertyVistor1_dbEvent_dbAddress_dbCard_dbPerson%n"
+                + "%s properties%s%n", dbPerson, f.apply(dbPerson));
 
         final List<String> propNames = new PropertyVistor().dynaPropertyVistor(dbPerson);
-        System.out.printf("%s dynaPropertyVistor%n%s%n", dbPerson, propNames.stream().collect(Collectors.joining("\n")));
+        System.out.printf("testdynaPropertyVistor1_dbEvent_dbAddress_dbCard_dbPerson%n"
+                + "%s dynaPropertyVistor%n%s%n", dbPerson, propNames.stream().collect(Collectors.joining("\n")));
     }
 
     @Test
-    public void hello5() throws ReflectiveOperationException {
-        final DynaBean db1 = new Factories.DynaClassBuilder().name("Dyna1")
+    public void helloDyna1() throws ReflectiveOperationException {
+        final DynaBean db1 = new DynaClassBuilder().name("Dyna1")
                 .prop("prop1", String.class)
                 .prop("prop2", Integer[].class)
+                //--
                 .prop("prop3", Map.class, Double.class)
                 .prop("prop4", List.class, Double.class)
+                //--
                 .prop("prop5", Reference.class, Long.class)
                 .prop("prop6", Value.class, Long.class)
                 .createInstance();
         db1.set("prop1", "Prop1Value");
         db1.set("prop2", new Integer[]{1, 2});
+        //--
         db1.set("prop3", new HashMap<String, Double>());
-        db1.set("prop3", "p1", 12.3d);
         db1.set("prop4", Arrays.asList(3, 4));
-        db1.set("prop5", new Reference<Long>(5L));
-        db1.set("prop6", new Value<Long>(6L));
+        //--
+        db1.set("prop5", new Reference<>(5L));
+        db1.set("prop6", new Value<>(6L));
+
         final List<String> propNames = new PropertyVistor().dynaPropertyVistor(db1);
-        System.out.printf("%s%ndynaPropertyVistor %s%n", db1, propNames.stream().collect(Collectors.joining("\n")));
+        System.out.printf("helloDyna1%n"
+                + "%s%ndynaPropertyVistor%n%s%n", db1, propNames.stream().collect(Collectors.joining("\n")));
     }
 
     static class PropertyVistor {
@@ -286,7 +336,7 @@ public class FactoriesTest {
             final Stack<String> prefixes = new Stack<>();
             prefixes.add("");
             int i = 0;
-            List<String> m = new ArrayList<String>();
+            final List<String> m = new ArrayList<String>();
             return _dynaPropertyVistor(i, db, m, prefixes);
         }
 
@@ -294,15 +344,15 @@ public class FactoriesTest {
             if (i > 100) {
                 return m;
             }
-            String prefix = prefixes.pop();
+            final String prefix = prefixes.pop();
             final List<DynaProperty> l = Arrays.asList(db.getDynaClass().getDynaProperties());
             for (DynaProperty dp : l) {
-                String name = dp.getName();
-                Class<?> typeClass = dp.getType();
-                Class<?> contentTypeClass = dp.getContentType();
-                Object value = db.get(name);
-                String fullName = "".equals(prefix) ? name : prefix + "." + name;
-                if (1 == 1) {
+                final String name = dp.getName();
+                final Class<?> typeClass = dp.getType();
+                final Class<?> contentTypeClass = dp.getContentType();
+                final Object value = db.get(name);
+                final String fullName = "".equals(prefix) ? name : prefix + "." + name;
+                if (1 == 0) {
                     m.add(String.format("name: %s, dp: %s", fullName, dp));
                 } else {
                     m.add(String.format("name: %s, value: %s, "
@@ -316,20 +366,20 @@ public class FactoriesTest {
                 }
 
                 if (typeClass != null && typeClass.isAssignableFrom(DynaBean.class)) {
-                    DynaBean dpValue = (DynaBean) value;
+                    final DynaBean dpValue = (DynaBean) value;
                     prefixes.push(name);
                     List<String> result = _dynaPropertyVistor(i + 1, dpValue, m, prefixes);
                 } else if (typeClass != null && typeClass.isAssignableFrom(Delegates.Reference.class)) {
                     if (contentTypeClass != null && contentTypeClass.isAssignableFrom(DynaBean.class)) {
-                        DynaBean dpValue = (DynaBean) ((Delegates.Reference) value).getValue();
+                        final DynaBean dpValue = (DynaBean) ((Delegates.Reference) value).getValue();
                         prefixes.push(fullName + ".value");
-                        List<String> result = _dynaPropertyVistor(i + 1, dpValue, m, prefixes);
+                        final List<String> result = _dynaPropertyVistor(i + 1, dpValue, m, prefixes);
                     }
                 } else if (typeClass != null && typeClass.isAssignableFrom(Delegates.Value.class)) {
                     if (contentTypeClass != null && contentTypeClass.isAssignableFrom(DynaBean.class)) {
-                        DynaBean dpValue = (DynaBean) ((Delegates.Value) value).getValue();
+                        final DynaBean dpValue = (DynaBean) ((Delegates.Value) value).getValue();
                         prefixes.push(fullName + ".value");
-                        List<String> result = _dynaPropertyVistor(i + 1, dpValue, m, prefixes);
+                        final List<String> result = _dynaPropertyVistor(i + 1, dpValue, m, prefixes);
                     }
                 }
             }
