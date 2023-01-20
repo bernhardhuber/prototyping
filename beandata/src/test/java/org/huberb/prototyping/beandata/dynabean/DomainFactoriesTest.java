@@ -32,7 +32,7 @@ import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaProperty;
 import org.huberb.prototyping.beandata.dynabean.Delegates.Reference;
 import org.huberb.prototyping.beandata.dynabean.Delegates.Value;
-import org.huberb.prototyping.beandata.dynabean.Factories.PersonFactory;
+import org.huberb.prototyping.beandata.dynabean.DomainFactories.PersonFactory;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -44,14 +44,14 @@ import org.junit.jupiter.api.Test;
  *
  * @author berni3
  */
-public class FactoriesTest {
+public class DomainFactoriesTest {
 
-    public FactoriesTest() {
+    public DomainFactoriesTest() {
     }
 
     @Test
     public void hello() throws ReflectiveOperationException {
-        final DynaBean db = new Factories.EventFactory().createInstance();
+        final DynaBean db = new DomainFactories.EventFactory().createInstance();
 
         final DynaProperty dbTitle = db.getDynaClass().getDynaProperty("title");
         assertAll(
@@ -69,7 +69,7 @@ public class FactoriesTest {
 
     @Test
     public void given_DynaBean_Event_then_title_is_setable() throws ReflectiveOperationException {
-        final DynaBean db = new Factories.EventFactory().createInstance();
+        final DynaBean db = new DomainFactories.EventFactory().createInstance();
 
         for (DynaProperty dp : Arrays.asList(db.getDynaClass().getDynaProperties())) {
             if (!dp.isIndexed()
@@ -89,7 +89,7 @@ public class FactoriesTest {
     }
 
     public void given_Event_and_retrieving_unknonwproperty_then_IllegalArgumentException_is_thrown() throws ReflectiveOperationException {
-        final DynaBean db = new Factories.EventFactory().createInstance();
+        final DynaBean db = new DomainFactories.EventFactory().createInstance();
 
         assertAll(
                 () -> assertNotNull(db),
@@ -107,11 +107,11 @@ public class FactoriesTest {
 
     @Test
     public void testSetDefaults1_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
-        final DynaBean dbEvent = new Factories.EventFactory().createInstance();
-        final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
-        final DynaBean dbCard = new Factories.CardFactory().createInstance();
+        final DynaBean dbEvent = new DomainFactories.EventFactory().createInstance();
+        final DynaBean dbAddress = new DomainFactories.AddressFactory().createInstance();
+        final DynaBean dbCard = new DomainFactories.CardFactory().createInstance();
 
-        final DynaBean dbPerson = new Factories.PersonFactory().createInstance();
+        final DynaBean dbPerson = new DomainFactories.PersonFactory().createInstance();
 
         final Function<DynaBean, List<DynaProperty>> f = (db) -> Arrays.asList(db.getDynaClass().getDynaProperties());
         final BiConsumer<DynaBean, List<DynaProperty>> c = new BiConsumer<>() {
@@ -163,11 +163,11 @@ public class FactoriesTest {
 
     @Test
     public void testBeanUtils_populate_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
-        final DynaBean dbEvent = new Factories.EventFactory().createInstance();
-        final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
-        final DynaBean dbCard = new Factories.CardFactory().createInstance();
+        final DynaBean dbEvent = new DomainFactories.EventFactory().createInstance();
+        final DynaBean dbAddress = new DomainFactories.AddressFactory().createInstance();
+        final DynaBean dbCard = new DomainFactories.CardFactory().createInstance();
 
-        final DynaBean dbPerson = new Factories.PersonFactory().createInstance();
+        final DynaBean dbPerson = new DomainFactories.PersonFactory().createInstance();
 
         final Function<DynaBean, Map<String, Object>> f = (db) -> {
             final Map<String, Object> m = new HashMap<>();
@@ -217,11 +217,11 @@ public class FactoriesTest {
 
     @Test
     public void testBeanUtils_populate2_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
-        final DynaBean dbEvent = new Factories.EventFactory().createInstance();
-        final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
-        final DynaBean dbCard = new Factories.CardFactory().createInstance();
+        final DynaBean dbEvent = new DomainFactories.EventFactory().createInstance();
+        final DynaBean dbAddress = new DomainFactories.AddressFactory().createInstance();
+        final DynaBean dbCard = new DomainFactories.CardFactory().createInstance();
 
-        final DynaBean dbPerson = new Factories.PersonFactory().createInstance();
+        final DynaBean dbPerson = new DomainFactories.PersonFactory().createInstance();
         BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.name.name(), "name0");
         BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.card.name(), new Reference<>(dbCard));
         BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.address.name(), new Reference<>(dbAddress));
@@ -266,11 +266,11 @@ public class FactoriesTest {
 
     @Test
     public void testdynaPropertyVistor1_dbEvent_dbAddress_dbCard_dbPerson() throws ReflectiveOperationException {
-        final DynaBean dbEvent = new Factories.EventFactory().createInstance();
-        final DynaBean dbAddress = new Factories.AddressFactory().createInstance();
-        final DynaBean dbCard = new Factories.CardFactory().createInstance();
+        final DynaBean dbEvent = new DomainFactories.EventFactory().createInstance();
+        final DynaBean dbAddress = new DomainFactories.AddressFactory().createInstance();
+        final DynaBean dbCard = new DomainFactories.CardFactory().createInstance();
 
-        final DynaBean dbPerson = new Factories.PersonFactory().createInstance();
+        final DynaBean dbPerson = new DomainFactories.PersonFactory().createInstance();
 
         BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.name.name(), "name");
         BeanUtils.setProperty(dbPerson, PersonFactory.PropNames.card.name(), new Reference<>(dbCard));

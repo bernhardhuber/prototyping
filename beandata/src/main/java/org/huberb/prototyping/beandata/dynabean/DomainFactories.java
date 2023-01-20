@@ -15,8 +15,6 @@
  */
 package org.huberb.prototyping.beandata.dynabean;
 
-import java.util.ArrayList;
-import java.util.List;
 import org.apache.commons.beanutils.BasicDynaClass;
 import org.apache.commons.beanutils.DynaBean;
 import org.apache.commons.beanutils.DynaClass;
@@ -27,7 +25,7 @@ import org.huberb.prototyping.beandata.dynabean.Delegates.Reference;
  *
  * @author berni3
  */
-public class Factories {
+public class DomainFactories {
 
     @FunctionalInterface
     public static interface IFactory<T, E extends Exception> {

@@ -1,0 +1,24 @@
+@startuml
+' comment
+' dfdf
+
+component AComp as A
+component BComp as B
+component CComp as C
+component DComp as D
+
+D --> A : uses
+A --> B : uses
+A --> C : uses
+
+A ..> B : refs
+A ..> C : refs
+A ..> D : refs
+
+B -> C : communicates
+C -> D : communicates
+
+D => C : informs
+C => B : informs
+
+@enduml
