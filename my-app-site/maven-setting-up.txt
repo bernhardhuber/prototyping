@@ -1,0 +1,36 @@
+https://www.lorenzobettini.it/2020/01/publishing-a-maven-site-to-github-pages/
+
+mvn archetype:generate \
+    -DgroupId=com.mycompany.app \
+    -DartifactId=my-app \
+    -DarchetypeArtifactId=maven-archetype-quickstart \
+    -DarchetypeVersion=1.4 \
+    -DinteractiveMode=false
+
+mvn archetype:generate \
+    -DgroupId=com.mycompany.app \
+    -DartifactId=my-app \
+    -DarchetypeGroupId=org.apache.maven.archetypes \
+    -DarchetypeArtifactId=maven-archetype-site \
+    -DarchetypeVersion=1.4 \
+    -DinteractiveMode=false
+
+
+My setup for this project:
+
+
+mvn archetype:generate \
+    -DgroupId=org.huberb.app \
+    -DartifactId=my-app \
+    -DarchetypeArtifactId=maven-archetype-quickstart \
+    -DarchetypeVersion=1.4 \
+    -DinteractiveMode=false
+
+mvn archetype:generate \
+    -DgroupId=org.huberb.app \
+    -DartifactId=my-app \
+    -DarchetypeGroupId=org.apache.maven.archetypes \
+    -DarchetypeArtifactId=maven-archetype-site \
+    -DarchetypeVersion=1.4 \
+    -DinteractiveMode=false
+
