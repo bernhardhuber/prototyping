@@ -14,6 +14,9 @@
         <module>groovyintegration</module>
         <module>transhuelle</module>
         <module>blaze-mavenproject</module>
+        <module>xml</module>
+        <module>beandata</module>
+        <module>my-app-site</module>
     </modules>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
