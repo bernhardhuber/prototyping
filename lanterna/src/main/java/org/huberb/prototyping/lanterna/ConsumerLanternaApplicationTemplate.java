@@ -31,6 +31,9 @@ import java.util.function.Supplier;
 
 /**
  * A simple lanterna application template.
+ * <p>
+ * A concrete application shall provide consumers for implementing a concrete
+ * lanterna application.
  *
  * @author berni3
  */
@@ -61,7 +64,7 @@ public class ConsumerLanternaApplicationTemplate {
             return (T t) -> {
                 accept(t);
                 final Boolean conditionValue = booleanSupp.get();
-                if (conditionValue.booleanValue()) {
+                if (conditionValue) {
                     thenAfter.accept(t);
                 }
             };
@@ -76,9 +79,9 @@ public class ConsumerLanternaApplicationTemplate {
             return (T t) -> {
                 accept(t);
                 final Boolean conditionValue = booleanSupp.get();
-                if (conditionValue.booleanValue()) {
+                if (conditionValue) {
                     thenAfter.accept(t);
-                } else if (!conditionValue.booleanValue()) {
+                } else if (!conditionValue) {
                     elseAfter.accept(t);
                 }
             };
@@ -129,7 +132,9 @@ public class ConsumerLanternaApplicationTemplate {
      */
     public MultiWindowTextGUI createMultiWindowTextGUI(Screen screen) {
         final TextColor.ANSI backgroundColor = TextColor.ANSI.BLUE;
-        final MultiWindowTextGUI textGUI = new MultiWindowTextGUI(screen, new DefaultWindowManager(), new EmptySpace(backgroundColor));
+        final MultiWindowTextGUI textGUI = new MultiWindowTextGUI(screen,
+                new DefaultWindowManager(),
+                new EmptySpace(backgroundColor));
         return textGUI;
     }
 

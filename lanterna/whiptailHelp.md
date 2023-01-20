@@ -2,22 +2,22 @@
 
 Box options:
 
-* msgbox <text> <height> <width>
-* yesno  <text> <height> <width>
-* infobox <text> <height> <width>
-* inputbox <text> <height> <width> [init]
-* passwordbox <text> <height> <width> [init]
-* textbox <file> <height> <width>
-* menu <text> <height> <width> <listheight> [tag item] ...
-* checklist <text> <height> <width> <listheight> [tag item status]...
-* radiolist <text> <height> <width> <listheight> [tag item status]...
-* gauge <text> <height> <width> <percent>
+* msgbox `<text> <height> <width>`
+* yesno  `<text> <height> <width>`
+* infobox `<text> <height> <width>`
+* inputbox `<text> <height> <width> [init]`
+* passwordbox `<text> <height> <width> [init]`
+* textbox `<file> <height> <width>`
+* menu `<text> <height> <width> <listheight> [tag item] ...`
+* checklist `<text> <height> <width> <listheight> [tag item status]...
+* radiolist `<text> <height> <width> <listheight> [tag item status]...`
+* gauge `<text> <height> <width> <percent>`
 
-```
+```bash
 pi@raspberrypi-4-1:~ $ whiptail --help
 ```
 
-```
+```text
 Box options:
         --msgbox <text> <height> <width>
         --yesno  <text> <height> <width>

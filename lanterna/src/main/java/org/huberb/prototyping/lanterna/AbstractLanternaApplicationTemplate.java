@@ -28,6 +28,10 @@ import com.googlecode.lanterna.terminal.Terminal;
 import java.io.IOException;
 
 /**
+ * A simple lanterna application template.
+ * <p>
+ * A concrete application shall extends this abstract class and implement the
+ * abstract method {@link #setupComponents()}.
  *
  * @author berni3
  */

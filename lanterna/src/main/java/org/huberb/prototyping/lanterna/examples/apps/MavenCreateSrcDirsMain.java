@@ -23,8 +23,8 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map.Entry;
-import org.huberb.prototyping.lanterna.AppContext;
 import org.huberb.prototyping.lanterna.AbstractLanternaApplicationTemplate;
+import org.huberb.prototyping.lanterna.AppContext;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialog;
 import org.huberb.prototyping.lanterna.examples.dialogs.CheckListDialogBuilder;
 import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.IItemLabel;
@@ -36,7 +36,7 @@ import org.huberb.prototyping.lanterna.examples.dialogs.ItemLabelWrappings.ItemL
  */
 public class MavenCreateSrcDirsMain extends AbstractLanternaApplicationTemplate {
 
-    private AppContext appContext = new AppContext("mavencreatesrcdirsmain");
+    private final AppContext appContext = new AppContext("mavencreatesrcdirsmain");
 
     public static void main(String[] args) throws Exception {
         final MavenCreateSrcDirsMain mavenCreateSrcTestDirsMain = new MavenCreateSrcDirsMain();
