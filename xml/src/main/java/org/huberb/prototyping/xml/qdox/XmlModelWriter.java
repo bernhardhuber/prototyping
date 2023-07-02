@@ -68,10 +68,13 @@ public class XmlModelWriter implements ModelWriter {
         buffer.writeEndElement("imports");
 
         // classes
+        buffer.writeStartElement("classes");
         for (ListIterator<JavaClass> iter = source.getClasses().listIterator(); iter.hasNext();) {
             JavaClass cls = iter.next();
             writeClass(cls);
         }
+        buffer.writeEndElement("classes");
+
         buffer.writeEndElement("source");
         return this;
     }
@@ -141,24 +144,32 @@ public class XmlModelWriter implements ModelWriter {
         buffer.writeStartElement("classbody");
 
         // fields
+        buffer.writeStartElement("fields");
         for (JavaField javaField : cls.getFields()) {
             writeField(javaField);
         }
+        buffer.writeEndElement("fields");
 
         // constructors
+        buffer.writeStartElement("constructors");
         for (JavaConstructor javaConstructor : cls.getConstructors()) {
             writeConstructor(javaConstructor);
         }
+        buffer.writeEndElement("constructors");
 
         // methods
+        buffer.writeStartElement("methods");
         for (JavaMethod javaMethod : cls.getMethods()) {
             writeMethod(javaMethod);
         }
+        buffer.writeEndElement("methods");
 
         // inner-classes
+        buffer.writeStartElement("inner-classes");
         for (JavaClass innerCls : cls.getNestedClasses()) {
             writeClass(innerCls);
         }
+        buffer.writeEndElement("inner-classes");
 
         buffer.writeEndElement("classbody");
         return this;
@@ -228,9 +239,12 @@ public class XmlModelWriter implements ModelWriter {
         writeAllModifiers(constructor.getModifiers());
 
         buffer.writeInlineElement("name", constructor.getName());
+
+        buffer.writeStartElement("parameters");
         for (ListIterator<JavaParameter> iter = constructor.getParameters().listIterator(); iter.hasNext();) {
             writeParameter(iter.next());
         }
+        buffer.writeEndElement("parameters");
 
         if (!constructor.getExceptions().isEmpty()) {
             buffer.writeStartElement("throws");
@@ -241,7 +255,11 @@ public class XmlModelWriter implements ModelWriter {
         }
 
         if (constructor.getSourceCode() != null) {
+            buffer.writeStartElement("source");
+            buffer.write("<![DATA[");
             buffer.write(constructor.getSourceCode());
+            buffer.write("]]>");
+            buffer.writeEndElement("source");
         }
 
         buffer.writeEndElement("constructor");
@@ -261,9 +279,12 @@ public class XmlModelWriter implements ModelWriter {
         buffer.writeInlineElement("return-type", method.getReturnType().getGenericCanonicalName());
 
         buffer.writeInlineElement("name", method.getName());
+
+        buffer.writeStartElement("parameters");
         for (ListIterator<JavaParameter> iter = method.getParameters().listIterator(); iter.hasNext();) {
             writeParameter(iter.next());
         }
+        buffer.writeEndElement("parameters");
 
         if (!method.getExceptions().isEmpty()) {
             buffer.writeStartElement("throws");
@@ -340,50 +361,46 @@ public class XmlModelWriter implements ModelWriter {
         buffer.write("]]>");
         buffer.writeEndElement("canonical-name");
         if (parameter.isVarArgs()) {
-            buffer.write("...");
+            buffer.writeInlineElement("var-args", "...");
         }
-        buffer.write(' ');
-        buffer.writeStartElement("name");
-        buffer.write(parameter.getName());
-        buffer.writeEndElement("name");
+        buffer.writeInlineElement("name", parameter.getName());
         buffer.writeEndElement("parameter");
         return this;
     }
 
     protected void commentHeader(JavaAnnotatedElement entity) {
-        buffer.writeStartElement("commentHeader");
+        buffer.writeStartElement("comment-header");
         if (entity.getComment() != null || (entity.getTags().size() > 0)) {
-            buffer.write("/**");
-            buffer.newline();
-
             if (entity.getComment() != null && entity.getComment().length() > 0) {
-                buffer.write(entity.getComment().replaceAll("\n", "\n * "));
+                buffer.writeStartElement("comment");
+                buffer.write("<![CDATA[");
+                buffer.write(entity.getComment());
+                buffer.write("]]>");
+                buffer.writeEndElement("comment");
             }
 
             if (!entity.getTags().isEmpty()) {
-                if (entity.getComment() != null && entity.getComment().length() > 0) {
-                    buffer.newline();
-                }
+                buffer.writeStartElement("doclets");
                 for (DocletTag docletTag : entity.getTags()) {
-                    buffer.write(" * @");
-                    buffer.write(docletTag.getName());
+                    buffer.writeStartElement("doclet");
+                    buffer.writeInlineElement("name", docletTag.getName());
                     if (docletTag.getValue().length() > 0) {
-                        buffer.write(' ');
-                        buffer.write(docletTag.getValue());
+                        buffer.writeInlineElement("value", docletTag.getValue());
                     }
-                    buffer.newline();
+                    buffer.writeEndElement("doclet");
                 }
+                buffer.writeEndElement("doclets");
             }
-
-            buffer.write(" */");
-            buffer.newline();
         }
-        buffer.writeEndElement("commentHeader");
+        buffer.writeEndElement("comment-header");
 
         if (entity.getAnnotations() != null) {
+            buffer.writeStartElement("annotations");
+
             for (JavaAnnotation annotation : entity.getAnnotations()) {
                 writeAnnotation(annotation);
             }
+            buffer.writeEndElement("annotations");
         }
     }
 
