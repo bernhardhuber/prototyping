@@ -18,7 +18,6 @@ package org.huberb.prototyping.xml.qdox;
 import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaSource;
-
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
@@ -32,16 +31,16 @@ public class QdoxMain {
         JavaProjectBuilder builder = new JavaProjectBuilder();
         File directory = new File("src");
         builder.addSourceTree(directory);
-
-        final Collection<JavaPackage> jpCollection = builder.getPackages();
-        for (Iterator<JavaPackage> it = jpCollection.iterator(); it.hasNext(); ) {
-            final JavaPackage jp = it.next();
-            System.out.printf("JavaPackage:%s%n", jp.getName());
-
+        if (1 == 0) {
+            final Collection<JavaPackage> jpCollection = builder.getPackages();
+            for (Iterator<JavaPackage> it = jpCollection.iterator(); it.hasNext();) {
+                final JavaPackage jp = it.next();
+                System.out.printf("JavaPackage:%s%n", jp.getName());
+            }
         }
 
         final Collection<JavaSource> javaSourceCollection = builder.getSources();
-        for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext(); ) {
+        for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
             final JavaSource source = it.next();
             final XmlModelWriter dmw = new XmlModelWriter();
             dmw.writeSource(source);

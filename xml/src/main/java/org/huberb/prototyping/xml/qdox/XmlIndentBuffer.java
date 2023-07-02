@@ -21,11 +21,10 @@ package org.huberb.prototyping.xml.qdox;
 public class XmlIndentBuffer {
 
     private String eol = "\n";
-    private String indentation = "\t";
+    private String indentation = " ";
     private StringBuffer buffer = new StringBuffer();
 
     private int depth = 0;
-
     private boolean newLine;
 
     public void setEol(String eol) {
@@ -71,6 +70,13 @@ public class XmlIndentBuffer {
             }
             newLine = false;
         }
+    }
+
+    void writeInlineElement(String elementname, String value) {
+        this.write("<" + elementname + ">");
+        this.write(value);
+        this.write("</" + elementname + ">");
+        this.newline();
     }
 
     void writeStartElement(String elementname) {
