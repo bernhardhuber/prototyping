@@ -24,6 +24,7 @@ import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaUses;
 import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import com.thoughtworks.qdox.model.expression.Expression;
 import com.thoughtworks.qdox.writer.ModelWriter;
+import java.io.StringWriter;
 import java.util.*;
 import java.util.function.Function;
 
@@ -32,7 +33,8 @@ import java.util.function.Function;
  */
 public class XmlModelWriter implements ModelWriter {
 
-    private XmlIndentBuffer buffer = new XmlIndentBuffer();
+    //private final IGenericXmlEmitter buffer = new XmlIndentBufferEmitter();
+    private final IGenericXmlEmitter buffer = new XmlStreamWriterEmitter(new StringWriter());
 
     /**
      * All information is written to this buffer. When extending this class you
@@ -40,7 +42,7 @@ public class XmlModelWriter implements ModelWriter {
      *
      * @return the buffer
      */
-    protected final XmlIndentBuffer getBuffer() {
+    protected final IGenericXmlEmitter getBuffer() {
         return buffer;
     }
 
@@ -49,6 +51,7 @@ public class XmlModelWriter implements ModelWriter {
      */
     @Override
     public ModelWriter writeSource(JavaSource source) {
+        buffer.startDocument();
 
         buffer.writeStartElement("source");
 
@@ -63,7 +66,6 @@ public class XmlModelWriter implements ModelWriter {
             buffer.writeStartElement("import");
             buffer.writeInlineElement("name", imprt);
             buffer.writeEndElement("import");
-            buffer.newline();
         }
         buffer.writeEndElement("imports");
 
@@ -76,6 +78,7 @@ public class XmlModelWriter implements ModelWriter {
         buffer.writeEndElement("classes");
 
         buffer.writeEndElement("source");
+        buffer.endDocument();
         return this;
     }
 
@@ -256,7 +259,7 @@ public class XmlModelWriter implements ModelWriter {
 
         if (constructor.getSourceCode() != null) {
             buffer.writeStartElement("source");
-            buffer.write("<![DATA[");
+            buffer.write("<![CDATA[");
             buffer.write(constructor.getSourceCode());
             buffer.write("]]>");
             buffer.writeEndElement("source");
@@ -299,7 +302,6 @@ public class XmlModelWriter implements ModelWriter {
             buffer.write("<![CDATA[");
             buffer.write(method.getSourceCode());
             buffer.write("]]>");
-            buffer.newline();
         }
         buffer.writeEndElement("source");
 
@@ -323,26 +325,19 @@ public class XmlModelWriter implements ModelWriter {
     public ModelWriter writeAnnotation(JavaAnnotation annotation) {
         buffer.writeStartElement("annotation");
 
-        buffer.write('@');
-        buffer.write(annotation.getType().getGenericCanonicalName());
+        buffer.writeInlineElement("name", "@" + annotation.getType().getGenericCanonicalName());
+
         if (!annotation.getPropertyMap().isEmpty()) {
-            buffer.indent();
-            buffer.write('(');
+            buffer.writeStartElement("values");
+
             Iterator<Map.Entry<String, AnnotationValue>> iterator = annotation.getPropertyMap().entrySet().iterator();
             while (iterator.hasNext()) {
                 Map.Entry<String, AnnotationValue> entry = iterator.next();
-                buffer.write(entry.getKey());
-                buffer.write('=');
-                buffer.write(entry.getValue().toString());
-                if (iterator.hasNext()) {
-                    buffer.write(',');
-                    buffer.newline();
-                }
+                buffer.writeInlineElement("key", entry.getKey());
+                buffer.writeInlineElement("value", entry.getValue().toString());
             }
-            buffer.write(')');
-            buffer.deindent();
+            buffer.writeEndElement("values");
         }
-        buffer.newline();
         buffer.writeEndElement("annotation");
         return this;
     }
@@ -413,8 +408,6 @@ public class XmlModelWriter implements ModelWriter {
             buffer.write("open ");
         }
         buffer.write("module " + descriptor.getName() + " {");
-        buffer.newline();
-        buffer.indent();
 
         for (JavaRequires requires : descriptor.getRequires()) {
             buffer.newline();
@@ -442,7 +435,6 @@ public class XmlModelWriter implements ModelWriter {
         }
 
         buffer.newline();
-        buffer.deindent();
         buffer.write('}');
         buffer.newline();
         return this;

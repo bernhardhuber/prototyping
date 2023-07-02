@@ -15,12 +15,12 @@
  */
 package org.huberb.prototyping.xml.qdox;
 
-import javax.xml.stream.XMLOutputFactory;
-import javax.xml.stream.XMLStreamException;
-import javax.xml.stream.XMLStreamWriter;
 import java.io.Writer;
 import java.util.Map;
 import java.util.Objects;
+import javax.xml.stream.XMLOutputFactory;
+import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 
 /**
  * @author berni3
@@ -75,7 +75,7 @@ public class XmlSaxWriter implements AutoCloseable {
         private XmlStreamWriterConsumer current;
 
         XmlStreamWriterConsumerTemplates() {
-            this((xsw) -> {
+            this(xsw -> {
             });
         }
 
@@ -85,55 +85,55 @@ public class XmlSaxWriter implements AutoCloseable {
 
         XmlStreamWriterConsumerTemplates startDocument() {
             final XmlStreamWriterConsumer xswc = current
-                    .andThen((xsw) -> xsw.writeStartDocument());
+                    .andThen(xsw -> xsw.writeStartDocument());
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates endDocument() {
             final XmlStreamWriterConsumer xswc = current
-                    .andThen((xsw) -> xsw.writeEndDocument());
+                    .andThen(xsw -> xsw.writeEndDocument());
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates comment(String comment) {
             final XmlStreamWriterConsumer xswc = current
-                    .andThen((xsw) -> xsw.writeComment(comment));
+                    .andThen(xsw -> xsw.writeComment(comment));
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates text(String characters) {
             final XmlStreamWriterConsumer xswc = current
-                    .andThen((xsw) -> xsw.writeCharacters(characters));
+                    .andThen(xsw -> xsw.writeCharacters(characters));
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates emptyElement(String elementname) {
             XmlStreamWriterConsumer xswc = current
-                    .andThen((xsw) -> xsw.writeEmptyElement(elementname));
+                    .andThen(xsw -> xsw.writeEmptyElement(elementname));
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates startElement(String elementname) {
             XmlStreamWriterConsumer xswc = this.current
-                    .andThen((xsw) -> xsw.writeStartElement(elementname));
+                    .andThen(xsw -> xsw.writeStartElement(elementname));
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates endElement() {
             XmlStreamWriterConsumer xswc = this.current
-                    .andThen((xsw) -> xsw.writeEndElement());
+                    .andThen(xsw -> xsw.writeEndElement());
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates attributes(String k, String v) {
-            final XmlStreamWriterConsumer xswcAttributes = (xsw) -> {
+            final XmlStreamWriterConsumer xswcAttributes = xsw -> {
                 xsw.writeAttribute(k, v);
             };
             final XmlStreamWriterConsumer xswc = current
@@ -143,7 +143,7 @@ public class XmlSaxWriter implements AutoCloseable {
         }
 
         XmlStreamWriterConsumerTemplates attributes(Map<String, String> atts) {
-            final XmlStreamWriterConsumer xswcAttributes = (xsw) -> {
+            final XmlStreamWriterConsumer xswcAttributes = xsw -> {
                 for (Map.Entry<String, String> e : atts.entrySet()) {
                     xsw.writeAttribute(e.getKey(), e.getValue());
                 }
@@ -157,7 +157,7 @@ public class XmlSaxWriter implements AutoCloseable {
         XmlStreamWriterConsumerTemplates nested(XmlStreamWriterConsumer inner) {
             final XmlStreamWriterConsumer xswc = current
                     .andThen(inner)
-                    .andThen((_xsw) -> _xsw.writeEndElement());
+                    .andThen(xsw -> xsw.writeEndElement());
             this.current = xswc;
             return this;
         }

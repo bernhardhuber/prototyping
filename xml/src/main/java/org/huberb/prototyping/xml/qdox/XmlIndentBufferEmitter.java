@@ -18,7 +18,7 @@ package org.huberb.prototyping.xml.qdox;
 /**
  * @author berni3
  */
-public class XmlIndentBuffer {
+public class XmlIndentBufferEmitter implements IGenericXmlEmitter {
 
     private String eol = "\n";
     private String indentation = " ";
@@ -35,11 +35,21 @@ public class XmlIndentBuffer {
         this.indentation = indentation;
     }
 
+    @Override
+    public void startDocument() {
+    }
+
+    @Override
+    public void endDocument() {
+    }
+
+    @Override
     public void write(String s) {
         checkNewLine();
         buffer.append(s);
     }
 
+    @Override
     public void write(char s) {
         checkNewLine();
         buffer.append(s);
@@ -72,20 +82,23 @@ public class XmlIndentBuffer {
         }
     }
 
-    void writeInlineElement(String elementname, String value) {
+    @Override
+    public void writeInlineElement(String elementname, String value) {
         this.write("<" + elementname + ">");
         this.write(value);
         this.write("</" + elementname + ">");
         this.newline();
     }
 
-    void writeStartElement(String elementname) {
+    @Override
+    public void writeStartElement(String elementname) {
         this.write("<" + elementname + ">");
         this.newline();
         this.indent();
     }
 
-    void writeEndElement(String elementname) {
+    @Override
+    public void writeEndElement(String elementname) {
         this.write("</" + elementname + ">");
         this.newline();
         this.deindent();

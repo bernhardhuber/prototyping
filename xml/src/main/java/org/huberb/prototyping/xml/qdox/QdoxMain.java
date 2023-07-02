@@ -21,16 +21,39 @@ import com.thoughtworks.qdox.model.JavaSource;
 import java.io.File;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.concurrent.Callable;
+import picocli.CommandLine;
 
 /**
  * @author berni3
  */
-public class QdoxMain {
+@CommandLine.Command(name = "QdoxCli",
+        mixinStandardHelpOptions = true,
+        showAtFileInUsageHelp = true,
+        showDefaultValues = true,
+        version = "QdoxCli 0.1-SNAPSHOT",
+        description = "Run qdox from the command line%n"
+)
+public class QdoxMain implements Callable<Integer> {
 
-    public static void main(String[] args) {
-        JavaProjectBuilder builder = new JavaProjectBuilder();
-        File directory = new File("src");
-        builder.addSourceTree(directory);
+    File src;
+
+    public static void main(String[] args) throws Exception {
+        final int exitCode = new CommandLine(new QdoxMain()).execute(args);
+        System.exit(exitCode);
+    }
+
+    @Override
+    public Integer call() throws Exception {
+        this.src = new File("src");
+        JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
+        javaProjectBuilder.addSourceTree(this.src);
+
+        processSources(javaProjectBuilder);
+        return 0;
+    }
+
+    void processPackages(JavaProjectBuilder builder) {
         if (1 == 0) {
             final Collection<JavaPackage> jpCollection = builder.getPackages();
             for (Iterator<JavaPackage> it = jpCollection.iterator(); it.hasNext();) {
@@ -38,13 +61,16 @@ public class QdoxMain {
                 System.out.printf("JavaPackage:%s%n", jp.getName());
             }
         }
+    }
 
+    void processSources(JavaProjectBuilder builder) {
         final Collection<JavaSource> javaSourceCollection = builder.getSources();
         for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
             final JavaSource source = it.next();
-            final XmlModelWriter dmw = new XmlModelWriter();
-            dmw.writeSource(source);
-            System.out.printf("JavaSource:%n%s%n", dmw.toString());
+            final XmlModelWriter xmlModelWriter = new XmlModelWriter();
+            xmlModelWriter.writeSource(source);
+            System.out.printf("JavaSource:%n%s%n", xmlModelWriter.toString());
         }
     }
+
 }
