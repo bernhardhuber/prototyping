@@ -15,15 +15,14 @@
  */
 package org.huberb.prototyping.xml.qdox;
 
-import java.io.Writer;
-import java.util.Map;
-import java.util.Objects;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.io.Writer;
+import java.util.Map;
+import java.util.Objects;
 
 /**
- *
  * @author berni3
  */
 public class XmlSaxWriter implements AutoCloseable {

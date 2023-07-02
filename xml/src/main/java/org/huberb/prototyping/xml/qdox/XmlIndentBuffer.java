@@ -16,7 +16,6 @@
 package org.huberb.prototyping.xml.qdox;
 
 /**
- *
  * @author berni3
  */
 public class XmlIndentBuffer {

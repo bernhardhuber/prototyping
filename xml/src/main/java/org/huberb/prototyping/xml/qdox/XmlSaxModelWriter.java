@@ -15,37 +15,22 @@
  */
 package org.huberb.prototyping.xml.qdox;
 
-import com.thoughtworks.qdox.model.JavaAnnotatedElement;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaConstructor;
-import com.thoughtworks.qdox.model.JavaField;
-import com.thoughtworks.qdox.model.JavaInitializer;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaModuleDescriptor;
-import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaExports;
-import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaOpens;
-import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaProvides;
-import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaRequires;
-import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaUses;
-import com.thoughtworks.qdox.model.JavaPackage;
-import com.thoughtworks.qdox.model.JavaParameter;
-import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.JavaType;
+import com.thoughtworks.qdox.model.*;
+import com.thoughtworks.qdox.model.JavaModuleDescriptor.*;
 import com.thoughtworks.qdox.writer.ModelWriter;
+import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlModelSaxWriterFactory;
+import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumer;
+import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumerTemplates;
+
+import javax.xml.stream.XMLStreamException;
 import java.io.StringWriter;
 import java.util.Collection;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.xml.stream.XMLStreamException;
-import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlModelSaxWriterFactory;
-import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumer;
-import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumerTemplates;
 
 /**
- *
  * @author berni3
  */
 public class XmlSaxModelWriter implements ModelWriter {
@@ -69,6 +54,7 @@ public class XmlSaxModelWriter implements ModelWriter {
 //    protected final XmlIndentBuffer getBuffer() {
 //        return buffer;
 //    }
+
     /**
      * {@inheritDoc}
      */
@@ -92,7 +78,7 @@ public class XmlSaxModelWriter implements ModelWriter {
         xswct.endElement();
 
         // classes
-        for (ListIterator<JavaClass> iter = source.getClasses().listIterator(); iter.hasNext();) {
+        for (ListIterator<JavaClass> iter = source.getClasses().listIterator(); iter.hasNext(); ) {
             JavaClass cls = iter.next();
             writeClass(cls);
             if (iter.hasNext()) {
@@ -158,7 +144,7 @@ public class XmlSaxModelWriter implements ModelWriter {
         if (cls.getImplements().size() > 0) {
             String extendsOrImplements = (cls.isInterface() ? " extends " : " implements ");
 
-            for (ListIterator<JavaType> iter = cls.getImplements().listIterator(); iter.hasNext();) {
+            for (ListIterator<JavaType> iter = cls.getImplements().listIterator(); iter.hasNext(); ) {
                 this.xswct.emptyElement(extendsOrImplements)
                         .attributes("name", iter.next().getGenericCanonicalName());
             }

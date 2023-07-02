@@ -15,36 +15,19 @@
  */
 package org.huberb.prototyping.xml.qdox;
 
-import com.thoughtworks.qdox.model.DocletTag;
-import com.thoughtworks.qdox.model.JavaAnnotatedElement;
-import com.thoughtworks.qdox.model.JavaAnnotation;
-import com.thoughtworks.qdox.model.JavaClass;
-import com.thoughtworks.qdox.model.JavaConstructor;
-import com.thoughtworks.qdox.model.JavaField;
-import com.thoughtworks.qdox.model.JavaInitializer;
-import com.thoughtworks.qdox.model.JavaMethod;
-import com.thoughtworks.qdox.model.JavaModule;
-import com.thoughtworks.qdox.model.JavaModuleDescriptor;
+import com.thoughtworks.qdox.model.*;
 import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaExports;
 import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaOpens;
 import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaProvides;
 import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaRequires;
 import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaUses;
-import com.thoughtworks.qdox.model.JavaPackage;
-import com.thoughtworks.qdox.model.JavaParameter;
-import com.thoughtworks.qdox.model.JavaSource;
-import com.thoughtworks.qdox.model.JavaType;
 import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import com.thoughtworks.qdox.model.expression.Expression;
 import com.thoughtworks.qdox.writer.ModelWriter;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Map;
+import java.util.*;
+import java.util.function.Function;
 
 /**
- *
  * @author berni3
  */
 public class XmlModelWriter implements ModelWriter {
@@ -134,10 +117,19 @@ public class XmlModelWriter implements ModelWriter {
         writeAccessibilityModifier(cls.getModifiers());
         writeNonAccessibilityModifiers(cls.getModifiers());
 
-        final String typeOf = cls.isEnum() ? "enum "
-                : cls.isInterface() ? "interface "
-                : cls.isAnnotation() ? "@interface "
-                : "class ";
+        Function<JavaClass, String> typeOfF = (JavaClass jc) -> {
+            if (cls.isEnum()) {
+                return "enum";
+            } else if (cls.isInterface()) {
+                return "interface";
+            } else if (cls.isAnnotation()) {
+                return "@interface";
+            } else {
+                return "class";
+            }
+        };
+
+        final String typeOf = typeOfF.apply(cls);
         buffer.writeStartElement(typeOf);
         buffer.writeStartElement("name");
         buffer.write(cls.getName());
@@ -295,7 +287,7 @@ public class XmlModelWriter implements ModelWriter {
         }
         buffer.write(')');
 
-        if (constructor.getExceptions().size() > 0) {
+        if (!constructor.getExceptions().isEmpty()) {
             buffer.write(" throws ");
             for (Iterator<JavaClass> excIter = constructor.getExceptions().iterator(); excIter.hasNext();) {
                 buffer.write(excIter.next().getGenericCanonicalName());
@@ -341,7 +333,7 @@ public class XmlModelWriter implements ModelWriter {
         }
         buffer.write(')');
 
-        if (method.getExceptions().size() > 0) {
+        if (!method.getExceptions().isEmpty()) {
             buffer.write(" throws ");
             for (Iterator<JavaClass> excIter = method.getExceptions().iterator(); excIter.hasNext();) {
                 buffer.write(excIter.next().getGenericCanonicalName());
@@ -459,7 +451,7 @@ public class XmlModelWriter implements ModelWriter {
                 buffer.newline();
             }
 
-            if (entity.getTags().size() > 0) {
+            if (!entity.getTags().isEmpty()) {
                 if (entity.getComment() != null && entity.getComment().length() > 0) {
                     buffer.write(" *");
                     buffer.newline();

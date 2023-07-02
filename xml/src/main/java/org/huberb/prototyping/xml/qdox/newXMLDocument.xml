@@ -16,12 +16,11 @@ See the License for the specific language governing permissions and
 limitations under the License.
 -->
 
-
-
 <root>
     <source>
         <url>
-            file:/C:/Users/berni3/Documents/GitHub/prototyping/xml/src/main/java/org/huberb/prototyping/xml/qdox/XmlModelWriter.java</url>
+            file:/C:/Users/berni3/Documents/GitHub/prototyping/xml/src/main/java/org/huberb/prototyping/xml/qdox/XmlModelWriter.java
+        </url>
         <package>
             <commentHeader>
             </commentHeader>
@@ -144,18 +143,18 @@ limitations under the License.
                 * @author berni3
                 */
             </commentHeader>
-            <accessibilityModifier>public </accessibilityModifier>
+            <accessibilityModifier>public</accessibilityModifier>
             <nonAccessibilityModifiers></nonAccessibilityModifiers>
-            <class >
+            <class>
                 <name>XmlModelWriter</name>
-            </class >
+            </class>
             implements com.thoughtworks.qdox.writer.ModelWriter
             <classbody>
                 {
 
                 <field>
                     <commentHeader></commentHeader>
-                    <allModifiers>private </allModifiers>
+                    <allModifiers>private</allModifiers>
                     org.huberb.prototyping.xml.qdox.XmlIndentBuffer buffer = new XmlIndentBuffer();
                 </field>
 
@@ -170,7 +169,7 @@ limitations under the License.
                     </commentHeader>
                     <accessibilityModifier>protected</accessibilityModifier>
                     <nonAccessibilityModifiers>final</nonAccessibilityModifiers>
-                    org.huberb.prototyping.xml.qdox.XmlIndentBuffer getBuffer() {					
+                    org.huberb.prototyping.xml.qdox.XmlIndentBuffer getBuffer() {
                     return buffer;
                     }
                 </method>
@@ -181,14 +180,15 @@ limitations under the License.
                         * {@inheritDoc}
                         */
                     </commentHeader>
-                    <accessibilityModifier>public </accessibilityModifier>
+                    <accessibilityModifier>public</accessibilityModifier>
                     <nonAccessibilityModifiers></nonAccessibilityModifiers>
                     com.thoughtworks.qdox.writer.ModelWriter writeSource(
                     <parameter>
                         <commentHeader></commentHeader>
-                        com.thoughtworks.qdox.model.JavaSource source</parameter>
+                        com.thoughtworks.qdox.model.JavaSource source
+                    </parameter>
                     ) {
-					
+
 
                     buffer.writeStartElement("source");
 
@@ -234,15 +234,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writePackage(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writePackage(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaPackage pckg</parameter>
+                        com.thoughtworks.qdox.model.JavaPackage pckg
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("package");
                     if (pckg != null) {
                     commentHeader(pckg);
@@ -266,15 +269,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeClass(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeClass(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaClass cls</parameter>
+                        com.thoughtworks.qdox.model.JavaClass cls
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("class");
                     commentHeader(cls);
 
@@ -322,15 +328,18 @@ limitations under the License.
                     <commentHeader>
                     </commentHeader>
                     <accessibilityModifier>
-                        private </accessibilityModifier>
+                        private
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeClassBody(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeClassBody(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaClass cls</parameter>
+                        com.thoughtworks.qdox.model.JavaClass cls
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("classbody");
 
                     buffer.write(" {");
@@ -378,12 +387,14 @@ limitations under the License.
                     </commentHeader>
                     <accessibilityModifier>public</accessibilityModifier>
                     <nonAccessibilityModifiers></nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeInitializer(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeInitializer(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaInitializer init</parameter>
+                        com.thoughtworks.qdox.model.JavaInitializer init
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("initializer");
                     if (init.isStatic()) {
                     buffer.write("static ");
@@ -410,15 +421,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeField(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeField(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaField field</parameter>
+                        com.thoughtworks.qdox.model.JavaField field
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("field");
                     commentHeader(field);
 
@@ -430,9 +444,11 @@ limitations under the License.
                     buffer.write(field.getName());
 
                     if (field.isEnumConstant()) {
-                    if (field.getEnumConstantArguments() != null &amp;&amp; !field.getEnumConstantArguments().isEmpty()) {
+                    if (field.getEnumConstantArguments() != null &amp;&amp; !field.getEnumConstantArguments().isEmpty())
+                    {
                     buffer.write("( ");
-                    for (Iterator&lt;Expression> iter = field.getEnumConstantArguments().listIterator(); iter.hasNext();) {
+                    for (Iterator&lt;Expression> iter = field.getEnumConstantArguments().listIterator();
+                    iter.hasNext();) {
                     buffer.write(iter.next().getParameterValue().toString());
                     if (iter.hasNext()) {
                     buffer.write(", ");
@@ -444,7 +460,8 @@ limitations under the License.
                     writeClassBody(field.getEnumConstantClass());
                     }
                     } else {
-                    if (field.getInitializationExpression() != null &amp;&amp; field.getInitializationExpression().length() > 0) {
+                    if (field.getInitializationExpression() != null &amp;&amp;
+                    field.getInitializationExpression().length() > 0) {
                     {
                     buffer.write(" = ");
                     }
@@ -465,15 +482,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeConstructor(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeConstructor(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaConstructor constructor</parameter>
+                        com.thoughtworks.qdox.model.JavaConstructor constructor
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("constructor");
 
                     commentHeader(constructor);
@@ -481,7 +501,8 @@ limitations under the License.
 
                     buffer.write(constructor.getName());
                     buffer.write('(');
-                    for (ListIterator&lt;JavaParameter> iter = constructor.getParameters().listIterator(); iter.hasNext();) {
+                    for (ListIterator&lt;JavaParameter> iter = constructor.getParameters().listIterator();
+                    iter.hasNext();) {
                     writeParameter(iter.next());
                     if (iter.hasNext()) {
                     buffer.write(", ");
@@ -518,15 +539,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeMethod(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeMethod(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaMethod method</parameter>
+                        com.thoughtworks.qdox.model.JavaMethod method
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("method");
                     commentHeader(method);
                     writeAccessibilityModifier(method.getModifiers());
@@ -571,15 +595,18 @@ limitations under the License.
                     <commentHeader>
                     </commentHeader>
                     <accessibilityModifier>
-                        private </accessibilityModifier>
+                        private
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    void writeNonAccessibilityModifiers(<parameter>
+                    void writeNonAccessibilityModifiers(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        java.util.Collection&lt;java.lang.String> modifiers</parameter>
+                        java.util.Collection&lt;java.lang.String> modifiers
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("nonAccessibilityModifiers");
 
                     for (String modifier : modifiers) {
@@ -596,15 +623,18 @@ limitations under the License.
                     <commentHeader>
                     </commentHeader>
                     <accessibilityModifier>
-                        private </accessibilityModifier>
+                        private
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    void writeAccessibilityModifier(<parameter>
+                    void writeAccessibilityModifier(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        java.util.Collection&lt;java.lang.String> modifiers</parameter>
+                        java.util.Collection&lt;java.lang.String> modifiers
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("accessibilityModifier");
                     for (String modifier : modifiers) {
                     if (modifier.startsWith("p")) {
@@ -620,15 +650,18 @@ limitations under the License.
                     <commentHeader>
                     </commentHeader>
                     <accessibilityModifier>
-                        private </accessibilityModifier>
+                        private
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    void writeAllModifiers(<parameter>
+                    void writeAllModifiers(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        java.util.List&lt;java.lang.String> modifiers</parameter>
+                        java.util.List&lt;java.lang.String> modifiers
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("allModifiers");
                     for (String modifier : modifiers) {
                     buffer.write(modifier);
@@ -645,15 +678,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeAnnotation(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeAnnotation(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaAnnotation annotation</parameter>
+                        com.thoughtworks.qdox.model.JavaAnnotation annotation
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("annotation");
 
                     buffer.write('@');
@@ -661,7 +697,8 @@ limitations under the License.
                     if (!annotation.getPropertyMap().isEmpty()) {
                     buffer.indent();
                     buffer.write('(');
-                    Iterator&lt;Map.Entry&lt;String, AnnotationValue>> iterator = annotation.getPropertyMap().entrySet().iterator();
+                    Iterator&lt;Map.Entry&lt;String, AnnotationValue>> iterator =
+                    annotation.getPropertyMap().entrySet().iterator();
                     while (iterator.hasNext()) {
                     Map.Entry&lt;String, AnnotationValue> entry = iterator.next();
                     buffer.write(entry.getKey());
@@ -688,15 +725,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeParameter(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeParameter(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaParameter parameter</parameter>
+                        com.thoughtworks.qdox.model.JavaParameter parameter
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("parameter");
                     commentHeader(parameter);
                     buffer.write(parameter.getGenericCanonicalName());
@@ -714,15 +754,18 @@ limitations under the License.
                     <commentHeader>
                     </commentHeader>
                     <accessibilityModifier>
-                        protected </accessibilityModifier>
+                        protected
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    void commentHeader(<parameter>
+                    void commentHeader(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaAnnotatedElement entity</parameter>
+                        com.thoughtworks.qdox.model.JavaAnnotatedElement entity
+                    </parameter>
                     ) {
-					
+
                     buffer.writeStartElement("commentHeader");
                     if (entity.getComment() != null || (entity.getTags().size() > 0)) {
                     buffer.write("/**");
@@ -772,15 +815,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeModuleDescriptor(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeModuleDescriptor(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaModuleDescriptor descriptor</parameter>
+                        com.thoughtworks.qdox.model.JavaModuleDescriptor descriptor
+                    </parameter>
                     ) {
-					
+
                     if (descriptor.isOpen()) {
                     buffer.write("open ");
                     }
@@ -828,15 +874,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeModuleExports(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeModuleExports(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaExports exports</parameter>
+                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaExports exports
+                    </parameter>
                     ) {
-					
+
                     buffer.write("exports ");
                     buffer.write(exports.getSource().getName());
                     if (!exports.getTargets().isEmpty()) {
@@ -863,15 +912,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeModuleOpens(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeModuleOpens(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaOpens opens</parameter>
+                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaOpens opens
+                    </parameter>
                     ) {
-					
+
                     buffer.write("opens ");
                     buffer.write(opens.getSource().getName());
                     if (!opens.getTargets().isEmpty()) {
@@ -898,15 +950,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeModuleProvides(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeModuleProvides(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaProvides provides</parameter>
+                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaProvides provides
+                    </parameter>
                     ) {
-					
+
                     buffer.write("provides ");
                     buffer.write(provides.getService().getName());
                     buffer.write(" with ");
@@ -931,15 +986,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeModuleRequires(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeModuleRequires(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaRequires requires</parameter>
+                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaRequires requires
+                    </parameter>
                     ) {
-					
+
                     buffer.write("requires ");
                     writeAccessibilityModifier(requires.getModifiers());
                     writeNonAccessibilityModifiers(requires.getModifiers());
@@ -957,15 +1015,18 @@ limitations under the License.
                         */
                     </commentHeader>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
-                    com.thoughtworks.qdox.writer.ModelWriter writeModuleUses(<parameter>
+                    com.thoughtworks.qdox.writer.ModelWriter writeModuleUses(
+                    <parameter>
                         <commentHeader>
                         </commentHeader>
-                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaUses uses</parameter>
+                        com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaUses uses
+                    </parameter>
                     ) {
-					
+
                     buffer.write("uses ");
                     buffer.write(uses.getService().getName());
                     buffer.write(';');
@@ -981,11 +1042,12 @@ limitations under the License.
                         @java.lang.Override
                     </annotation>
                     <accessibilityModifier>
-                        public </accessibilityModifier>
+                        public
+                    </accessibilityModifier>
                     <nonAccessibilityModifiers>
                     </nonAccessibilityModifiers>
                     java.lang.String toString() {
-					
+
                     return buffer.toString();
                     }
                 </method>
@@ -994,8 +1056,8 @@ limitations under the License.
             </classbody>
         </class>
     </source>
-    
-    
+
+
     <source url="file:/C:/Users/berni3/Documents/GitHub/prototyping/xml/src/test/java/org/huberb/prototyping/xml/qdox/XmlSaxModelWriterTest.java">
         <packages>
             <package name="org.huberb.prototyping.xml.qdox"/>
@@ -1015,7 +1077,7 @@ limitations under the License.
             <typeOf name="class "/>
         </class>
     </source>
-    
+
     <source url="file:/C:/Users/berni3/Documents/GitHub/prototyping/xml/src/test/java/org/huberb/prototyping/xml/qdox/XmlSaxWriterTest.java">
         <packages>
             <package name="org.huberb.prototyping.xml.qdox"/>
@@ -1036,7 +1098,7 @@ limitations under the License.
             <typeOf name="class "/>
         </class>
     </source>
-    
+
     <source url="file:/C:/Users/berni3/Documents/GitHub/prototyping/xml/src/test/java/org/huberb/prototyping/xml/trang/DriverTest.java">
         <packages>
             <package name="org.huberb.prototyping.xml.trang"/>

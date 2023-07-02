@@ -20,13 +20,12 @@ import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.writer.ModelWriter;
 import com.thoughtworks.qdox.writer.impl.DefaultModelWriter;
-import java.io.File;
-import java.util.Collection;
-import java.util.Iterator;
 import org.junit.jupiter.api.Test;
 
+import java.io.File;
+import java.util.Collection;
+
 /**
- *
  * @author berni3
  */
 public class DefaultModelWriterTest {
@@ -38,10 +37,9 @@ public class DefaultModelWriterTest {
         builder.addSourceTree(directory);
 
         final Collection<JavaPackage> jpCollection = builder.getPackages();
-        for (Iterator<JavaPackage> it = jpCollection.iterator(); it.hasNext();) {
-            final JavaPackage jp = it.next();
+        jpCollection.forEach(jp -> {
             System.out.printf("JavaPackage:%s%n", jp.getName());
-        }
+        });
     }
 
     @Test
@@ -50,12 +48,11 @@ public class DefaultModelWriterTest {
         File directory = new File("src");
         builder.addSourceTree(directory);
         final Collection<JavaSource> javaSourceCollection = builder.getSources();
-        for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
-            final JavaSource source = it.next();
+        javaSourceCollection.forEach(source -> {
             final ModelWriter dmw = new DefaultModelWriter();
             dmw.writeSource(source);
             System.out.printf("JavaSource:%n%s%n", dmw.toString());
-        }
+        });
 
     }
 

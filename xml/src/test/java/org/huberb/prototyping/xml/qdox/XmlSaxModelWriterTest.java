@@ -19,39 +19,35 @@ import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaSource;
 import com.thoughtworks.qdox.writer.ModelWriter;
-import java.io.File;
-import java.util.Collection;
-import java.util.Iterator;
-import javax.xml.stream.XMLStreamException;
 import org.junit.jupiter.api.Test;
 
+import javax.xml.stream.XMLStreamException;
+import java.io.File;
+import java.util.Collection;
+
 /**
- *
  * @author berni3
  */
 public class XmlSaxModelWriterTest {
 
     @Test
     public void given_java_sources_then_packages_parsed() {
-        JavaProjectBuilder builder = new JavaProjectBuilder();
-        File directory = new File("src");
+        final JavaProjectBuilder builder = new JavaProjectBuilder();
+        final File directory = new File("src");
         builder.addSourceTree(directory);
 
         final Collection<JavaPackage> jpCollection = builder.getPackages();
-        for (Iterator<JavaPackage> it = jpCollection.iterator(); it.hasNext();) {
-            final JavaPackage jp = it.next();
-            System.out.printf("JavaPackage:%s%n", jp.getName());
-        }
+        jpCollection.forEach(jp -> System.out.printf("JavaPackage:%s%n", jp.getName()));
     }
 
     @Test
     public void given_java_sources_then_java_sources_parsed() throws XMLStreamException {
-        JavaProjectBuilder builder = new JavaProjectBuilder();
-        File directory = new File("src");
+        final JavaProjectBuilder builder = new JavaProjectBuilder();
+        final File directory = new File("src");
         builder.addSourceTree(directory);
+
         final Collection<JavaSource> javaSourceCollection = builder.getSources();
-        for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
-            final JavaSource source = it.next();
+        for (final JavaSource source : javaSourceCollection) {
             final ModelWriter dmw = new XmlSaxModelWriter();
             dmw.writeSource(source);
             System.out.printf("JavaSource:%n%s%n", dmw.toString());
