@@ -21,13 +21,9 @@ package org.huberb.prototyping.xml.qdox;
  */
 public interface IGenericXmlEmitter {
 
-    public void newline();
-
     void startDocument();
 
     void endDocument();
-
-    void write(char c);
 
     void write(String s);
 

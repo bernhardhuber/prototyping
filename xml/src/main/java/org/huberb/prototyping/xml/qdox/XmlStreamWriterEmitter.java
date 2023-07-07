@@ -24,7 +24,7 @@ import javax.xml.stream.XMLStreamWriter;
  *
  * @author berni3
  */
-public class XmlStreamWriterEmitter implements IGenericXmlEmitter {
+public class XmlStreamWriterEmitter implements IGenericXmlEmitter, AutoCloseable {
 
     XMLStreamWriter xsw;
     final Writer w;
@@ -32,10 +32,6 @@ public class XmlStreamWriterEmitter implements IGenericXmlEmitter {
 
     public XmlStreamWriterEmitter(Writer w) {
         this.w = w;
-    }
-
-    @Override
-    public void newline() {
     }
 
     @Override
@@ -53,15 +49,6 @@ public class XmlStreamWriterEmitter implements IGenericXmlEmitter {
     public void endDocument() {
         try {
             this.xsw.writeEndDocument();
-        } catch (XMLStreamException ex) {
-            throw new RuntimeException(ex);
-        }
-    }
-
-    @Override
-    public void write(char c) {
-        try {
-            xsw.writeCharacters(new char[]{c}, 0, 1);
         } catch (XMLStreamException ex) {
             throw new RuntimeException(ex);
         }
@@ -108,6 +95,13 @@ public class XmlStreamWriterEmitter implements IGenericXmlEmitter {
     @Override
     public String toString() {
         return w.toString();
+    }
+
+    @Override
+    public void close() throws Exception {
+        if (this.w != null) {
+            w.close();
+        }
     }
 
 }

@@ -16,13 +16,21 @@
 package org.huberb.prototyping.xml.qdox;
 
 import com.thoughtworks.qdox.JavaProjectBuilder;
-import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaSource;
 import java.io.File;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.List;
 import java.util.concurrent.Callable;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.xml.stream.XMLStreamException;
 import picocli.CommandLine;
+import picocli.CommandLine.Model.CommandSpec;
+import picocli.CommandLine.Option;
+import picocli.CommandLine.Parameters;
+import picocli.CommandLine.Spec;
 
 /**
  * @author berni3
@@ -36,7 +44,27 @@ import picocli.CommandLine;
 )
 public class QdoxMain implements Callable<Integer> {
 
-    File src;
+    @Spec
+    private CommandSpec spec;
+
+    @Parameters(index = "0..*",
+            description = "input sources.")
+    private List<String> sources;
+
+    @Option(names = {"-o", "--output"},
+            description = "Write evaluated expressions to file.")
+    private String output = null;
+
+    enum ModelWriterMode {
+        m1, m2;
+    }
+    @Option(names = {"-m", "-model-writer"},
+            description = "Choose model-writer",
+            defaultValue = "m1"
+    )
+    ModelWriterMode modelWriterMode;
+
+    private LoggingSystem loggingSystem;
 
     public static void main(String[] args) throws Exception {
         final int exitCode = new CommandLine(new QdoxMain()).execute(args);
@@ -45,31 +73,88 @@ public class QdoxMain implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        this.src = new File("src");
-        JavaProjectBuilder javaProjectBuilder = new JavaProjectBuilder();
-        javaProjectBuilder.addSourceTree(this.src);
+        loggingSystem = new LoggingSystem(spec);
+        loggingSystem.info("Hello %s", this.getClass().getName());
 
-        processSources(javaProjectBuilder);
+        JavaProjectBuilder javaProjectBuilder = createFromInputSources(this.sources);
+        if (!javaProjectBuilder.getSources().isEmpty()) {
+            if (modelWriterMode == ModelWriterMode.m1) {
+                processSourcesUsingXmlModelWriter(javaProjectBuilder);
+            } else if (modelWriterMode == ModelWriterMode.m2) {
+                processSourcesUsingXmlSaxModelWriter(javaProjectBuilder);
+            }
+        }
         return 0;
     }
 
-    void processPackages(JavaProjectBuilder builder) {
-        if (1 == 0) {
-            final Collection<JavaPackage> jpCollection = builder.getPackages();
-            for (Iterator<JavaPackage> it = jpCollection.iterator(); it.hasNext();) {
-                final JavaPackage jp = it.next();
-                System.out.printf("JavaPackage:%s%n", jp.getName());
+    JavaProjectBuilder createFromInputSources(List<String> theSources) {
+        JavaProjectBuilder result = new JavaProjectBuilder();
+        if (theSources != null && !theSources.isEmpty()) {
+            for (String s : theSources) {
+                String trimmedS = s.trim();
+                File f = new File(trimmedS);
+                if (f.exists() && f.canRead()) {
+                    if (f.isDirectory()) {
+                        result.addSourceTree(f);
+                    } else if (f.isFile()) {
+                        try {
+                            result.addSource(f);
+                        } catch (IOException ex) {
+                            loggingSystem.info(ex, "file %s", f);
+                        }
+                    }
+                } else {
+                    loggingSystem.info("File %s is not accessible", f.toString());
+                }
             }
         }
+
+        return result;
     }
 
-    void processSources(JavaProjectBuilder builder) {
+    void processSourcesUsingXmlModelWriter(JavaProjectBuilder builder) {
         final Collection<JavaSource> javaSourceCollection = builder.getSources();
         for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
             final JavaSource source = it.next();
             final XmlModelWriter xmlModelWriter = new XmlModelWriter();
             xmlModelWriter.writeSource(source);
-            System.out.printf("JavaSource:%n%s%n", xmlModelWriter.toString());
+            loggingSystem.System_out_format("JavaSource:%n%s%n", xmlModelWriter.toString());
+        }
+    }
+
+    void processSourcesUsingXmlSaxModelWriter(JavaProjectBuilder builder) {
+        final Collection<JavaSource> javaSourceCollection = builder.getSources();
+        for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
+            final JavaSource source = it.next();
+            try {
+                final XmlSaxModelWriter xmlModelWriter = new XmlSaxModelWriter();
+                xmlModelWriter.writeSource(source);
+                loggingSystem.System_out_format("JavaSource:%n%s%n", xmlModelWriter.toString());
+            } catch (XMLStreamException ex) {
+                loggingSystem.info(ex, "Unexpecting processing error '%s'", source);
+            }
+        }
+    }
+
+    static class LoggingSystem {
+
+        private static final Logger LOGGER = Logger.getLogger(LoggingSystem.class.getName());
+        private final CommandSpec spec;
+
+        public LoggingSystem(CommandSpec spec) {
+            this.spec = spec;
+        }
+
+        public void System_out_format(String format, Object... args) {
+            spec.commandLine().getOut().format(format, args);
+        }
+
+        public void info(Exception ex, String format, Object... args) {
+            LOGGER.log(Level.INFO, ex, () -> String.format(format, args));
+        }
+
+        public void info(String format, Object... args) {
+            LOGGER.info(() -> String.format(format, args));
         }
     }
 
