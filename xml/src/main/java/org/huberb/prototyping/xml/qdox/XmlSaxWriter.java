@@ -85,14 +85,14 @@ public class XmlSaxWriter implements AutoCloseable {
 
         XmlStreamWriterConsumerTemplates startDocument() {
             final XmlStreamWriterConsumer xswc = current
-                    .andThen(xsw -> xsw.writeStartDocument());
+                    .andThen(XMLStreamWriter::writeStartDocument);
             this.current = xswc;
             return this;
         }
 
         XmlStreamWriterConsumerTemplates endDocument() {
             final XmlStreamWriterConsumer xswc = current
-                    .andThen(xsw -> xsw.writeEndDocument());
+                    .andThen(XMLStreamWriter::writeEndDocument);
             this.current = xswc;
             return this;
         }
@@ -133,11 +133,8 @@ public class XmlSaxWriter implements AutoCloseable {
         }
 
         XmlStreamWriterConsumerTemplates attributes(String k, String v) {
-            final XmlStreamWriterConsumer xswcAttributes = xsw -> {
-                xsw.writeAttribute(k, v);
-            };
             final XmlStreamWriterConsumer xswc = current
-                    .andThen(xswcAttributes);
+                    .andThen(xsw -> xsw.writeAttribute(k, v));
             this.current = xswc;
             return this;
         }
@@ -175,7 +172,10 @@ public class XmlSaxWriter implements AutoCloseable {
 
     static class XmlModelSaxWriterFactory {
 
-        XmlSaxWriter create(Writer w) throws XMLStreamException {
+        private XmlModelSaxWriterFactory() {
+        }
+
+        static XmlSaxWriter create(Writer w) throws XMLStreamException {
             final XMLOutputFactory xof = XMLOutputFactory.newInstance();
             final XMLStreamWriter xsw = xof.createXMLStreamWriter(w);
             return new XmlSaxWriter(xsw);

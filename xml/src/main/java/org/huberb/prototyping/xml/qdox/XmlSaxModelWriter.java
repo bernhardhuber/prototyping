@@ -75,7 +75,7 @@ public class XmlSaxModelWriter implements ModelWriter, AutoCloseable {
         this.xswct.endElement();
         this.xswct.endDocument();
 
-        try (final XmlSaxWriter xsw = new XmlModelSaxWriterFactory().create(sw)) {
+        try (final XmlSaxWriter xsw = XmlModelSaxWriterFactory.create(sw)) {
             final XmlStreamWriterConsumer consumer = xswct.build();
             xsw.accept(consumer);
         } catch (XMLStreamException ex) {

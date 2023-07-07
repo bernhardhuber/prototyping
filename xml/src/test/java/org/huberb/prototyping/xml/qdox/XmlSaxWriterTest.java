@@ -42,7 +42,7 @@ public class XmlSaxWriterTest {
     public void testAccept() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = new XmlModelSaxWriterFactory().create(sw)) {
+            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .build();
                 instance.accept(consumer);
@@ -60,7 +60,7 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementNameEmpty1_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = new XmlModelSaxWriterFactory().create(sw)) {
+            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .emptyElement("elementNameEmpty1")
@@ -83,7 +83,7 @@ public class XmlSaxWriterTest {
     public void testGiven_LotsOfElementNameEmpty1_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = new XmlModelSaxWriterFactory().create(sw)) {
+            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
                 XmlStreamWriterConsumerTemplates templates = new XmlStreamWriterConsumerTemplates();
                 templates.startDocument();
                 for (int i = 0; i < 100; i += 1) {
@@ -107,7 +107,7 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementName12_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = new XmlModelSaxWriterFactory().create(sw)) {
+            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .startElement("elementName1")
@@ -136,7 +136,7 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementName1Text_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = new XmlModelSaxWriterFactory().create(sw)) {
+            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .startElement("elementName1")
@@ -163,7 +163,7 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementName1AttributesText_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = new XmlModelSaxWriterFactory().create(sw)) {
+            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .startElement("elementName1")
