@@ -129,7 +129,7 @@ public class QdoxMain implements Callable<Integer> {
             try {
                 final XmlSaxModelWriter xmlModelWriter = new XmlSaxModelWriter();
                 xmlModelWriter.writeSource(source);
-                loggingSystem.System_out_format("JavaSource:%n%s%n", xmlModelWriter.toString());
+                loggingSystem.System_out_format("JavaSource:%n%s%n", xmlModelWriter.emitXml());
             } catch (XMLStreamException ex) {
                 loggingSystem.info(ex, "Unexpecting processing error '%s'", source);
             }

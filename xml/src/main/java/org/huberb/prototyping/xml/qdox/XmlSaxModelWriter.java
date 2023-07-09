@@ -23,6 +23,7 @@ import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaRequires;
 import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaUses;
 import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import com.thoughtworks.qdox.writer.ModelWriter;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
@@ -34,17 +35,30 @@ import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumer;
 import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumerTemplates;
 
 /**
+ * Implementation of an {@link ModelWriter} emitting XML using
+ * {@link XmlSaxWriter}.
+ *
  * @author berni3
  */
-public class XmlSaxModelWriter implements ModelWriter, AutoCloseable {
+public class XmlSaxModelWriter implements ModelWriter {
 
     private static final Logger LOG = Logger.getLogger(XmlSaxModelWriter.class.getName());
-    private final StringWriter sw;
     private final XmlStreamWriterConsumerTemplates xswct;
 
     public XmlSaxModelWriter() throws XMLStreamException {
-        this.sw = new StringWriter();
         this.xswct = new XmlStreamWriterConsumerTemplates();
+    }
+
+    public String emitXml() {
+        try (final StringWriter sw = new StringWriter(); final XmlSaxWriter xsw = XmlModelSaxWriterFactory.create(sw)) {
+            final XmlStreamWriterConsumer consumer = xswct.build();
+            xsw.accept(consumer);
+            sw.flush();
+            return sw.toString();
+        } catch (XMLStreamException | IOException ex) {
+            LOG.log(Level.WARNING, "Cannot create XML from JavaSource", ex);
+        }
+        return "";
     }
 
     /**
@@ -73,14 +87,9 @@ public class XmlSaxModelWriter implements ModelWriter, AutoCloseable {
                 .forEach(jc -> writeClass(jc)
                 );
         this.xswct.endElement();
+
         this.xswct.endDocument();
 
-        try (final XmlSaxWriter xsw = XmlModelSaxWriterFactory.create(sw)) {
-            final XmlStreamWriterConsumer consumer = xswct.build();
-            xsw.accept(consumer);
-        } catch (XMLStreamException ex) {
-            LOG.log(Level.WARNING, "Cannot create XML from JavaSource", ex);
-        }
         return this;
     }
 
@@ -499,8 +508,7 @@ public class XmlSaxModelWriter implements ModelWriter, AutoCloseable {
      * {@inheritDoc}
      */
     @Override
-    public ModelWriter writeModuleUses(JavaUses uses
-    ) {
+    public ModelWriter writeModuleUses(JavaUses uses) {
 //        buffer.write("uses ");
 //        buffer.write(uses.getService().getName());
 //        buffer.write(';');
@@ -508,13 +516,4 @@ public class XmlSaxModelWriter implements ModelWriter, AutoCloseable {
         return this;
     }
 
-    @Override
-    public String toString() {
-        return this.sw.toString();
-    }
-
-    @Override
-    public void close() throws Exception {
-        this.sw.close();
-    }
 }
