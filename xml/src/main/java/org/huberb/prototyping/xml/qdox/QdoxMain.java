@@ -56,11 +56,11 @@ public class QdoxMain implements Callable<Integer> {
     private String output = null;
 
     enum ModelWriterMode {
-        m1, m2;
+        XmlModelWriter, XmlSaxModelWriter;
     }
-    @Option(names = {"-m", "-model-writer"},
+    @Option(names = {"-m", "--model-writer"},
             description = "Choose model-writer",
-            defaultValue = "m1"
+            defaultValue = "XmlSaxModelWriter"
     )
     ModelWriterMode modelWriterMode;
 
@@ -78,9 +78,9 @@ public class QdoxMain implements Callable<Integer> {
 
         JavaProjectBuilder javaProjectBuilder = createFromInputSources(this.sources);
         if (!javaProjectBuilder.getSources().isEmpty()) {
-            if (modelWriterMode == ModelWriterMode.m1) {
+            if (modelWriterMode == ModelWriterMode.XmlModelWriter) {
                 processSourcesUsingXmlModelWriter(javaProjectBuilder);
-            } else if (modelWriterMode == ModelWriterMode.m2) {
+            } else if (modelWriterMode == ModelWriterMode.XmlSaxModelWriter) {
                 processSourcesUsingXmlSaxModelWriter(javaProjectBuilder);
             }
         }
