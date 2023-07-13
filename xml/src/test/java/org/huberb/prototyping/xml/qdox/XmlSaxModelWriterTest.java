@@ -19,8 +19,12 @@ import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaPackage;
 import com.thoughtworks.qdox.model.JavaSource;
 import java.io.File;
+import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlModelSaxWriterFactory;
 import static org.junit.jupiter.api.Assertions.assertAll;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -50,7 +54,7 @@ public class XmlSaxModelWriterTest {
     }
 
     @Test
-    public void given_java_sources_then_java_sources_parsed() throws XMLStreamException {
+    public void given_java_sources_then_java_sources_parsed() throws XMLStreamException, IOException {
         final JavaProjectBuilder builder = new JavaProjectBuilder();
         final File directory = new File("src");
         builder.addSourceTree(directory);
@@ -59,14 +63,22 @@ public class XmlSaxModelWriterTest {
         for (final JavaSource source : javaSourceCollection) {
             final XmlSaxModelWriter dmw = new XmlSaxModelWriter();
             dmw.writeSource(source);
-            final String emitXml = dmw.emitXml();
-            System.out.printf("JavaSource:%n%s%n", emitXml);
-            assertAll(
-                    () -> assertNotNull(emitXml),
-                    () -> assertFalse(emitXml.isEmpty()),
-                    () -> assertFalse(emitXml.isBlank()),
-                    () -> assertTrue(emitXml.startsWith("<?xml"))
-            );
+
+            try (final StringWriter sw = new StringWriter()) {
+                XMLStreamWriter xsw0 = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+                final XmlSaxWriter xsw1 = new XmlSaxWriter();
+                xsw1.accept(xsw0, dmw.getXswct().build());
+                final String emitXml = sw.toString();
+                System.out.printf("JavaSource:%n%s%n", emitXml);
+                assertAll(
+                        () -> assertNotNull(emitXml),
+                        () -> assertFalse(emitXml.isEmpty()),
+                        () -> assertFalse(emitXml.isBlank()),
+                        () -> assertTrue(emitXml.startsWith("<source"))
+                //() -> assertTrue(emitXml.startsWith("<?xml"))
+                );
+            }
+
         }
 
     }

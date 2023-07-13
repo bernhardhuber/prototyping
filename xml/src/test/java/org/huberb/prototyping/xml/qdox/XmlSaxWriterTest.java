@@ -18,6 +18,7 @@ package org.huberb.prototyping.xml.qdox;
 import java.io.IOException;
 import java.io.StringWriter;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
 import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlModelSaxWriterFactory;
 import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumer;
 import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumerTemplates;
@@ -42,11 +43,11 @@ public class XmlSaxWriterTest {
     public void testAccept() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
-                final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
-                        .build();
-                instance.accept(consumer);
-            }
+            final XMLStreamWriter xsw = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+            final XmlSaxWriter instance = new XmlSaxWriter();
+            final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
+                    .build();
+            instance.accept(xsw, consumer);
             sw.flush();
 
             assertEquals("", sw.toString());
@@ -60,13 +61,15 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementNameEmpty1_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
+            final XMLStreamWriter xsw = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+            final XmlSaxWriter instance = new XmlSaxWriter();
+            {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .emptyElement("elementNameEmpty1")
                         .endDocument()
                         .build();
-                instance.accept(consumer);
+                instance.accept(xsw, consumer);
             }
             sw.flush();
 
@@ -83,7 +86,9 @@ public class XmlSaxWriterTest {
     public void testGiven_LotsOfElementNameEmpty1_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
+            final XMLStreamWriter xsw = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+            final XmlSaxWriter instance = new XmlSaxWriter();
+            {
                 XmlStreamWriterConsumerTemplates templates = new XmlStreamWriterConsumerTemplates();
                 templates.startDocument();
                 for (int i = 0; i < 100; i += 1) {
@@ -91,7 +96,7 @@ public class XmlSaxWriterTest {
                 }
                 templates.endDocument();
                 XmlStreamWriterConsumer consumer = templates.build();
-                instance.accept(consumer);
+                instance.accept(xsw, consumer);
             }
             sw.flush();
 
@@ -107,7 +112,9 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementName12_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
+            final XMLStreamWriter xsw = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+            final XmlSaxWriter instance = new XmlSaxWriter();
+            {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .startElement("elementName1")
@@ -115,9 +122,10 @@ public class XmlSaxWriterTest {
                                 .emptyElement("elementName2")
                                 .build()
                         )
+                        .endElement()
                         .endDocument()
                         .build();
-                instance.accept(consumer);
+                instance.accept(xsw, consumer);
             }
             sw.flush();
 
@@ -136,7 +144,9 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementName1Text_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
+            final XMLStreamWriter xsw = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+            final XmlSaxWriter instance = new XmlSaxWriter();
+            {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .startElement("elementName1")
@@ -144,7 +154,7 @@ public class XmlSaxWriterTest {
                         .endElement()
                         .endDocument()
                         .build();
-                instance.accept(consumer);
+                instance.accept(xsw, consumer);
             }
             sw.flush();
 
@@ -163,7 +173,9 @@ public class XmlSaxWriterTest {
     public void testGiven_ElementName1AttributesText_then_xml_docuement_is_okay() throws XMLStreamException, IOException {
 
         try (final StringWriter sw = new StringWriter()) {
-            try (final XmlSaxWriter instance = XmlModelSaxWriterFactory.create(sw)) {
+            final XMLStreamWriter xsw = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+            final XmlSaxWriter instance = new XmlSaxWriter();
+            {
                 final XmlStreamWriterConsumer consumer = new XmlStreamWriterConsumerTemplates()
                         .startDocument()
                         .startElement("elementName1")
@@ -172,7 +184,7 @@ public class XmlSaxWriterTest {
                         .endElement()
                         .endDocument()
                         .build();
-                instance.accept(consumer);
+                instance.accept(xsw, consumer);
             }
             sw.flush();
 

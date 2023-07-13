@@ -23,15 +23,10 @@ import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaRequires;
 import com.thoughtworks.qdox.model.JavaModuleDescriptor.JavaUses;
 import com.thoughtworks.qdox.model.expression.AnnotationValue;
 import com.thoughtworks.qdox.writer.ModelWriter;
-import java.io.IOException;
-import java.io.StringWriter;
 import java.util.List;
 import java.util.Map;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
-import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlModelSaxWriterFactory;
-import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumer;
 import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumerTemplates;
 
 /**
@@ -49,25 +44,31 @@ public class XmlSaxModelWriter implements ModelWriter {
         this.xswct = new XmlStreamWriterConsumerTemplates();
     }
 
-    public String emitXml() {
-        try (final StringWriter sw = new StringWriter(); final XmlSaxWriter xsw = XmlModelSaxWriterFactory.create(sw)) {
-            final XmlStreamWriterConsumer consumer = xswct.build();
-            xsw.accept(consumer);
-            sw.flush();
-            return sw.toString();
-        } catch (XMLStreamException | IOException ex) {
-            LOG.log(Level.WARNING, "Cannot create XML from JavaSource", ex);
-        }
-        return "";
+    public XmlStreamWriterConsumerTemplates getXswct() {
+        return xswct;
     }
+
+//    public String emitXml(XmlSaxWriter xsw) {
+//        
+//            final XmlStreamWriterConsumer inner = xswct.build();
+//xsw.accept(inner);
+//
+//            final XmlStreamWriterConsumerTemplates outer = new XmlStreamWriterConsumerTemplates();
+//            outer.startDocument()
+//                    .nested(inner)
+//                    .endDocument();
+//
+//            xsw.accept(outer.build());
+//            sw.flush();
+//            return sw.toString();
+//
+//    }
 
     /**
      * {@inheritDoc}
      */
     @Override
     public ModelWriter writeSource(JavaSource source) {
-
-        this.xswct.startDocument();
 
         xswct.startElement("source");
         xswct.attributes("url", source.getURL().toString());
@@ -78,7 +79,7 @@ public class XmlSaxModelWriter implements ModelWriter {
         // import statement
         xswct.startElement("imports");
         source.getImports().stream().
-                forEach(s -> this.xswct.emptyElement("import").attributes("name", s)
+                forEach(s -> xswct.emptyElement("import").attributes("name", s)
                 );
         xswct.endElement();
 
@@ -86,9 +87,7 @@ public class XmlSaxModelWriter implements ModelWriter {
         source.getClasses().stream()
                 .forEach(jc -> writeClass(jc)
                 );
-        this.xswct.endElement();
-
-        this.xswct.endDocument();
+        xswct.endElement();
 
         return this;
     }
@@ -378,8 +377,7 @@ public class XmlSaxModelWriter implements ModelWriter {
      * {@inheritDoc}
      */
     @Override
-    public ModelWriter writeModuleDescriptor(JavaModuleDescriptor descriptor
-    ) {
+    public ModelWriter writeModuleDescriptor(JavaModuleDescriptor descriptor) {
 //        if (descriptor.isOpen()) {
 //            buffer.write("open ");
 //        }
@@ -423,8 +421,7 @@ public class XmlSaxModelWriter implements ModelWriter {
      * {@inheritDoc}
      */
     @Override
-    public ModelWriter writeModuleExports(JavaExports exports
-    ) {
+    public ModelWriter writeModuleExports(JavaExports exports) {
 //        buffer.write("exports ");
 //        buffer.write(exports.getSource().getName());
 //        if (!exports.getTargets().isEmpty()) {
@@ -471,8 +468,7 @@ public class XmlSaxModelWriter implements ModelWriter {
      * {@inheritDoc}
      */
     @Override
-    public ModelWriter writeModuleProvides(JavaProvides provides
-    ) {
+    public ModelWriter writeModuleProvides(JavaProvides provides) {
 //        buffer.write("provides ");
 //        buffer.write(provides.getService().getName());
 //        buffer.write(" with ");
@@ -493,8 +489,7 @@ public class XmlSaxModelWriter implements ModelWriter {
      * {@inheritDoc}
      */
     @Override
-    public ModelWriter writeModuleRequires(JavaRequires requires
-    ) {
+    public ModelWriter writeModuleRequires(JavaRequires requires) {
 //        buffer.write("requires ");
 //        writeAccessibilityModifier(requires.getModifiers());
 //        writeNonAccessibilityModifiers(requires.getModifiers());

@@ -23,16 +23,11 @@ import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
 
 /**
+ * Wrap {@link XMLStreamWriter} in a functional API style.
+ *
  * @author berni3
  */
-public class XmlSaxWriter implements AutoCloseable {
-
-    private final XMLStreamWriter xsw;
-
-    XmlSaxWriter(XMLStreamWriter xsw) {
-        this.xsw = xsw;
-        String defaultNamespace = "urn:xxx";
-    }
+public class XmlSaxWriter {
 
     @FunctionalInterface
     public static interface XmlStreamWriterConsumer {
@@ -40,7 +35,7 @@ public class XmlSaxWriter implements AutoCloseable {
         /**
          * Performs this operation on the given argument.
          *
-         * @param t the input argument
+         * @param xsw
          */
         public void accept(XMLStreamWriter xsw) throws XMLStreamException;
 
@@ -63,10 +58,9 @@ public class XmlSaxWriter implements AutoCloseable {
                 after.accept(t);
             };
         }
-
     }
 
-    void accept(XmlStreamWriterConsumer consumer) throws XMLStreamException {
+    void accept(XMLStreamWriter xsw, XmlStreamWriterConsumer consumer) throws XMLStreamException {
         consumer.accept(xsw);
     }
 
@@ -127,7 +121,7 @@ public class XmlSaxWriter implements AutoCloseable {
 
         XmlStreamWriterConsumerTemplates endElement() {
             XmlStreamWriterConsumer xswc = this.current
-                    .andThen(xsw -> xsw.writeEndElement());
+                    .andThen(XMLStreamWriter::writeEndElement);
             this.current = xswc;
             return this;
         }
@@ -153,8 +147,7 @@ public class XmlSaxWriter implements AutoCloseable {
 
         XmlStreamWriterConsumerTemplates nested(XmlStreamWriterConsumer inner) {
             final XmlStreamWriterConsumer xswc = current
-                    .andThen(inner)
-                    .andThen(xsw -> xsw.writeEndElement());
+                    .andThen(inner);
             this.current = xswc;
             return this;
         }
@@ -164,21 +157,18 @@ public class XmlSaxWriter implements AutoCloseable {
         }
     }
 
-    @Override
-    public void close() throws XMLStreamException {
-        this.xsw.close();
-
-    }
-
+    /**
+     * Simple factory for creating an {@link XmlSaxWriter}.
+     */
     static class XmlModelSaxWriterFactory {
 
         private XmlModelSaxWriterFactory() {
         }
 
-        static XmlSaxWriter create(Writer w) throws XMLStreamException {
+        static XMLStreamWriter createXMLStreamWriter(Writer w) throws XMLStreamException {
             final XMLOutputFactory xof = XMLOutputFactory.newInstance();
             final XMLStreamWriter xsw = xof.createXMLStreamWriter(w);
-            return new XmlSaxWriter(xsw);
+            return xsw;
         }
     }
 

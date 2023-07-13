@@ -19,13 +19,16 @@ import com.thoughtworks.qdox.JavaProjectBuilder;
 import com.thoughtworks.qdox.model.JavaSource;
 import java.io.File;
 import java.io.IOException;
+import java.io.StringWriter;
 import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.xml.stream.XMLStreamException;
+import javax.xml.stream.XMLStreamWriter;
+import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlModelSaxWriterFactory;
+import org.huberb.prototyping.xml.qdox.XmlSaxWriter.XmlStreamWriterConsumerTemplates;
 import picocli.CommandLine;
 import picocli.CommandLine.Model.CommandSpec;
 import picocli.CommandLine.Option;
@@ -90,49 +93,66 @@ public class QdoxMain implements Callable<Integer> {
     JavaProjectBuilder createFromInputSources(List<String> theSources) {
         JavaProjectBuilder result = new JavaProjectBuilder();
         if (theSources != null && !theSources.isEmpty()) {
-            for (String s : theSources) {
-                String trimmedS = s.trim();
-                File f = new File(trimmedS);
-                if (f.exists() && f.canRead()) {
-                    if (f.isDirectory()) {
-                        result.addSourceTree(f);
-                    } else if (f.isFile()) {
-                        try {
-                            result.addSource(f);
-                        } catch (IOException ex) {
-                            loggingSystem.info(ex, "file %s", f);
+            theSources.stream()
+                    .map(String::trim)
+                    .map(File::new)
+                    .filter(f -> f.exists() && f.canRead())
+                    .forEach(f -> {
+                        if (f.isDirectory()) {
+                            result.addSourceTree(f);
+                        } else if (f.isFile()) {
+                            try {
+                                result.addSource(f);
+                            } catch (IOException ex) {
+                                loggingSystem.info(ex, "file %s", f);
+                            }
                         }
-                    }
-                } else {
-                    loggingSystem.info("File %s is not accessible", f.toString());
-                }
-            }
+                    });
         }
-
         return result;
     }
 
     void processSourcesUsingXmlModelWriter(JavaProjectBuilder builder) {
         final Collection<JavaSource> javaSourceCollection = builder.getSources();
-        for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
-            final JavaSource source = it.next();
+        for (JavaSource js : javaSourceCollection) {
             final XmlModelWriter xmlModelWriter = new XmlModelWriter();
-            xmlModelWriter.writeSource(source);
+            xmlModelWriter.writeSource(js);
             loggingSystem.System_out_format("JavaSource:%n%s%n", xmlModelWriter.toString());
         }
     }
 
-    void processSourcesUsingXmlSaxModelWriter(JavaProjectBuilder builder) {
-        final Collection<JavaSource> javaSourceCollection = builder.getSources();
-        for (Iterator<JavaSource> it = javaSourceCollection.iterator(); it.hasNext();) {
-            final JavaSource source = it.next();
-            try {
-                final XmlSaxModelWriter xmlModelWriter = new XmlSaxModelWriter();
-                xmlModelWriter.writeSource(source);
-                loggingSystem.System_out_format("JavaSource:%n%s%n", xmlModelWriter.emitXml());
-            } catch (XMLStreamException ex) {
-                loggingSystem.info(ex, "Unexpecting processing error '%s'", source);
+    void processSourcesUsingXmlSaxModelWriter(JavaProjectBuilder builder) throws XMLStreamException, IOException {
+
+        try (final StringWriter sw = new StringWriter()) {
+            final XMLStreamWriter xsw = XmlModelSaxWriterFactory.createXMLStreamWriter(sw);
+            final XmlSaxWriter xsw1 = new XmlSaxWriter();
+
+            final XmlStreamWriterConsumerTemplates xswctStart = new XmlStreamWriterConsumerTemplates();
+            xsw1.accept(xsw, xswctStart.startDocument().build());
+
+            final Collection<JavaSource> javaSourceCollection = builder.getSources();
+            for (JavaSource source : javaSourceCollection) {
+                try {
+                    final XmlSaxModelWriter xsmw = new XmlSaxModelWriter();
+                    xsmw.writeSource(source);
+                    xsw1.accept(xsw, xsmw.getXswct().build());
+
+                    sw.flush();
+
+                    loggingSystem.System_out_format("JavaSource:%n%s%n", sw.toString());
+                    int start = 0;
+                    int end = sw.getBuffer().length();
+                    if (end > 0) {
+                        sw.getBuffer().delete(start, end);
+                    }
+
+                } catch (XMLStreamException ex) {
+                    loggingSystem.info(ex, "Unexpecting processing error '%s'", source);
+                }
             }
+            final XmlStreamWriterConsumerTemplates xswctEnd = new XmlStreamWriterConsumerTemplates();
+            xsw1.accept(xsw, xswctEnd.endDocument().build());
+            loggingSystem.System_out_format("JavaSource:%n%s%n", sw.toString());
         }
     }
 
