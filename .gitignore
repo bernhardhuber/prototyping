@@ -23,6 +23,8 @@
 hs_err_pid*
 
 **/target/
+**/tmp/
+**/.idea/
 **/.lanterna/
 /project4_java_laterna/
 **/nbproject/
